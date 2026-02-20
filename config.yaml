@@ -1,24 +1,20 @@
-# Hugo Configuration
-author:
-  name: "Your Name"
-  email: "your_email@example.com"
-
-baseURL: "https://example.com/"
-theme: "your-theme-name"
-
-params:
-  color:
-    primary: silver
-    secondary: platinum
-
-menu:
-  main:
-    - name: "Home"
-      url: "/"
-      weight: 1
-    - name: "About"
-      url: "/about/"
-      weight: 2
-    - name: "Contact"
-      url: "/contact/"
-      weight: 3
+baseURL = "https://akriwolu.github.io/econ_stardust_webpage/"
+title = "Alexander Kriwoluzky - Macroeconomics"
+theme = "stardust"
+menu = {
+    main = [
+        { name = "Home", url = "/" },
+        { name = "Working Papers", url = "/working-papers/" },
+        { name = "Publications", url = "/publications/" },
+        { name = "Writing for General Public", url = "/writing/" },
+        { name = "Teaching", url = "/teaching/" },
+        { name = "Contact", url = "/contact/" }
+    ]
+}
+author = {
+    name = "Alexander Kriwoluzky"
+    email = "akriwoluzky@diw.de"
+    address = "Anton-Wilhelm-Amo-Straße 58, 10117 Berlin, Germany"
+    affiliations = ["DIW Berlin", "FU Berlin"]
+    linkedin = "https://www.linkedin.com/in/alexander-kriwoluzky-b11331288/"
+}
