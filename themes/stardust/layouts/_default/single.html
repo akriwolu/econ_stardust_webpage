@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="{{ .Site.LanguageCode }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ .Title }} - {{ .Site.Title }}</title>
+    <meta name="description" content="{{ .Description }}">
+    <link rel="stylesheet" href="{{ "css/style.css" | relURL }}">
+</head>
+<body>
+    {{ partial "header.html" . }}
+    
+    <main class="container">
+        <article class="page-section">
+            <h1>{{ .Title }}</h1>
+            
+            {{ if .Params.date }}
+                <time class="post-date">{{ .Date.Format "January 2, 2006" }}</time>
+            {{ end }}
+            
+            <div class="page-content">
+                {{ .Content }}
+            </div>
+            
+            {{ if .Params.authors }}
+                <div class="post-meta">
+                    <p><strong>Authors:</strong> {{ delimit .Params.authors ", " }}</p>
+                </div>
+            {{ end }}
+            
+            {{ if .Params.link }}
+                <div class="post-link">
+                    <a href="{{ .Params.link }}" class="button" target="_blank">View Publication →</a>
+                </div>
+            {{ end }}
+        </article>
+    </main>
+
+    {{ partial "footer.html" . }}
+</body>
+</html>
