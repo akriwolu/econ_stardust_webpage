@@ -1,0 +1,24 @@
+# Hugo Configuration
+author:
+  name: "Your Name"
+  email: "your_email@example.com"
+
+baseURL: "https://example.com/"
+theme: "your-theme-name"
+
+params:
+  color:
+    primary: silver
+    secondary: platinum
+
+menu:
+  main:
+    - name: "Home"
+      url: "/"
+      weight: 1
+    - name: "About"
+      url: "/about/"
+      weight: 2
+    - name: "Contact"
+      url: "/contact/"
+      weight: 3
