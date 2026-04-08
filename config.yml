@@ -1,0 +1,102 @@
+baseURL: "https://akriwolu.github.io/econ_stardust_webpage/"
+title: Alexander Kriwoluzky
+theme: PaperMod
+
+enableInlineShortcodes: true
+enableRobotsTXT: true
+pagination:
+  pagerSize: 20
+
+taxonomies:
+    tag: tags
+
+menu:
+    main:
+        - name: Working Papers
+          url: working-papers/
+          weight: 2
+        - name: Publications
+          url: publications/
+          weight: 3
+        - name: Writing for General Public
+          url: writing/
+          weight: 4
+        - name: Teaching
+          url: teaching/
+          weight: 5
+
+params:
+    description: "This website hosts Alexander Kriwoluzky's research papers, publications, teaching materials, and contact information."
+    author: Alexander Kriwoluzky
+    DateFormat: "January 2006"
+    defaultTheme: light
+    hideFooter: false
+    disableThemeToggle: true
+    ShowShareButtons: false
+    ShowReadingTime: false
+    disableSpecial1stPost: true
+    disableAnchoredHeadings: true
+    ShowPostNavLinks: false
+    ShowBreadCrumbs: false
+    ShowCodeCopyButtons: true
+    ShowAllPagesInArchive: false
+    MainSections: ["working-papers","publications","writing","teaching"]
+    ShowToc: false
+    disableScrollToTop: true
+    TocOpen: true
+    ShowWordCount: false
+    UseHugoToc: true
+    comments: false
+    math: true
+    profileMode:
+          enabled: true
+          title: Alexander Kriwoluzky
+          subtitle: "I am a macroeconomist at DIW Berlin and FU Berlin. My research focuses on macroeconomics, monetary policy, and fiscal policy."
+          imageUrl: "picture.jpeg"
+          imageWidth: 160
+          imageHeight: 160
+          buttons:
+            - name: Working Papers
+              url: working-papers/
+            - name: Publications
+              url: publications/
+            - name: Teaching
+              url: teaching/
+            - name: Writing
+              url: writing/
+            - name: Tags
+              url: tags/
+            - name: Archive
+              url: archive/
+
+    socialIcons:
+        - name: CV
+          url: cv.pdf
+        - name: Email
+          url: mailto:akriwoluzky@diw.de
+        - name: Location
+          url: location/
+        - name: LinkedIn
+          url: https://www.linkedin.com/in/alexander-kriwoluzky-b11331288/
+
+    assets:
+        disableScrollBarStyle: true
+    cover:
+        hiddenInList: false
+        hiddenInSingle: true
+    label:
+      text: "Alexander Kriwoluzky"
+      icon: favicon.ico
+      iconHeight: 18
+
+markup:
+    goldmark:
+        renderer:
+            unsafe: true
+    highlight:
+        guessSyntax: true
+        style: autumn
+    tableOfContents:
+        endLevel: 2
+        ordered: false
+        startLevel: 2
