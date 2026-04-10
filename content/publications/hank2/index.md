@@ -4,17 +4,18 @@ date: 2024-01-01
 tags: ["macroeconomics","monetary policy","monetary union","HANK"]
 author: ["Christian Bayer", "Alexander Kriwoluzky", "Gernot J. Müller", "Fabian Seyrich"]
 description: "We develop a HANK² model of monetary unions to study the impact of business cycle shocks at the household level."
-summary: "We develop a HANK² model of monetary unions to study the impact of business cycle shocks at the household level. Journal of Monetary Economics, 2024."
+summary: "We develop a HANK² model of monetary unions to study the impact of business cycle shocks at the household level. Journal of Monetary Economics, 2024. Click here for open access version"
 editPost:
     URL: "https://doi.org/10.1016/j.jmoneco.2024.103579"
     Text: "Journal of Monetary Economics"
+    Text: "Click for open access version"
 ---
 
 ---
 
 ##### Abstract
 
-We develop a HANK² model of monetary unions to study the impact of business cycle shocks at the household level.
+How does a monetary union alter the impact of business cycle shocks at the household level? We develop a Heterogeneous Agent New Keynesian model of two countries (HANK) and show in closed form that a monetary union shifts the adjustment to a shock horizontally across countries, within the brackets of the union-wide wealth distribution, rather than vertically, that is, across the brackets of the union-wide wealth distribution. Calibrating the model to the euro area reveals that a monetary union alters the impact of shocks most strongly in the tails of the wealth distribution but leaves the middle class almost unaffected.
 
 ---
 
