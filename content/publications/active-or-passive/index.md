@@ -7,7 +7,7 @@ description: "We revisit the role of fiscal policy during periods of high inflat
 summary: "We revisit the role of fiscal policy during the high inflation periods of the 1960s and 1970s in the US. European Economic Review, 2024."
 editPost:
     URL: "https://doi.org/10.1016/j.euroecorev.2024.104874"
-    Text: "Click for open access version"
+    Text: "Click here for open access version"
 ---
 
 ---
