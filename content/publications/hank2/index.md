@@ -6,7 +6,7 @@ author: ["Christian Bayer", "Alexander Kriwoluzky", "Gernot J. Müller", "Fabian
 description: "We develop a HANK² model of monetary unions to study the impact of business cycle shocks at the household level."
 summary: "We develop a HANK² model of monetary unions to study the impact of business cycle shocks at the household level. Journal of Monetary Economics, 2024."
 editPost:
-    URL: "https://doi.org/10.1016/j.jmoneco.2024.02.003"
+    URL: "https://doi.org/10.1016/j.jmoneco.2024.103579"
     Text: "Journal of Monetary Economics"
 ---
 
