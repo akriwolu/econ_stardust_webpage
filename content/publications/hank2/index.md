@@ -1,6 +1,6 @@
 ---
 title: "A HANK² Model of Monetary Unions"
-date: 2024-01-01
+date: 2024-10-01
 tags: ["macroeconomics","monetary policy","monetary union","HANK"]
 author: ["Christian Bayer", "Alexander Kriwoluzky", "Gernot J. Müller", "Fabian Seyrich"]
 description: "We develop a HANK² model of monetary unions to study the impact of business cycle shocks at the household level."
