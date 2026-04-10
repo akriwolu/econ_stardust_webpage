@@ -71,7 +71,7 @@ params:
 
     socialIcons:
         - name: CV
-          url: cv.pdf
+          url: CV.pdf
         - name: Email
           url: mailto:akriwoluzky@diw.de
         - name: Location
