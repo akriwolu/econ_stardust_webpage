@@ -51,8 +51,8 @@ params:
     profileMode:
           enabled: true
           title: Alexander Kriwoluzky
-          subtitle: "I am a macroeconomist at DIW Berlin and FU Berlin. My research focuses on macroeconomics, monetary policy, and fiscal policy."
-          imageUrl: "picture.jpeg"
+          subtitle: "I am a professor at Freie Universität Berlin and head of macroeconomics department at the German Institute for Economic Research (DIW) Berlin. My research focuses on monetary policy, fiscal policy, and its interaction."
+          imageUrl: "foto_webpage.jpg"
           imageWidth: 160
           imageHeight: 160
           buttons:
