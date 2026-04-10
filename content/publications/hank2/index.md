@@ -7,7 +7,6 @@ description: "We develop a HANK² model of monetary unions to study the impact o
 summary: "We develop a HANK² model of monetary unions to study the impact of business cycle shocks at the household level. Journal of Monetary Economics, 2024. Click here for open access version"
 editPost:
     URL: "https://doi.org/10.1016/j.jmoneco.2024.103579"
-    Text: "Journal of Monetary Economics"
     Text: "Click for open access version"
 ---
 
