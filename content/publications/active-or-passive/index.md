@@ -14,8 +14,7 @@ editPost:
 
 ##### Abstract
 
-We revisit the role of fiscal policy during periods of high inflation.
-
+We investigate the interplay of the monetary–fiscal policy mix during times of crisis by drawing insights from the Great Inflation of the 1960s and 1970s. We use a Sequential Monte Carlo (SMC) algorithm to estimate a DSGE model with three distinct monetary/fiscal policy regimes. We show that, in such a model, SMC outperforms standard sampling algorithms because it is better suited to deal with multimodal posteriors, an outcome that is highly likely in a DSGE model with monetary–fiscal policy interactions. From the estimation with SMC, a differentiated perspective results: pre-Volcker macroeconomic dynamics were similarly driven by passive monetary/passive fiscal policy and fiscal dominance. We apply these insights to study the post-pandemic inflation period.
 ---
 
 ##### Citation
