@@ -1,0 +1,82 @@
+baseURL = "https://www.alexanderkriwoluzky.com/"
+theme = "hugo-apero"
+languageCode = "en"
+title = "Alexander Kriwoluzky"
+author = "Alexander Kriwoluzky"
+copyright = ""
+metaDataFormat = "yaml"
+footnoteReturnLinkContents = "&#8617;"
+enableEmoji = true
+
+[pagination]
+  pagerSize = 20
+
+[markup]
+  defaultMarkdownHandler = "goldmark"
+  [markup.goldmark.renderer]
+    unsafe = true
+    hardwraps = false
+  [markup.tableOfContents]
+    startLevel = 2
+    endLevel = 2
+    ordered = false
+  [markup.highlight]
+    style = "github"
+
+[params]
+  orgName = "Alexander Kriwoluzky"
+  description = "I am a professor at Freie Universität Berlin and head of macroeconomics department at the German Institute for Economic Research (DIW) Berlin. My research focuses on monetary and fiscal policy."
+  favicon = "/favicon.ico"
+  mainSections = ["publications", "working-papers", "teaching", "writing"]
+  navallcaps = false
+  socialInHeader = false
+  socialInFooter = false
+
+  # Light color theme
+  theme = "primer"
+
+  # Fonts
+  customtextFontFamily = "Commissioner"
+  customheadingFontFamily = "Fraunces"
+
+  # Disable comments
+  comments = ""
+
+  # Social icons shown on home page and about page
+  [[params.social]]
+    icon      = "envelope"
+    icon_pack = "fas"
+    url       = "mailto:akriwoluzky@diw.de"
+  [[params.social]]
+    icon      = "file-pdf"
+    icon_pack = "fas"
+    url       = "/CV.pdf"
+  [[params.social]]
+    icon      = "linkedin"
+    icon_pack = "fab"
+    url       = "https://www.linkedin.com/in/alexander-kriwoluzky-b11331288/"
+
+[taxonomies]
+  tag = "tags"
+
+[menu]
+  [[menu.header]]
+    name   = "Working Papers"
+    title  = "Working Papers"
+    url    = "/working-papers/"
+    weight = 1
+  [[menu.header]]
+    name   = "Publications"
+    title  = "Publications"
+    url    = "/publications/"
+    weight = 2
+  [[menu.header]]
+    name   = "Teaching"
+    title  = "Teaching"
+    url    = "/teaching/"
+    weight = 3
+  [[menu.header]]
+    name   = "Writing"
+    title  = "Writing"
+    url    = "/writing/"
+    weight = 4

@@ -3,11 +3,13 @@ title: "Article Title"
 date: 2024-06-01
 tags: ["macroeconomics","policy"]
 author: ["Alexander Kriwoluzky"]
-description: "Short description of the article."
-summary: "Summary of the article for the listing page."
-editPost:
-    URL: "https://www.diw.de"
-    Text: "DIW Blog"
+excerpt: "Summary of the article for the listing page."
+links:
+  - icon: external-link-alt
+    icon_pack: fas
+    name: DIW Blog
+    url: "https://www.diw.de"
+layout: single
 ---
 
 ---
