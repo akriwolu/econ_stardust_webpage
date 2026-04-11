@@ -3,11 +3,13 @@ title: "Active or Passive? Revisiting the Role of Fiscal Policy during High Infl
 date: 2024-11-01
 tags: ["macroeconomics","fiscal policy","inflation"]
 author: ["Stephanie Ettmeier", "Alexander Kriwoluzky"]
-description: "We revisit the role of fiscal policy during periods of high inflation."
-summary: "We revisit the role of fiscal policy during the high inflation periods of the 1960s and 1970s in the US. **European Economic Review**, 2024."
-editPost:
-    URL: "https://doi.org/10.1016/j.euroecorev.2024.104874"
-    Text: "Click here for open access version"
+excerpt: "We revisit the role of fiscal policy during the high inflation periods of the 1960s and 1970s in the US. **European Economic Review**, 2024."
+links:
+  - icon: external-link-alt
+    icon_pack: fas
+    name: Open Access
+    url: "https://doi.org/10.1016/j.euroecorev.2024.104874"
+layout: single
 ---
 
 ---

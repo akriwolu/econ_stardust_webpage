@@ -3,15 +3,13 @@ title: "Publication Title"
 date: 2023-01-01
 tags: ["macroeconomics","fiscal policy"]
 author: ["Alexander Kriwoluzky"]
-description: "Short description of the publication."
-summary: "Extended summary of the publication for the listing page."
-cover:
-    image: "pub1.png"
-    alt: "Publication Figure"
-    relative: true
-editPost:
-    URL: "https://doi.org/10.xxxx/xxxxx"
-    Text: "Journal of Economics"
+excerpt: "Short description of the publication. **Journal of Economics**, 2023."
+links:
+  - icon: external-link-alt
+    icon_pack: fas
+    name: Journal
+    url: "https://doi.org/10.xxxx/xxxxx"
+layout: single
 ---
 
 ---
