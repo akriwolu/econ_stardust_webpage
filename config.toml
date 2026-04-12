@@ -31,13 +31,10 @@ enableEmoji = true
   navallcaps = false
   socialInHeader = false
   socialInFooter = false
-
   theme = "apressoleil"
   disableDarkMode = true
-
   customtextFontFamily = "Commissioner"
   customheadingFontFamily = "Fraunces"
-
   comments = ""
 
   [[params.social]]
@@ -53,7 +50,7 @@ enableEmoji = true
     icon_pack = "fab"
     url       = "https://www.linkedin.com/in/alexander-kriwoluzky-b11331288/"
 
-taxonomies]
+[taxonomies]
   tag = "tags"
 
 [menu]
