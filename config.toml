@@ -24,6 +24,7 @@ enableEmoji = true
     style = "github"
 
 [params]
+  theme = "peach"
   orgName = "Alexander Kriwoluzky"
   description = "I am a professor at Freie Universität Berlin and head of macroeconomics department at the German Institute for Economic Research (DIW) Berlin. My research focuses on monetary and fiscal policy."
   favicon = "/favicon.ico"
