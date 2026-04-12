@@ -32,20 +32,14 @@ enableEmoji = true
   socialInHeader = false
   socialInFooter = false
 
-  # Color theme - warm light (like the Hugo Apero demo site)
   theme = "apressoleil"
-
-  # Force light mode
   disableDarkMode = true
 
-  # Fonts
   customtextFontFamily = "Commissioner"
   customheadingFontFamily = "Fraunces"
 
-  # Disable comments
   comments = ""
 
-  # Social icons shown on home page and about page
   [[params.social]]
     icon      = "envelope"
     icon_pack = "fas"
