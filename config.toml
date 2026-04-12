@@ -1,5 +1,5 @@
 baseURL = "https://www.alexanderkriwoluzky.com/"
-theme = "hugo-apero"
+theme = "apressoleil"
 languageCode = "en"
 title = "Alexander Kriwoluzky"
 author = "Alexander Kriwoluzky"
@@ -32,8 +32,8 @@ enableEmoji = true
   socialInHeader = false
   socialInFooter = false
 
-  # Light color theme
-  theme = "primer"
+  # Color theme - warm light (like the Hugo Apero demo site)
+  theme = "apressoleil"
 
   # Force light mode
   disableDarkMode = true
@@ -59,7 +59,7 @@ enableEmoji = true
     icon_pack = "fab"
     url       = "https://www.linkedin.com/in/alexander-kriwoluzky-b11331288/"
 
-[taxonomies]
+taxonomies]
   tag = "tags"
 
 [menu]
