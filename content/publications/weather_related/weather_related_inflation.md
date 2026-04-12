@@ -27,3 +27,16 @@ This paper investigates the impact of weather-related disasters on inflation in 
 Beirne, John, Yannis Dafermos, Alexander Kriwoluzky, Nuobu Renzhi, Ulrich Volz, and Jana Wittich (2024). “Weather-related Disasters and Inflation in the Euro Area.” *Journal of Banking & Finance* 169: 107298. 
 
 ```BibTeX
+@article{BDKRVW2024,
+title = {Weather-related disasters and inflation in the euro area},
+journal = {Journal of Banking & Finance},
+volume = {169},
+pages = {107298},
+year = {2024},
+issn = {0378-4266},
+doi = {https://doi.org/10.1016/j.jbankfin.2024.107298},
+url = {https://www.sciencedirect.com/science/article/pii/S0378426624002127},
+author = {John Beirne and Yannis Dafermos and Alexander Kriwoluzky and Nuobu Renzhi and Ulrich Volz and Jana Wittich},
+keywords = {Weather-related disasters, Climate change, Inflation, Monetary policy, European Central Bank},
+}
+```
