@@ -2,7 +2,7 @@
 title: "Alexander Kriwoluzky"
 subtitle: ""
 description: |
-  I am a professor at Freie Universität (FU) Berlin and head of the Macroeconomics Department at the German Institute for Economic Research (DIW Berlin).
+  I am a professor at Freie Universität (FU) Berlin and head of the Macroeconomics Department at the German Institute for Economic Research (DIW) Berlin.
 
   My research studies monetary and fiscal policy, with a particular focus on their interaction and macroeconomic effects.
 images:
