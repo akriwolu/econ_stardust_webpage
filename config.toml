@@ -35,6 +35,9 @@ enableEmoji = true
   # Light color theme
   theme = "primer"
 
+  # Force light mode
+  disableDarkMode = true
+
   # Fonts
   customtextFontFamily = "Commissioner"
   customheadingFontFamily = "Fraunces"
