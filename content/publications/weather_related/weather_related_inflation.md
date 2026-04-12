@@ -20,10 +20,10 @@ layout: single
 
 ##### Abstract
 
-This paper investigates the impact of weather-related disasters on inflation in the euro area over the period 1996–2021. Using a panel structural VAR, we examine whether disasters have a significant and persistent effect on headline inflation and how demand-side and supply-side channels contribute to the overall response. We also analyse heterogeneous effects across inflation components and assess the distributional implications for households. Our results suggest that weather-related disasters have a positive but non-persistent effect on aggregate inflation, reflecting the dominance of negative supply and positive demand channels over negative demand channels. The inflationary impact is particularly pronounced for expenditure categories that account for a larger share of the consumption basket of low-income households, implying that disasters reinforce inflation inequality and may complicate the task of the European Central Bank in maintaining price stability as the climate crisis intensifies. [web:206][web:211]
+This paper investigates the impact of weather-related disasters on inflation in the euro area over the period 1996–2021. Using a panel structural VAR, we examine whether disasters have a significant and persistent effect on headline inflation and how demand-side and supply-side channels contribute to the overall response. We also analyse heterogeneous effects across inflation components and assess the distributional implications for households. Our results suggest that weather-related disasters have a positive but non-persistent effect on aggregate inflation, reflecting the dominance of negative supply and positive demand channels over negative demand channels. The inflationary impact is particularly pronounced for expenditure categories that account for a larger share of the consumption basket of low-income households, implying that disasters reinforce inflation inequality and may complicate the task of the European Central Bank in maintaining price stability as the climate crisis intensifies. 
 
 ##### Citation
 
-Beirne, John, Yannis Dafermos, Alexander Kriwoluzky, Nuobu Renzhi, Ulrich Volz, and Jana Wittich (2024). “Weather-related Disasters and Inflation in the Euro Area.” *Journal of Banking & Finance* 169: 107298. [web:202][web:203]
+Beirne, John, Yannis Dafermos, Alexander Kriwoluzky, Nuobu Renzhi, Ulrich Volz, and Jana Wittich (2024). “Weather-related Disasters and Inflation in the Euro Area.” *Journal of Banking & Finance* 169: 107298. 
 
 ```BibTeX
