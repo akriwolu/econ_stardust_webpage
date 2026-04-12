@@ -9,7 +9,7 @@ authors:
   - "Nuobu Renzhi"
   - "Ulrich Volz"
   - "Jana Wittich"
-excerpt: "We study how weather-related disasters affect inflation dynamics and inflation inequality in the euro area. **Journal of Banking & Finance**, 169, 107298, 2024."
+excerpt: "We study how weather-related disasters affect inflation dynamics and inflation inequality in the euro area. **Journal of Banking & Finance**, 2024."
 links:
   - icon: external-link-alt
     icon_pack: fas
