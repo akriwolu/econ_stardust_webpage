@@ -1,5 +1,5 @@
 baseURL = "https://www.alexanderkriwoluzky.com/"
-theme = "apressoleil"
+theme = "hugo-apero"
 languageCode = "en"
 title = "Alexander Kriwoluzky"
 author = "Alexander Kriwoluzky"
