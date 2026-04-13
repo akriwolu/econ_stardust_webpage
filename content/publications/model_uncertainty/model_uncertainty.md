@@ -5,7 +5,7 @@ tags: ["model uncertainty", "nested models", "policy evaluation", "macroeconomet
 authors:
   - "Alexander Kriwoluzky"
   - "Christian A. Stoltenberg"
-excerpt: "with Christian A. Stoltenberg, **Scandinavian Journal of Economics**, 2016."
+excerpt: "with Christian Stoltenberg, **Scandinavian Journal of Economics**, 2016."
 links:
   - icon: external-link-alt
     icon_pack: fas
