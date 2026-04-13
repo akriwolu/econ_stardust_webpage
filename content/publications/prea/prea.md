@@ -24,7 +24,7 @@ An econometric strategy to identify a pre-announced fiscal policy shock is propo
 
 Kriwoluzky, Alexander (2012). “The effects of a government expenditure shock.” *European Economic Review* 56(3): 373–388.
 
-'''Bibtex
+```BibTeX
 
 @article{KRIWOLUZKY2012,
 title = {Pre-announcement and timing: The effects of a government expenditure shock},
