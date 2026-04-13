@@ -16,7 +16,7 @@ links:
   - icon: file-pdf
     icon_pack: fas
     name: Working paper
-    url: "/paper/Kliem_Kriwoluzky_Sarferaz_Low_frequency_deficits_inflation_wp.pdf"
+    url: "/paper/KKS_low_frequency.pdf"
 layout: single
 ---
 ##### Abstract
