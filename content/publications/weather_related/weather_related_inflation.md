@@ -9,7 +9,7 @@ authors:
   - "Nuobu Renzhi"
   - "Ulrich Volz"
   - "Jana Wittich"
-excerpt: "with John Beirne, Yannis Dafermos, Nuobu Renzhi, Ulrich Volz, Jana Wittich, **Journal of Banking & Finance**, 2024."
+excerpt: "with John Beirne, Yannis Dafermos, Nuobu Renzhi, Ulrich Volz, Jana Wittich, **Journal of Banking and Finance**, 2024."
 links:
   - icon: external-link-alt
     icon_pack: fas
