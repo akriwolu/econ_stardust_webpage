@@ -15,7 +15,7 @@ links:
   - icon: file-pdf
     icon_pack: fas
     name: Working paper
-    url: "/paper/Kliem_Kriwoluzky_Taylor_rule_fiscal_policy_wp.pdf"
+    url: "/paper/KK_fiscal_rule.pdf"
 layout: single
 ---
 
