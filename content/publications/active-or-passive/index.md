@@ -5,7 +5,7 @@ tags: ["macroeconomics","fiscal policy","inflation"]
 authors:
   - "Stephanie Ettmeier"
   - "Alexander Kriwoluzky"
-excerpt: "We revisit the role of fiscal policy during the high inflation periods of the 1960s and 1970s in the US. **European Economic Review**, 2024."
+excerpt: "(with Stephanie Ettmeier) We revisit the role of fiscal policy during the high inflation periods of the 1960s and 1970s in the US. **European Economic Review**, 2024."
 links:
   - icon: external-link-alt
     icon_pack: fas
