@@ -25,7 +25,7 @@ We study how the interaction of monetary and fiscal policy shapes the low-freque
 
 ##### Citation
 
-Kliem, Martin, Alexander Kriwoluzky, and Samad Sarferaz (2016). “Monetary–Fiscal Policy Interaction and Fiscal Inflation: A Tale of Three Countries.” *European Economic Review* 88: 158–184. [web:324]
+Kliem, Martin, Alexander Kriwoluzky, and Samad Sarferaz (2016). “Monetary–Fiscal Policy Interaction and Fiscal Inflation: A Tale of Three Countries.” *European Economic Review* 88: 158–184.
 
 ```BibTeX
 @article{KKS2016b,
