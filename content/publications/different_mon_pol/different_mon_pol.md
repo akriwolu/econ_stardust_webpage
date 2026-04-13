@@ -15,7 +15,7 @@ links:
   - icon: file-pdf
     icon_pack: fas
     name: Working paper
-    url: "/paper/Ettmeier_Kriwoluzky_Same_but_different_2017.pdf"
+    url: "/paper/Ettmeier_Kriwoluzky_Same_but_different.pdf"
 layout: single
 ---
 
