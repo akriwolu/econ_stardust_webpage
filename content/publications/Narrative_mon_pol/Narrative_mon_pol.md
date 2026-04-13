@@ -15,7 +15,7 @@ links:
   - icon: file-pdf
     icon_pack: fas
     name: Working paper
-    url: "/paper/Kliem_Kriwoluzky_Reconciling_narrative_monetary_shocks_wp.pdf"
+    url: "/paper/Kliem_Kriwoluzky_proxy_SVAR.pdf"
 layout: single
 ---
 ##### Abstract
