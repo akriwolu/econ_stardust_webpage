@@ -31,7 +31,7 @@ We study a sovereign debt crisis in a small member state of a currency union. If
 
 ##### Citation
 
-Kriwoluzky, Alexander, Gernot J. Müller, and Martin Wolf (2019). “Exit Expectations and Debt Crises in Currency Unions.” Journal of International Economics 121: 103252
+Kriwoluzky, Alexander, Gernot J. Müller, and Martin Wolf (2019). “Exit Expectations and Debt Crises in Currency Unions.” *Journal of International Economics* 121: 103252
 
 ```BibTeX
 @article{KMW2019,
