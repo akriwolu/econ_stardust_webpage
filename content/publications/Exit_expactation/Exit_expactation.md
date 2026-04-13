@@ -12,6 +12,11 @@ links:
     icon_pack: fas
     name: Journal article
     url: "https://www.sciencedirect.com/science/article/pii/S0022199619300777"
+
+  - icon: file-pdf
+    icon_pack: fas
+    name: Working paper
+    url: "https://www.vwl.uni-mannheim.de/media/Lehrstuehle/vwl/DFG_1578/Publications/KriwoluzkyMuellerWolf_Exit_2018.pdf"
 layout: single
 ---
 
