@@ -16,7 +16,7 @@ links:
   - icon: file-pdf
     icon_pack: fas
     name: Working paper
-    url: "https://www.vwl.uni-mannheim.de/media/Lehrstuehle/vwl/DFG_1578/Publications/KriwoluzkyMuellerWolf_Exit_2018.pdf"
+    url: "/paper/Exit_August2019.pdf"
 layout: single
 ---
 
