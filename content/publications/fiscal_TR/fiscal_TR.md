@@ -26,6 +26,9 @@ In DSGE models, fiscal policy is typically described by simple rules in which ta
 
 Kliem, Martin, and Alexander Kriwoluzky (2014). “Toward a Taylor rule for fiscal policy.” *Review of Economic Dynamics* 17(2): 294–302.
 
+
+```BibTeX
+
 @article{KliemKriwoluzky2014_RED,
   title   = {Toward a Taylor rule for fiscal policy},
   author  = {Kliem, Martin and Kriwoluzky, Alexander},
