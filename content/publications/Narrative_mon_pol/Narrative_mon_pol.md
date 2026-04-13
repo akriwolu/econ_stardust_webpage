@@ -26,7 +26,7 @@ Structural VAR studies disagree with narrative accounts about the history of mon
 
 Kliem, Martin, and Alexander Kriwoluzky (2013). “Reconciling narrative monetary policy disturbances with structural VAR model shocks?” *Economics Letters* 121(2): 247–251. [web:402][web:403]
 
-'''Bibtex
+```BibTeX
 
 @article{KK2013,
 title = {Reconciling narrative monetary policy disturbances with structural VAR model shocks?},
