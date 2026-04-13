@@ -15,6 +15,12 @@ links:
     icon_pack: fas
     name: Journal article
     url: "https://doi.org/10.1016/j.jbankfin.2024.107298"
+
+  - icon: file-pdf
+    icon_pack: fas
+    name: Working paper
+    url: "/paper/weather_disasters_inflation.pdf"
+
 layout: single
 ---
 
