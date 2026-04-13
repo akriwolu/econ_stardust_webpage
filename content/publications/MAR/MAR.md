@@ -5,7 +5,7 @@ tags: ["monetary policy", "money demand", "US", "determinacy"]
 authors:
   - "Alexander Kriwoluzky"
   - "Christian A. Stoltenberg"
-excerpt: "with Christian A. Stoltenberg, **Economic Journal**, 2015."
+excerpt: "with Christian Stoltenberg, **Economic Journal**, 2015."
 links:
   - icon: external-link-alt
     icon_pack: fas
