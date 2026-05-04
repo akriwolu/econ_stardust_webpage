@@ -18,11 +18,9 @@ intro: |
 - [LinkedIn](https://www.linkedin.com/in/alexander-kriwoluzky-b11331288/?skipRedirect=true)
 - [X](https://x.com/econ_stardust)
 
-
-show_outro: true
+show_output: true
 number_featured: 0
 use_featured: false
 number_categories: 0
 ---
-
 
