@@ -13,7 +13,7 @@ Beyond academic publishing, Alexander engages with policy institutions and the w
 
 ##### Links
 
-- [Curriculum Vitae (PDF)](/files/CV_Kriwoluzky_03_24.pdf)
+- [Curriculum Vitae (PDF)](/files/CV.pdf)
 - [Google Scholar](https://scholar.google.com/citations?hl=de&user=m9yBDI8AAAAJ)
 - [LinkedIn](https://www.linkedin.com/in/alexander-kriwoluzky-b11331288/?skipRedirect=true)
 - [X](https://x.com/econ_stardust)
