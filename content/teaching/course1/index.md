@@ -1,5 +1,5 @@
 ---
-title: "Advanced Macroeconomic Analysis II"
+title: "Advanced Macroeconomic Analysis II (2025)"
 subtitle: "PhD/MA, summer term 2025"
 excerpt: "In recent years, monetary and fiscal policy have been at the centre of most political debates. The 2019 pandemic prompted central banks to cut their interest rates quickly, drawing on the lessons of the Great Financial Crisis. At the same time, many governments launched huge stimulus packages, leaving many economies with high levels of public debt. In times of low interest rates, high public debt is of little concern to (fiscal) policymakers. 
 
