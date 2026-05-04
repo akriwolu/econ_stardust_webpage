@@ -17,7 +17,7 @@ tags:
 draft: false
 layout: single
 ---
-Identification of effects of monetary and fiscal policy. 
+Identification of the effects of monetary and fiscal policy. 
 ---
 
 **Syllabus:** [Download PDF](/teaching/AMA_II_syllabus_2025.pdf)
