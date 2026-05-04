@@ -19,16 +19,4 @@ layout: single
 ---
 Identification of effects of monetary and fiscal policy. 
 ---
-title: "Course Title"
-date: 2024-09-01
-tags: ["macroeconomics","graduate"]
-author: "Alexander Kriwoluzky"
-excerpt: "Summary of the course for the listing page."
-links:
-  - icon: external-link-alt
-    icon_pack: fas
-    name: Course portal
-    url: "https://github.com/akriwolu/econ_stardust_webpage"
-layout: single
----
 
