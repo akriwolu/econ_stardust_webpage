@@ -1,5 +1,5 @@
 ---
-title: "Seminar on Monetary Theory"
+title: "Seminar on Monetary Theory (2024/25)"
 subtitle: "BA, winter term 2024/25 · Freie Universität Berlin · taught in German"
 excerpt: "What turns an ordinary piece of paper or digital bits into money? What role does it play in the economy and why is it valuable? And above all: how is its value determined?
 
