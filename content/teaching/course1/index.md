@@ -20,3 +20,4 @@ layout: single
 Identification of effects of monetary and fiscal policy. 
 ---
 
+**Syllabus:** [Download PDF](/files/AMA_II_syllabus.pdf)
