@@ -5,7 +5,7 @@ description: ""
 link_list_label: "Links"
 link_list:
   - name: "Curriculum Vitae"
-    url: "/files/CV_Kriwoluzky_03_24.pdf"
+    url: "/CV.pdf"
   - name: "Google Scholar"
     url: "https://scholar.google.com/citations?hl=de&user=m9yBDI8AAAAJ"
   - name: "LinkedIn"
