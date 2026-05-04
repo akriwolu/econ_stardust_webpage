@@ -9,15 +9,7 @@ intro: |
   As the head of the Macroeconomics Department at DIW Berlin, I lead a team of more than twenty researchers working on monetary and fiscal policy, inequality, and the macroeconomics of the green transition. I am also a professor of economics at Freie Universität Berlin and a member of the Berlin School of Economics. 
 
   Beyond academic publishing, I engage with policy institutions and the broader public debate on monetary and fiscal policy in Europe. I contribute to discussions on issues such as energy-price shocks, high public debt, and the design of macroeconomic policies to deal with them. In my teaching and supervision, I aim to help students understand how abstract macroeconomic models connect to real-world policy choices and their distributional consequences.
-
-
-##### Links
-
-- [Curriculum Vitae (PDF)](/files/CV.pdf)
-- [Google Scholar](https://scholar.google.com/citations?hl=de&user=m9yBDI8AAAAJ)
-- [LinkedIn](https://www.linkedin.com/in/alexander-kriwoluzky-b11331288/?skipRedirect=true)
-- [X](https://x.com/econ_stardust)
-
+  
 show_output: true
 number_featured: 0
 use_featured: false
