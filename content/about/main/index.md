@@ -1,5 +1,5 @@
 ---
-title: "About me"
+title: ""
 show_intro: true
 intro: |
   I am a professor at Freie Universität Berlin and head of the macroeconomics department at the German Institute for Economic Research (DIW) Berlin. 
