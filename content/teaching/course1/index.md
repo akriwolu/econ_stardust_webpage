@@ -17,8 +17,7 @@ tags:
 draft: false
 layout: single
 ---
-
-This course uses the recent macroeconomic experience — from the pandemic stimulus and the build-up of public debt, to the surge in energy prices after the invasion of Ukraine and the subsequent monetary tightening — as a lens through which to study the theory and empirics of monetary and fiscal policy...
+Identification of effects of monetary and fiscal policy. 
 ---
 title: "Course Title"
 date: 2024-09-01
