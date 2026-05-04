@@ -21,3 +21,18 @@ Identification of effects of monetary and fiscal policy.
 ---
 
 **Syllabus:** [Download PDF](/teaching/AMA_II_syllabus_2025.pdf)
+
+### Week 1 — Introduction
+A small sample of macro-history. 
+
+### Weeks 2–3 — Monetary Policy
+- **Lecture 2:** Definition and effects of monetary policy shocks (narrative shocks, high-frequency shocks, central bank information shocks)
+- **Lecture 3:** Transmission channels — interest-rate channel, bank-lending channel, redistribution channel, energy-price channel
+
+### Weeks 4–5 — Fiscal Policy
+- **Lecture 4:** Fiscal policy shocks and the multiplier — timing restrictions, narrative shocks, state- and sign-dependent multipliers, regional multipliers
+- **Lecture 5:** Transmission channels of fiscal policy — heterogeneous agents, energy crisis, military spending and government investment
+
+### Weeks 6–7 — Interaction of Monetary and Fiscal Policy
+- **Lecture 6:** Why money has value
+- **Lecture 7:** Fiscal Theory of the Price Level (FTPL)
