@@ -7,7 +7,7 @@ authors:
   - "Alexander Kriwoluzky"
   - "Frederik Kurcz"
   - "Ben Schumann"
-excerpt: "with Gökhan Ider, Frederik Kurcz, and Ben Schumann, Working paper, 2026. Revise and resubmit at **American Economic Journal: Macroeconomics**"
+excerpt: "with Gökhan Ider, Frederik Kurcz, and Ben Schumann, Working paper, 2026. Revise and resubmit at **JPE Macroeconomics**"
 links:
   - icon: file-pdf
     icon_pack: fas
