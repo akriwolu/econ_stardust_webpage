@@ -7,7 +7,7 @@ authors:
   - "Alexander Kriwoluzky"
   - "Gernot J. Müller"
   - "Alexander Scheer"
-excerpt: "with Martin Kliem, Gernot J. Müller, and Alexander Scheer, Working paper, 2024. Revise and resubmit at **American Economic Journal: Macroeconomics**"
+excerpt: "with Martin Kliem, Gernot J. Müller, and Alexander Scheer, Working paper, 2024. Conditionally accepted **American Economic Journal: Macroeconomics**"
 links:
   - icon: file-pdf
     icon_pack: fas
