@@ -6,11 +6,18 @@ intro: |
 
   | Course | Level | Years |
   |---|:---:|---|
+  | Advanced Macroeconomic Analysis I | PhD/MA | 2026/27 |
   | Advanced Macroeconomic Analysis II | PhD/MA | 2021, 2022, 2023, 2024, 2025 |
   | Bayesian DSGE Model Estimation | PhD | 2019 |
   | Topics in Macroeconomics | PhD | 2019, 2020, 2021, 2022 |
   | Monetary Economics | MA | 2020 |
   | Seminar on Monetary Theory | BA | 2024 |
+
+  ---
+
+  ### Advanced Macroeconomic Analysis I *(PhD/MA, winter term 2026/27)*
+
+  New Keynesian models and their application to questions of monetary and fiscal policy. Starting from a short journey through macroeconomic history, the course develops the baseline New Keynesian model step by step — determinacy and the Taylor principle, optimal monetary policy, fiscal multipliers, and household heterogeneity (TANK) — and closes with the question of why money has value and the fiscal theory of the price level. Every lecture is paired with a hands-on exercise in Dynare. My part starts on December 9, 2026 at DIW Berlin. [Course page and syllabus &rarr;](/teaching/ama-i/)
 
   ---
 
