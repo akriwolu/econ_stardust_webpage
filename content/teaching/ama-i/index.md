@@ -16,25 +16,11 @@ draft: false
 layout: single
 ---
 
-New Keynesian models and their application to questions of monetary and fiscal policy.
-
----
+I am teaching the second part of *Advanced Macroeconomic Analysis I*, the first-year PhD course in macroeconomics at the Berlin School of Economics: New Keynesian models and their application to questions of monetary and fiscal policy.
 
 **Syllabus:** [Download PDF](/teaching/AMA_I_syllabus_2026.pdf)
 
 ---
-
-## Organisation
-
-*Advanced Macroeconomic Analysis I* is the first semester of the full-year first-year PhD sequence in macroeconomics at the Berlin School of Economics. Part 1 (weeks 1–8, Britta Gehrke and Nicolas Syrichas) starts on October 14 at FU Berlin. My part (weeks 9–16) starts on **December 9, 2026** and takes place in the Elinor-Ostrom room at DIW Berlin, Wednesdays and Thursdays, 10:00–12:00.
-
-- **Instructors:** Britta Gehrke, Alexander Kriwoluzky, Nicolas Syrichas, with Alina Ermolaeva, Jo-Ya Kung and Florian von Muschwitz.
-- **Participants:** BSoE students, qualified master's students, and others with the instructor's permission. The course presumes familiarity with macroeconomics.
-- **Evaluation:** mid-term and final exam (120 min).
-
----
-
-## Part 2 — Monetary & fiscal policy in a New Keynesian model
 
 This part of the course is built around the New Keynesian model and the question of who controls inflation. We open with a historical lecture that poses the questions of the course, then build the model step by step: the classical monetary model, the New Keynesian model with sticky prices, and the design of monetary policy. We then add fiscal policy, first with a representative household and then with two types of households (TANK). The final two lectures investigate the consequences of the interaction between monetary and fiscal policy. From the second week on, each lecture is followed by a tutorial that implements the corresponding model in Dynare.
 
