@@ -17,7 +17,7 @@ intro: |
 
   ### Advanced Macroeconomic Analysis I *(PhD/MA, winter term 2026/27)*
 
-  New Keynesian models and their application to questions of monetary and fiscal policy. Starting from a short journey through macroeconomic history, the course develops the baseline New Keynesian model step by step — determinacy and the Taylor principle, optimal monetary policy, fiscal multipliers, and household heterogeneity (TANK) — and closes with the question of why money has value and the fiscal theory of the price level. Every lecture is paired with a hands-on exercise in Dynare. My part starts on December 9, 2026 at DIW Berlin. [Course page and syllabus &rarr;](/teaching/ama-i/)
+  New Keynesian models and their application to questions of monetary and fiscal policy. Built around the question of who controls inflation, the course develops the classical monetary model, the New Keynesian model and the design of monetary policy, adds fiscal policy with one and two types of households (TANK), and closes with the interaction between monetary and fiscal policy and the fiscal theory of the price level. Each lecture is followed by a tutorial in Dynare. My part starts on December 9, 2026 at DIW Berlin. [Course page and syllabus &rarr;](/teaching/ama-i/)
 
   ---
 
