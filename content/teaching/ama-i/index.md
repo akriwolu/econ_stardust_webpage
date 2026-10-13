@@ -16,13 +16,11 @@ draft: false
 layout: single
 ---
 
-I am teaching the second part of *Advanced Macroeconomic Analysis I*, the first-year PhD course in macroeconomics at the Berlin School of Economics: New Keynesian models and their application to questions of monetary and fiscal policy.
-
-**Syllabus:** [Download PDF](/teaching/AMA_I_syllabus_2026.pdf)
-
----
+I am teaching the second part of *Advanced Macroeconomic Analysis I*, the first-year PhD course in macroeconomics at the Berlin School of Economics.
 
 This part of the course is built around the New Keynesian model and the question of who controls inflation. We open with a historical lecture that poses the questions of the course, then build the model step by step: the classical monetary model, the New Keynesian model with sticky prices, and the design of monetary policy. We then add fiscal policy, first with a representative household and then with two types of households (TANK). The final two lectures investigate the consequences of the interaction between monetary and fiscal policy. From the second week on, each lecture is followed by a tutorial that implements the corresponding model in Dynare.
+
+**Syllabus:** [Download PDF](https://www.alexanderkriwoluzky.com/teaching/AMA_I_syllabus_2026.pdf)
 
 ### Introduction
 - **Week 1 (Dec 9):** A small sample of macro-history
