@@ -9,10 +9,6 @@ links:
     icon_pack: fas
     name: Open Access
     url: "https://doi.org/10.1111/obes.70074"
-  - icon: file-pdf
-    icon_pack: fas
-    name: PDF
-    url: "/paper/Holtemoeller_Kriwoluzky_Kwak_Information_Channel.pdf"
 layout: single
 ---
 
