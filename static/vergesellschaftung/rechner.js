@@ -59,10 +59,11 @@
         { v: 8, s: 'heute', t: 'Etwa das heutige Mietniveau in den betroffenen Beständen (DIW aktuell Nr. 126, nach Geschäftsberichten von Adler Real Estate, Grand City Properties und Vonovia)' }
       ] },
     { key: 'mietsteigerung', url: 'gm', pct: true, label: 'Mietsteigerung pro Jahr', unit: '%', min: 0, max: 3, step: 0.1, nmin: -2, nmax: 6, nstep: 0.1, dec: 1, main: true,
+      hint: 'Ab dem zweiten Jahr. Die Bewirtschaftungskosten steigen fest mit 2 % pro Jahr, dem Inflationsziel der EZB.',
       marks: [
-        { v: 0, s: 'konstant', t: 'Konstante Miete, wie in Tabelle 2 des DIW aktuell Nr. 126' },
-        { v: 0.01, s: 'Holm et al.', t: 'Grundmodell Holm et al. (2025); Wahlprogramm Die Linke: Mieterhöhungen der landeseigenen Unternehmen höchstens 1 % pro Jahr' },
-        { v: 0.02, s: 'wie Kosten', t: 'Mieten steigen so schnell wie die Kosten im Standardfall (2 %)' }
+        { v: 0, s: 'konstant', t: 'Mieten bleiben nominal konstant; real sinken sie mit der Inflation' },
+        { v: 0.01, s: 'Debatte', t: 'Politisch debattiert: Wahlprogramm Die Linke Berlin 2026, Mieterhöhungen der landeseigenen Unternehmen höchstens 1 % pro Jahr; auch Grundmodell Holm et al. (2025)' },
+        { v: 0.02, s: 'wie Inflation', t: 'Mieten steigen mit dem Inflationsziel der EZB, also so schnell wie die Kosten' }
       ] },
     { key: 'zinsEK', url: 'rek', pct: true, label: 'Zins für das Land', unit: '%', min: 0, max: 8, step: 0.1, nmin: 0, nmax: 15, nstep: 0.05, dec: 2, main: true,
       hint: 'Zins auf die Kredite, mit denen das Land das Eigenkapital finanziert.',
@@ -104,8 +105,6 @@
         { v: 4.40, s: 'IW Köln', t: 'IW Köln (2026): realistischere Modernisierungskosten (13–25 statt 6–12 €/m² im Jahr)' },
         { v: 4.44, s: 'Holm Plus', t: 'Holm et al. (2025), Tab. 6: erhöhte Instandsetzung' }
       ] },
-    { key: 'kostensteigerung', url: 'gb', pct: true, label: 'Kostensteigerung pro Jahr', unit: '%', min: 0, max: 4, step: 0.1, nmin: -2, nmax: 8, nstep: 0.1, dec: 1,
-      marks: [{ v: 0, s: 'konstant', t: 'Konstante Kosten, wie in Tabelle 2 des DIW aktuell Nr. 126' }, { v: 0.02, s: 'Holm et al.', t: 'Holm et al. (2025): inflationsbedingt 2 % pro Jahr' }] },
     { key: 'horizont', url: 'h', label: 'Betrachtungszeitraum', unit: 'Jahre', min: 10, max: 100, step: 1, nmin: 1, nmax: 100, nstep: 1, dec: 0,
       marks: [{ v: 40, s: 'IMK', t: 'IMK (2026)' }, { v: 50, s: 'DIW', t: 'DIW aktuell' }, { v: 100, s: 'DWE', t: 'Laufzeit im Gesetzentwurf der Initiative' }] }
   ];
@@ -122,12 +121,12 @@
   var DWE_TEXT = '<p><strong>Gesetzentwurf der Initiative:</strong> Die bisherigen Eigentümer erhalten statt Geld übertragbare Schuldverschreibungen der Anstalt „Gemeingut Wohnen“, verzinst mit 3,5 % und über 100 Jahre mit konstanter Annuität getilgt; das Land haftet. Liegt der Marktzins über 3,5 %, notieren die Papiere unter dem Nennwert. Die niedrigen Finanzierungskosten gehen dann teilweise zulasten der Entschädigung (und erhöhen das Rechtsrisiko).</p>';
   var PRESETS_UI = [
     { id: 'standard', label: 'DIW aktuell (Standard)', over: {},
-      note: '<p><strong>DIW aktuell (Standard):</strong> Das erste Jahr entspricht Tabelle 2 im DIW aktuell Nr. 126 (13,5 Mrd. € Entschädigung, 7 € Miete, Zinsen 4 % für das Land und 5 % für die Anstalt, 20 % Eigenkapital, 50 Jahre Annuität). Ab dem zweiten Jahr wird mit den Annahmen zur Miet- und Kostensteigerung fortgeschrieben; voreingestellt sind Mieten +1 % und Kosten +2 % pro Jahr (Holm et al. 2025). Andere Entschädigungen und Mieten aus Tabelle 2 lassen sich über die Marken an den Reglern oder die Übersicht weiter unten wählen.</p>' },
+      note: '<p><strong>DIW aktuell (Standard):</strong> Das erste Jahr entspricht Tabelle 2 im DIW aktuell Nr. 126 (13,5 Mrd. € Entschädigung, 7 € Miete, Zinsen 4 % für das Land und 5 % für die Anstalt, 20 % Eigenkapital, 50 Jahre Annuität). Ab dem zweiten Jahr wird fortgeschrieben: Die Mieten steigen um 1 % pro Jahr, wie politisch debattiert (einstellbar), die Bewirtschaftungskosten fest um 2 % pro Jahr, das Inflationsziel der EZB. Andere Entschädigungen und Mieten aus Tabelle 2 lassen sich über die Marken an den Reglern oder die Übersicht weiter unten wählen.</p>' },
     { id: 't2b', label: 'Zinsen +1 Prozentpunkt', over: { zinsEK: 0.05, zinsFK: 0.06 },
       note: '<p><strong>Zinsrisiko:</strong> wie der Standardfall, aber mit Zinsen 1 Prozentpunkt höher (5 % für das Land, 6 % für die Anstalt). Im ersten Jahr steigt der Zuschuss je nach Entschädigung um 70 bis 250 Mio. € pro Jahr.</p>' },
     { id: 'imk', label: 'IMK (rekonstruiert)', over: { entschaedigungMrd: 13.5, wohnungen: 210000, flaecheJeWohnung: 63, miete: 7.08, bewirtschaftung: 3.66, ekQuote: 0.3,
-      zinsEK: 0.015, zinsFK: 0.02, laufzeitEK: 40, laufzeitFK: 40, horizont: 40, mietsteigerung: 0, kostensteigerung: 0 },
-      note: '<p><strong>IMK Policy Brief 225 (rekonstruiert):</strong> Das IMK nennt für den Kapitaldienst der Anstalt und des Landes (345 bzw. 135 Mio. € jährlich) keinen Zinssatz. Rechnerisch entspricht das einer 40-jährigen Annuität zu rund 2,0 % für die Anstalt und 1,5 % für das Land – plausibel nur als realer Zins – oder einer reinen Verzinsung zu rund 3,5 % ohne Tilgung (DIW aktuell Nr. 126). Mit heutigen Marktzinsen (4 % / 5 %) und sonst gleichen Annahmen müsste der Haushalt im ersten Jahr rund 210 Mio. € zuschießen. Die IMK-Miete von 7,08 € liegt knapp 1 € unter dem heutigen Niveau in den Beständen (etwa 8 €).</p>' },
+      zinsEK: 0.015, zinsFK: 0.02, laufzeitEK: 40, laufzeitFK: 40, horizont: 40, mietsteigerung: 0.02 },
+      note: '<p><strong>IMK Policy Brief 225 (rekonstruiert):</strong> Das IMK nennt für den Kapitaldienst der Anstalt und des Landes (345 bzw. 135 Mio. € jährlich) keinen Zinssatz. Rechnerisch entspricht das einer 40-jährigen Annuität zu rund 2,0 % für die Anstalt und 1,5 % für das Land – plausibel nur als realer Zins – oder einer reinen Verzinsung zu rund 3,5 % ohne Tilgung (DIW aktuell Nr. 126). Mit heutigen Marktzinsen (4 % / 5 %) und sonst gleichen Annahmen müsste der Haushalt im ersten Jahr rund 210 Mio. € zuschießen. Die IMK-Miete von 7,08 € liegt knapp 1 € unter dem heutigen Niveau in den Beständen (etwa 8 €). Das IMK rechnet real; hier steigen Mieten und Kosten deshalb beide um 2 % pro Jahr.</p>' },
     { id: 'dwe', label: 'DWE-Anleihemodell', over: { ekQuote: 0, zinsFK: 0.035, laufzeitFK: 100, horizont: 100 }, note: DWE_TEXT, kurs: true }
   ];
 
@@ -309,6 +308,7 @@
   var res = null, view = 'jahr', matrixUnit = 'mio';
 
   function update(skipEl) {
+    p.kostensteigerung = STANDARD.kostensteigerung;   // fest: Inflationsziel der EZB
     res = berechne(p);
     syncControls(skipEl);
     renderPresetNote(activePreset());
@@ -386,8 +386,7 @@
     var inT2 = ok && [8, 13.5, 21, 29].some(function (e) { return Math.abs(p.entschaedigungMrd - e) < 1e-9; }) &&
       [6, 7, 8].some(function (m) { return Math.abs(p.miete - m) < 1e-9; });
     var t = inT2 ? 'Das erste Jahr entspricht Tabelle 2 im DIW aktuell (' + nf(p.entschaedigungMrd, p.entschaedigungMrd % 1 ? 1 : 0) + ' Mrd. €, ' + nf(p.miete, 0) + ' € Miete). ' : '';
-    if (Math.abs(p.mietsteigerung) < 1e-12 && Math.abs(p.kostensteigerung) < 1e-12) t += 'Miete und Kosten bleiben konstant, der Saldo ist in allen Jahren gleich.';
-    else t += 'Ab dem zweiten Jahr fortgeschrieben mit Mieten ' + sf(p.mietsteigerung * 100, 1) + ' % und Kosten ' + sf(p.kostensteigerung * 100, 1) + ' % pro Jahr.';
+    t += 'Ab dem zweiten Jahr fortgeschrieben mit Mieten ' + sf(p.mietsteigerung * 100, 1) + ' % und Kosten ' + sf(p.kostensteigerung * 100, 1) + ' % pro Jahr (Inflationsziel der EZB).';
     return t;
   }
 
@@ -620,6 +619,7 @@
     CONTROLS.forEach(function (k) {
       if (k.type === 'tilgung') { L.push('Tilgung;' + (p.tilgung === 'nurZinsen' ? 'nur Zinsen' : 'Annuität')); return; }
       if (k.type === 'bestand') { L.push('Wohnungen;' + p.wohnungen); L.push('m² je Wohnung;' + c(p.flaecheJeWohnung, 1)); return; }
+      if (k.key === 'bewirtschaftung') L.push('Kostensteigerung pro Jahr (%, fest: Inflationsziel der EZB);' + c(p.kostensteigerung * 100, 1));
       L.push(k.label + ' (' + k.unit + ');' + c(disp(k, p[k.key]), k.dec + 2));
     });
     L.push('');
