@@ -329,14 +329,14 @@
   }
 
   function renderHero() {
-    var j = res.jahr1, B = j.belastung / 1e6;
+    var j = res.jahr1, B = j.belastung / 1e6;  // B > 0: Zuschuss; angezeigt wird der Saldo −B
     var zus = B > 0.5, ueb = B < -0.5;
     $('vgr-hero').classList.toggle('is-ueberschuss', !zus);
-    $('vgr-hero-value').innerHTML = esc(sf(B, 0)) + '<span class="hero-unit">Mio. € pro Jahr</span>';
+    $('vgr-hero-value').innerHTML = esc(sf(-B, 0)) + '<span class="hero-unit">Mio. € pro Jahr</span>';
     $('vgr-hero-tag').textContent = zus ? 'Zuschuss' : (ueb ? 'Überschuss' : 'ausgeglichen');
-    $('vgr-hero-qm').textContent = sf(j.belastungJeQmMonat, 2) + ' €';
-    $('vgr-hero-we').textContent = sf(j.belastungJeWohnungMonat, 0) + ' €';
-    $('vgr-mini-v').textContent = sf(B, 0) + ' Mio. € pro Jahr';
+    $('vgr-hero-qm').textContent = sf(-j.belastungJeQmMonat, 2) + ' €';
+    $('vgr-hero-we').textContent = sf(-j.belastungJeWohnungMonat, 0) + ' €';
+    $('vgr-mini-v').textContent = sf(-B, 0) + ' Mio. € pro Jahr';
     $('vgr-mini-t').textContent = zus ? 'Zuschuss' : (ueb ? 'Überschuss' : 'ausgeglichen');
     $('vgr-mini').classList.toggle('is-ueberschuss', !zus);
     $('vgr-br-rein').textContent = geld(j.reinertrag / 1e6);
@@ -388,10 +388,10 @@
     var dauerhaft = !mit.length ? 'von Anfang an ohne Zuschuss' : (lastMit >= H ? 'bis zum Ende des Zeitraums' : 'ab Jahr ' + (lastMit + 1) + ' dauerhaft ohne Zuschuss');
     var d = (p.diskontsatz === null || p.diskontsatz === undefined) ? p.zinsEK : p.diskontsatz;
     var tiles = [
-      ['Summe der Zuschüsse in ' + H + ' Jahren', geld(res.summeZuschuesse / 1e6), Math.abs(res.summeNetto - res.summeZuschuesse) > 5e5 ? 'nominal; netto nach Überschüssen ' + geld(res.summeNetto / 1e6, true) : 'nominal, nicht abgezinst'],
-      ['Barwert der Belastungen', geld(res.barwert / 1e6, true), 'abgezinst mit ' + pct(d, 1)],
-      ['Belastung im Jahr ' + H, geld(last.belastung / 1e6, true), sf(last.belastungJeQmMonat, 2) + ' € je m² und Monat'],
-      ['Höchstes aufgelaufenes Defizit', geld(res.maxKumuliertesDefizit / 1e6), 'Summe der Belastungen bis zum Höchststand'],
+      ['Summe der Zuschüsse in ' + H + ' Jahren', geld(res.summeZuschuesse / 1e6), Math.abs(res.summeNetto - res.summeZuschuesse) > 5e5 ? 'nominal; Saldo inkl. Überschüssen ' + geld(-res.summeNetto / 1e6, true) : 'nominal, nicht abgezinst'],
+      ['Barwert des Saldos', geld(-res.barwert / 1e6, true), 'abgezinst mit ' + pct(d, 1)],
+      ['Saldo im Jahr ' + H, geld(-last.belastung / 1e6, true), sf(-last.belastungJeQmMonat, 2) + ' € je m² und Monat'],
+      ['Höchstes aufgelaufenes Defizit', geld(res.maxKumuliertesDefizit / 1e6), 'Summe der Zuschüsse bis zum Höchststand'],
       ['Jahre mit Zuschuss', mit.length + ' von ' + H, dauerhaft],
       ['Eigenkapital des Landes', geld(res.eigenkapital / 1e6), '+' + pct(res.eigenkapital / HAUSHALT.schuldenstand) + ' Schuldenstand (≈ 69 Mrd. €)'],
       ['Kredite der Anstalt', geld(res.fremdkapital / 1e6), 'außerhalb des Landeshaushalts'],
@@ -445,10 +445,10 @@
     var kum = view === 'kum';
     return {
       kind: 'bars',
-      title: kum ? 'Aufgelaufene Belastung' : 'Jährliche Belastung des Landeshaushalts',
-      sub: kum ? 'Summe der Zuschüsse (positiv) und Überschüsse (negativ) bis zum jeweiligen Jahr, in Mrd. €, nominal.' : 'Mio. € pro Jahr, nominal. Positiv: Zuschuss aus dem Landeshaushalt; negativ: Überschuss.',
+      title: kum ? 'Aufgelaufener Saldo' : 'Jährlicher Saldo für den Landeshaushalt',
+      sub: kum ? 'Summe der Überschüsse (positiv) und Zuschüsse (negativ) bis zum jeweiligen Jahr, in Mrd. €, nominal.' : 'Mio. € pro Jahr, nominal. Positiv: Überschuss; negativ: Zuschuss aus dem Landeshaushalt.',
       unit: kum ? 'Mrd. €' : 'Mio. €',
-      values: J.map(function (j) { return kum ? j.kumuliert / 1e9 : j.belastung / 1e6; }),
+      values: J.map(function (j) { return kum ? -j.kumuliert / 1e9 : -j.belastung / 1e6; }),
       fmtTick: function (v) { return kum ? nf(v, Math.abs(v) < 10 && v % 1 ? 1 : 0) : nf(v, 0); }
     };
   }
@@ -495,7 +495,7 @@
       var bw = Math.max(1, Math.min(24, band - 2)), r = 4;
       D.values.forEach(function (v, i) {
         var d = barPath(xc(i) - bw / 2, bw, y(0), y(v), r);
-        if (d) svgEl('path', { d: d, fill: v > 0 ? COL.zuschuss : COL.ueberschuss }, svg);
+        if (d) svgEl('path', { d: d, fill: v < 0 ? COL.zuschuss : COL.ueberschuss }, svg);
       });
       // Direktbeschriftung: letztes Jahr
       var lv = D.values[n - 1], lt = svgEl('text', { x: Math.min(xc(n - 1), W - m.r), y: lv >= 0 ? y(lv) - 6 : y(lv) + 14, 'text-anchor': 'end', style: 'fill:#1f2623;font-weight:600' }, svg);
@@ -534,8 +534,8 @@
       var rows;
       if (D.kind === 'bars') {
         rows = [
-          ['Belastung', geld(j.belastung / 1e6, true)],
-          ['aufgelaufen', geld(j.kumuliert / 1e6, true)],
+          ['Saldo', geld(-j.belastung / 1e6, true)],
+          ['aufgelaufen', geld(-j.kumuliert / 1e6, true)],
           ['Reinertrag', geld(j.reinertrag / 1e6)],
           ['Kapitaldienst', geld(j.kapitaldienst / 1e6)]
         ];
@@ -544,7 +544,7 @@
           ['<span class="sw" style="background:' + COL.ueberschuss + '"></span>Miete', nf(j.miete, 2) + ' €'],
           ['<span class="sw" style="background:' + COL.zuschuss + '"></span>Kosten', nf(j.bewirtschaftungJeQm + j.kapitaldienst / res.flaeche / 12, 2) + ' €'],
           ['davon Bewirtschaftung', nf(j.bewirtschaftungJeQm, 2) + ' €'],
-          ['Belastung je m²', sf(j.belastungJeQmMonat, 2) + ' €']
+          ['Saldo je m²', sf(-j.belastungJeQmMonat, 2) + ' €']
         ];
       }
       tip.innerHTML = '<div class="t">Jahr ' + j.jahr + '</div>' + rows.map(function (r) { return '<div class="r"><span>' + r[0] + '</span><b>' + r[1] + '</b></div>'; }).join('');
@@ -563,18 +563,18 @@
     var J = res.jahre, n = J.length;
     if (D.kind === 'lines') return 'Liniendiagramm: Miete steigt von ' + nf(J[0].miete, 2) + ' € auf ' + nf(J[n - 1].miete, 2) + ' € je m² und Monat; die Kosten liegen im ersten Jahr bei ' +
       nf(J[0].bewirtschaftungJeQm + J[0].kapitaldienst / res.flaeche / 12, 2) + ' €. Alle Werte in der Tabelle unter dem Diagramm.';
-    return 'Säulendiagramm über ' + n + ' Jahre: Belastung im ersten Jahr ' + geld(J[0].belastung / 1e6, true) + ', im letzten Jahr ' + geld(J[n - 1].belastung / 1e6, true) +
-      ', aufgelaufen ' + geld(J[n - 1].kumuliert / 1e6, true) + '. Alle Werte in der Tabelle unter dem Diagramm.';
+    return 'Säulendiagramm über ' + n + ' Jahre: Saldo im ersten Jahr ' + geld(-J[0].belastung / 1e6, true) + ', im letzten Jahr ' + geld(-J[n - 1].belastung / 1e6, true) +
+      ', aufgelaufen ' + geld(-J[n - 1].kumuliert / 1e6, true) + '. Alle Werte in der Tabelle unter dem Diagramm.';
   }
 
   function renderYearTable() {
     var rows = res.jahre.map(function (j) {
       return '<tr><td>' + j.jahr + '</td><td>' + nf(j.miete, 2) + '</td><td>' + nf(j.bewirtschaftungJeQm, 2) + '</td><td>' + nf(j.reinertrag / 1e6, 1) + '</td><td>' +
-        nf(j.kapitaldienstLand / 1e6, 1) + '</td><td>' + nf(j.kapitaldienstAnstalt / 1e6, 1) + '</td><td>' + sf(j.belastung / 1e6, 1) + '</td><td>' + sf(j.belastungJeQmMonat, 2) +
-        '</td><td>' + sf(j.kumuliert / 1e6, 0) + '</td><td>' + nf(j.restschuld / 1e6, 0) + '</td></tr>';
+        nf(j.kapitaldienstLand / 1e6, 1) + '</td><td>' + nf(j.kapitaldienstAnstalt / 1e6, 1) + '</td><td>' + sf(-j.belastung / 1e6, 1) + '</td><td>' + sf(-j.belastungJeQmMonat, 2) +
+        '</td><td>' + sf(-j.kumuliert / 1e6, 0) + '</td><td>' + nf(j.restschuld / 1e6, 0) + '</td></tr>';
     }).join('');
     $('vgr-yeartable').innerHTML = '<table><thead><tr><th>Jahr</th><th>Miete €/m²</th><th>Bewirt. €/m²</th><th>Reinertrag Mio. €</th><th>KD Land Mio. €</th><th>KD Anstalt Mio. €</th>' +
-      '<th>Belastung Mio. €</th><th>Belastung €/m²</th><th>Aufgelaufen Mio. €</th><th>Restschuld Mio. €</th></tr></thead><tbody>' + rows + '</tbody></table>';
+      '<th>Saldo Mio. €</th><th>Saldo €/m²</th><th>Aufgelaufen Mio. €</th><th>Restschuld Mio. €</th></tr></thead><tbody>' + rows + '</tbody></table>';
   }
 
   // ------------------------------------------------------------------ Matrix (wie Tabelle 2)
@@ -587,9 +587,9 @@
       return '<tr><th scope="row">' + nf(e, e % 1 ? 1 : 0) + ' Mrd. €</th>' + Ms.map(function (mm) {
         var q = {}; for (var k in p) q[k] = p[k];
         q.entschaedigungMrd = e; q.miete = mm; q.horizont = 1;
-        var j = berechne(q).jahr1, v = matrixUnit === 'mio' ? j.belastung / 1e6 : j.belastungJeQmMonat;
+        var j = berechne(q).jahr1, v = matrixUnit === 'mio' ? -j.belastung / 1e6 : -j.belastungJeQmMonat;
         var d = matrixUnit === 'mio' ? 0 : 2, txt = sf(v, d);
-        var cls = clean(v, d) > 0 ? 'pos' : (clean(v, d) < 0 ? 'neg' : '');
+        var cls = clean(v, d) < 0 ? 'pos' : (clean(v, d) > 0 ? 'neg' : '');  // pos = Zuschuss (rot), neg = Überschuss (grün)
         if (Math.abs(e - p.entschaedigungMrd) < 1e-9 && Math.abs(mm - p.miete) < 1e-9) cls += ' cur';
         return '<td class="' + cls + '"><button type="button" data-e="' + e + '" data-m="' + mm + '" aria-label="' + esc(nf(e, 1) + ' Mrd. € Entschädigung, ' + nf(mm, 2) + ' € Miete: ' + txt + (matrixUnit === 'mio' ? ' Mio. €' : ' € je m²')) + '">' + txt + '</button></td>';
       }).join('') + '</tr>';
@@ -614,10 +614,10 @@
     });
     L.push('');
     L.push(['Jahr', 'Miete €/m²/Monat', 'Bewirtschaftung €/m²/Monat', 'Mieteinnahmen Mio €', 'Bewirtschaftungskosten Mio €', 'Reinertrag Mio €', 'Kapitaldienst Land Mio €',
-      'Kapitaldienst Anstalt Mio €', 'Belastung Mio €', 'Belastung €/m²/Monat', 'Belastung € je Wohnung/Monat', 'Aufgelaufen Mio €', 'Saldo Anstalt Mio €', 'Restschuld Mio €'].join(';'));
+      'Kapitaldienst Anstalt Mio €', 'Saldo Mio € (+ Überschuss, − Zuschuss)', 'Saldo €/m²/Monat', 'Saldo € je Wohnung/Monat', 'Saldo aufgelaufen Mio €', 'Saldo Anstalt Mio €', 'Restschuld Mio €'].join(';'));
     res.jahre.forEach(function (j) {
       L.push([j.jahr, c(j.miete, 4), c(j.bewirtschaftungJeQm, 4), c(j.mieteinnahmen / 1e6, 3), c(j.bewirtschaftung / 1e6, 3), c(j.reinertrag / 1e6, 3), c(j.kapitaldienstLand / 1e6, 3),
-        c(j.kapitaldienstAnstalt / 1e6, 3), c(j.belastung / 1e6, 3), c(j.belastungJeQmMonat, 4), c(j.belastungJeWohnungMonat, 2), c(j.kumuliert / 1e6, 3), c(j.saldoAnstalt / 1e6, 3), c(j.restschuld / 1e6, 3)].join(';'));
+        c(j.kapitaldienstAnstalt / 1e6, 3), c(-j.belastung / 1e6, 3), c(-j.belastungJeQmMonat, 4), c(-j.belastungJeWohnungMonat, 2), c(-j.kumuliert / 1e6, 3), c(j.saldoAnstalt / 1e6, 3), c(j.restschuld / 1e6, 3)].join(';'));
     });
     var blob = new Blob(['﻿' + L.join('\r\n')], { type: 'text/csv;charset=utf-8' });
     var a = document.createElement('a');

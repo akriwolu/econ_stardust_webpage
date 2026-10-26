@@ -35,7 +35,7 @@ show_title_as_headline: false
 
   <div class="results" aria-live="polite">
     <section class="hero" id="vgr-hero">
-      <p class="hero-label">Belastung des Landeshaushalts im ersten Jahr</p>
+      <p class="hero-label">Saldo für den Landeshaushalt im ersten Jahr</p>
       <div><span class="hero-value num" id="vgr-hero-value">–</span><span class="hero-tag" id="vgr-hero-tag">–</span></div>
       <div class="hero-sub">
         <span><b class="num" id="vgr-hero-qm">–</b> je m² Wohnfläche und Monat</span>
@@ -51,7 +51,7 @@ show_title_as_headline: false
     <div class="breakeven" id="vgr-breakeven"></div>
 
     <div class="chart-head">
-      <h3 id="vgr-chart-title">Belastung im Zeitverlauf</h3>
+      <h3 id="vgr-chart-title">Saldo im Zeitverlauf</h3>
       <div class="tabs" role="tablist" aria-label="Diagramm wählen">
         <button type="button" role="tab" data-view="jahr" aria-selected="true">Jährlich</button>
         <button type="button" role="tab" data-view="kum" aria-selected="false">Kumuliert</button>
@@ -71,16 +71,16 @@ show_title_as_headline: false
   </div>
 </div>
 
-<button type="button" class="mini" id="vgr-mini" aria-label="Zum Ergebnis springen"><span class="mini-k">Belastung im ersten Jahr</span><span class="mini-v num" id="vgr-mini-v"></span><span class="mini-t" id="vgr-mini-t"></span></button>
+<button type="button" class="mini" id="vgr-mini" aria-label="Zum Ergebnis springen"><span class="mini-k">Saldo im ersten Jahr</span><span class="mini-v num" id="vgr-mini-v"></span><span class="mini-t" id="vgr-mini-t"></span></button>
 
 <h2 id="matrix">Entschädigung und Miete: die Übersicht</h2>
-<p class="prose">Belastung im ersten Jahr für verschiedene Entschädigungen und Mieten, bei Ihren übrigen Annahmen (<span id="vgr-matrix-params"></span>). Mit den Standardwerten entspricht das Tabelle 2 im <a href="https://www.diw.de/de/diw_01.c.1021274.de/publikationen/diw_aktuell/2026_0126/vergesellschaftung_der_wohnungsunternehmen_in_berlin_belastet_den_haushalt_und_schafft_keine_zusaetzliche_wohnung.html">DIW aktuell</a>. Ein Klick auf ein Feld übernimmt die Werte.</p>
+<p class="prose">Saldo im ersten Jahr für verschiedene Entschädigungen und Mieten, bei Ihren übrigen Annahmen (<span id="vgr-matrix-params"></span>). Mit den Standardwerten entspricht das Tabelle 2 im <a href="https://www.diw.de/de/diw_01.c.1021274.de/publikationen/diw_aktuell/2026_0126/vergesellschaftung_der_wohnungsunternehmen_in_berlin_belastet_den_haushalt_und_schafft_keine_zusaetzliche_wohnung.html">DIW aktuell</a>. Ein Klick auf ein Feld übernimmt die Werte.</p>
 <div class="tabs" role="tablist" aria-label="Einheit der Übersicht" id="vgr-matrix-unit">
   <button type="button" role="tab" data-unit="mio" aria-selected="true">Mio. € pro Jahr</button>
   <button type="button" role="tab" data-unit="qm" aria-selected="false">€ je m² und Monat</button>
 </div>
 <div class="tbl-wrap" style="margin-top:0.6rem"><table class="matrix" id="vgr-matrix"></table></div>
-<p class="small muted" style="margin-top:0.5rem">Rot: Zuschuss aus dem Landeshaushalt. Grün mit Minuszeichen: Überschuss. Mieten: 4,04 € „Faire-Mieten-Modell“ (Holm et al. 2025) · 6 € Untergrenze der einkommensabhängigen Mieten im kommunalen Neubau (Wahlprogramm Die Linke 2026) · 7 € etwa Durchschnittsmiete der landeseigenen Unternehmen · 8 € etwa heutiges Niveau in den betroffenen Beständen.</p>
+<p class="small muted" style="margin-top:0.5rem">Grün mit Pluszeichen: Überschuss. Rot mit Minuszeichen: Zuschuss aus dem Landeshaushalt. Im DIW aktuell sind die Vorzeichen umgekehrt (dort positiv = Zuzahlung). Mieten: 4,04 € „Faire-Mieten-Modell“ (Holm et al. 2025) · 6 € Untergrenze der einkommensabhängigen Mieten im kommunalen Neubau (Wahlprogramm Die Linke 2026) · 7 € etwa Durchschnittsmiete der landeseigenen Unternehmen · 8 € etwa heutiges Niveau in den betroffenen Beständen.</p>
 
 <h2 id="download">Rechnung herunterladen und weitergeben</h2>
 <p class="prose">Das Excel-Rechenblatt enthält dieselbe Rechnung mit offenen Formeln: Annahmen ändern, Zeitreihe Jahr für Jahr nachvollziehen, Übersicht nach Entschädigung und Miete. Die CSV-Datei enthält die Zeitreihe zu den hier eingestellten Annahmen.</p>
@@ -103,9 +103,9 @@ Reinertrag(t) = (Miete(t) − Bewirtschaftung(t)) × Wohnfläche × 12
 Miete(t)      = Miete im Jahr 1 × (1 + Mietsteigerung)^(t−1)
 Bewirtschaftung(t) = Kosten im Jahr 1 × (1 + Kostensteigerung)^(t−1)
 
-Belastung(t)  = Kapitaldienst Land + Kapitaldienst Anstalt − Reinertrag(t)
-                > 0: Zuschuss aus dem Landeshaushalt,  < 0: Überschuss</div>
-<p style="margin-top:0.85rem">Im ersten Jahr spielen Miet- und Kostensteigerung noch keine Rolle; deshalb entspricht die Hauptzahl Tabelle 2 im DIW aktuell. Steigen die Kosten schneller als die Mieten (Standard: Kosten +2 %, Mieten +1 % pro Jahr, wie bei Holm et al. 2025), wächst die Belastung mit der Zeit. Der Barwert wird mit dem Zins des Landes abgezinst. Die höchste tragbare Entschädigung im ersten Jahr ist Reinertrag ÷ [q · AF(Zins Land) + (1 − q) · AF(Zins Anstalt)], wobei q die Eigenkapitalquote und AF der Annuitätenfaktor ist.</p>
+Saldo(t)      = Reinertrag(t) − Kapitaldienst Land − Kapitaldienst Anstalt
+                > 0: Überschuss,  < 0: Zuschuss aus dem Landeshaushalt</div>
+<p style="margin-top:0.85rem">Im ersten Jahr spielen Miet- und Kostensteigerung noch keine Rolle; deshalb entspricht die Hauptzahl Tabelle 2 im DIW aktuell (mit umgekehrtem Vorzeichen). Steigen die Kosten schneller als die Mieten (Standard: Kosten +2 %, Mieten +1 % pro Jahr, wie bei Holm et al. 2025), wächst der Zuschussbedarf mit der Zeit. Der Barwert wird mit dem Zins des Landes abgezinst. Die höchste tragbare Entschädigung im ersten Jahr ist Reinertrag ÷ [q · AF(Zins Land) + (1 − q) · AF(Zins Anstalt)], wobei q die Eigenkapitalquote und AF der Annuitätenfaktor ist.</p>
 
 <h3>Was die Schuldenbremse dazu sagt</h3>
 <ul class="clean">
