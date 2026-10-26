@@ -45,7 +45,7 @@
         { v: 8, s: 'Initiative', t: 'Initiative Deutsche Wohnen & Co enteignen: Ertragswert nach dem „Faire-Mieten-Modell“; auch Szenario des Rechnungshofs (2024)' },
         { v: 11, s: 'Initiative', t: 'Initiative: Ertragswert mit den Mieten der landeseigenen Unternehmen; auch Szenario des Rechnungshofs (2024)' },
         { v: 13.5, s: 'IMK', t: 'IMK Policy Brief 225 (2026): Ertragswert, 4 % real, 40 Jahre, zzgl. Boden' },
-        { v: 21, s: 'IMK neu bewertet', t: 'Ertragswert der IMK-Annahmen, wenn man mit dem eigenen Finanzierungssatz statt 4 % real bewertet (DIW aktuell)' },
+        { v: 21, s: 'Schwelle bei 8 €', t: 'DIW aktuell Nr. 126: Ab 21 Mrd. € Entschädigung muss der Landeshaushalt selbst bei 8 € Miete zuschießen' },
         { v: 29, s: 'Verkehrswert', t: 'Verkehrswert, untere Schätzung (Senat 2019; Rechnungshof 2024)' },
         { v: 36, s: 'Verkehrswert', t: 'Verkehrswert, obere Schätzung (Senat 2019; Rechnungshof 2024). Senat 2020: bis 39,5 Mrd. €' }
       ] },
@@ -56,7 +56,7 @@
         { v: 6, s: 'Neubau-Untergrenze', t: 'Untergrenze der einkommensabhängigen Mieten im kommunalen Neubau, 6–12 € (Wahlprogramm Die Linke Berlin 2026, S. 35). Für die vergesellschafteten Bestände nennt das Programm keine Zielmiete.' },
         { v: 7, s: 'Ø LWU', t: 'Etwa die Durchschnittsmiete der landeseigenen Wohnungsunternehmen 2025 (7,11 €; DIW aktuell Nr. 126); auch Grundmodell Holm et al. (2025)' },
         { v: 7.08, s: 'Ø LWU (IMK)', t: 'Durchschnittsmiete der sechs landeseigenen Unternehmen (IMK 2026, Tab. 1)' },
-        { v: 8, s: 'heute', t: 'Etwa das heutige Niveau in den betroffenen Beständen: 7,94 € Ende 2023 (Bernt/Holm 2023), fortgeschrieben rund 8,30 € 2026' }
+        { v: 8, s: 'heute', t: 'Etwa das heutige Mietniveau in den betroffenen Beständen (DIW aktuell Nr. 126, nach Geschäftsberichten von Adler Real Estate, Grand City Properties und Vonovia)' }
       ] },
     { key: 'mietsteigerung', url: 'gm', pct: true, label: 'Mietsteigerung pro Jahr', unit: '%', min: 0, max: 3, step: 0.1, nmin: -2, nmax: 6, nstep: 0.1, dec: 1, main: true,
       marks: [
@@ -129,7 +129,7 @@
       note: '<p><strong>Zinsrisiko:</strong> wie Tabelle 2 im DIW aktuell, aber mit Zinsen 1 Prozentpunkt höher (5 % / 6 %). Die Belastung steigt je nach Entschädigung um 70 bis 250 Mio. € pro Jahr.</p>' },
     { id: 'imk', label: 'IMK (rekonstruiert)', over: { entschaedigungMrd: 13.5, wohnungen: 210000, flaecheJeWohnung: 63, miete: 7.08, bewirtschaftung: 3.66, ekQuote: 0.3,
       zinsEK: 0.015, zinsFK: 0.02, laufzeitEK: 40, laufzeitFK: 40, horizont: 40, mietsteigerung: 0, kostensteigerung: 0 },
-      note: '<p><strong>IMK Policy Brief 225 (rekonstruiert):</strong> Das IMK nennt keinen Zinssatz, nur den Kapitaldienst (345 Mio. € für 9,5 Mrd. € Fremdkapital, 135 Mio. € für 4 Mrd. € Eigenkapital). Rechnerisch entspricht das einer 40-jährigen Annuität zu rund 2,0 bzw. 1,5 % – plausibel nur als realer Zins – oder reiner Verzinsung zu rund 3,6 bzw. 3,4 % ohne Tilgung. Finanziert die Anstalt nominal zu heutigen Marktzinsen, entsteht im ersten Jahr ein Defizit von rund 260 Mio. €. Die IMK-Miete von 7,08 € liegt rund 15 % unter dem geschätzten heutigen Niveau in den Beständen (≈ 8,30 €).</p>' },
+      note: '<p><strong>IMK Policy Brief 225 (rekonstruiert):</strong> Das IMK nennt für den Kapitaldienst der Anstalt und des Landes (345 bzw. 135 Mio. € jährlich) keinen Zinssatz. Rechnerisch entspricht das einer 40-jährigen Annuität zu rund 2,0 % für die Anstalt und 1,5 % für das Land – plausibel nur als realer Zins – oder einer reinen Verzinsung zu rund 3,5 % ohne Tilgung (DIW aktuell Nr. 126). Mit heutigen Marktzinsen (4 % / 5 %) und sonst gleichen Annahmen müsste der Haushalt im ersten Jahr rund 210 Mio. € zuschießen. Die IMK-Miete von 7,08 € liegt knapp 1 € unter dem heutigen Niveau in den Beständen (etwa 8 €).</p>' },
     { id: 'dwe', label: 'DWE-Anleihemodell', over: { ekQuote: 0, zinsFK: 0.035, laufzeitFK: 100, horizont: 100 }, note: DWE_TEXT, kurs: true }
   ];
 
