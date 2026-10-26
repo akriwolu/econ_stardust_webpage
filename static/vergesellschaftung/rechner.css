@@ -213,3 +213,7 @@
 @media (prefers-reduced-motion: reduce) { .vgr .mini { transition: none; } }
 
 @media (max-width: 560px) { .vgr .tiles { grid-template-columns: minmax(0, 1fr); } }
+
+.vgr .per { font-size: 0.82rem; color: var(--ink-2); margin: 0.1rem 0 0.35rem; font-variant-numeric: tabular-nums; }
+.vgr .chk { display: flex; gap: 0.45rem; align-items: flex-start; font-weight: 400 !important; font-size: 0.82rem !important; color: var(--ink-2); margin-top: 0.55rem; cursor: pointer; line-height: 1.35; }
+.vgr .chk input { margin: 0.15rem 0 0; accent-color: var(--accent); flex: none; }

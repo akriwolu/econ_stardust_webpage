@@ -48,6 +48,7 @@
         { v: 16, s: 'Sondierung', t: 'Obergrenze laut Sondierungspapier von Linke, Grünen und SPD (Oktober 2026), nach dpa-Bericht vom 21.10.2026' },
         { v: 29, s: 'Verkehrswert', t: 'Verkehrswert, untere Schätzung (Senat 2019; Rechnungshof 2024)' }
       ] },
+    { key: 'bestand', type: 'bestand', label: 'Bestand', main: true },
     { key: 'miete', url: 'm', label: 'Miete im ersten Jahr', unit: '€/m²', minDec: 2, min: 4, max: 10, step: 0.05, nmin: 0, nmax: 20, nstep: 0.01, dec: 2, main: true,
       hint: 'Nettokaltmiete je m² und Monat, die in den vergesellschafteten Wohnungen verlangt wird.',
       marks: [
@@ -84,7 +85,6 @@
     { key: 'laufzeitEK', url: 'nek', label: 'Laufzeit Eigenkapital-Kredit', unit: 'Jahre', min: 10, max: 100, step: 1, nmin: 1, nmax: 150, nstep: 1, dec: 0,
       marks: [{ v: 50, s: 'DIW', t: 'DIW aktuell' }] },
     { key: 'tilgung', type: 'tilgung', url: 't', label: 'Tilgung' },
-    { key: 'bestand', type: 'bestand', label: 'Bestand' },
     { key: 'bewirtschaftung', url: 'b', label: 'Bewirtschaftungskosten', unit: '€/m²', minDec: 2, min: 2, max: 6, step: 0.01, nmin: 0, nmax: 15, nstep: 0.01, dec: 2,
       hint: 'Je m² und Monat im ersten Jahr: Instandhaltung, Modernisierung, Verwaltung, Mietausfall, nicht umlagefähige Betriebskosten.',
       marks: [
@@ -97,7 +97,7 @@
       marks: [{ v: 50, s: 'DIW', t: 'DIW aktuell' }] }
   ];
 
-  var ADVANCED = ['ekQuote', 'laufzeitEK', 'laufzeitFK', 'tilgung', 'wohnungen', 'flaecheJeWohnung', 'bewirtschaftung', 'horizont'];
+  var ADVANCED = ['ekQuote', 'laufzeitEK', 'laufzeitFK', 'tilgung', 'bewirtschaftung', 'horizont'];
 
   var BESTAND = [
     { id: 'rh', w: 240000, a: 61, label: '240.000 Wohnungen à 61 m² (Rechnungshof, Holm et al.)' },
@@ -183,16 +183,17 @@
         el.addEventListener('change', function (e) { p.tilgung = e.target.value; update(); });
       } else if (c.type === 'bestand') {
         el.innerHTML = '<label for="vgr-bestand">Bestand</label>' +
-          '<p class="hint">Betroffen sind Unternehmen mit mehr als 3.000 Wohnungen in Berlin.</p>' +
+          '<p class="hint">Wie viele Wohnungen vergesellschaftet werden.</p>' +
           '<select id="vgr-bestand">' + BESTAND.map(function (b) { return '<option value="' + b.id + '">' + esc(b.label) + '</option>'; }).join('') + '</select>' +
           '<div class="pair"><span class="valbox"><label for="vgr-w">Wohnungen</label><input id="vgr-w" type="text" inputmode="numeric" autocomplete="off"></span>' +
-          '<span class="valbox"><label for="vgr-a">m² je Wohnung</label><input id="vgr-a" type="text" inputmode="decimal" autocomplete="off"></span></div>';
+          '<span class="valbox"><label for="vgr-a">m² je Wohnung</label><input id="vgr-a" type="text" inputmode="decimal" autocomplete="off"></span></div>' +
+          '<label class="chk"><input type="checkbox" id="vgr-scale" checked> Entschädigung je m² beibehalten: Bei einem anderen Bestand passt sich der Gesamtbetrag an.</label>';
         el.querySelector('select').addEventListener('change', function (e) {
           var b = BESTAND.filter(function (x) { return x.id === e.target.value; })[0];
-          if (b && b.w) { p.wohnungen = b.w; p.flaecheJeWohnung = b.a; update(); }
+          if (b && b.w) setBestand(b.w, b.a); else update();
         });
-        el.querySelector('#vgr-w').addEventListener('change', function (e) { var v = parseDe(e.target.value); if (v >= 1000) { p.wohnungen = Math.round(v); } update(); });
-        el.querySelector('#vgr-a').addEventListener('change', function (e) { var v = parseDe(e.target.value); if (v >= 10) { p.flaecheJeWohnung = v; } update(); });
+        el.querySelector('#vgr-w').addEventListener('change', function (e) { var v = parseDe(e.target.value); if (v >= 1000) setBestand(Math.round(v), p.flaecheJeWohnung); else update(); });
+        el.querySelector('#vgr-a').addEventListener('change', function (e) { var v = parseDe(e.target.value); if (v >= 10) setBestand(p.wohnungen, v); else update(); });
       } else {
         var marks = (c.marks || []).map(function (m, i) {
           return '<button type="button" class="mark" data-i="' + i + '" title="' + esc(m.t) + '" aria-label="' + esc(nf(disp(c, m.v), c.dec) + ' ' + c.unit + ': ' + m.t) + '"><b>' +
@@ -202,6 +203,7 @@
           '<span class="valbox"><input id="' + id + '-n" type="text" inputmode="decimal" autocomplete="off" aria-label=""' + esc(c.label + ' in ' + c.unit) + '">' + esc(c.unit) + '</span></div>' +
           (c.hint ? '<p class="hint">' + esc(c.hint) + '</p>' : '') +
           '<input type="range" id="' + id + '" min="' + c.min + '" max="' + c.max + '" step="' + c.step + '">' +
+          (c.key === 'entschaedigungMrd' ? '<p class="per" id="vgr-e-per" aria-live="polite"></p>' : '') +
           (marks ? '<div class="marks" aria-label="Werte aus der Debatte">' + marks + '</div>' : '');
         var range = el.querySelector('input[type=range]'), num = el.querySelector('input[type=text]');
         range.addEventListener('input', function () { p[c.key] = c.pct ? parseFloat(range.value) / 100 : parseFloat(range.value); update(range); });
@@ -219,6 +221,13 @@
       }
       (c.main ? main : more).appendChild(el);
     });
+  }
+  // Bestand ändern; auf Wunsch bleibt die Entschädigung je m² gleich und der Gesamtbetrag skaliert mit der Fläche
+  function setBestand(w, a) {
+    var f0 = p.wohnungen * p.flaecheJeWohnung, f1 = w * a;
+    if ($('vgr-scale').checked && f0 > 0) p.entschaedigungMrd = Math.round(p.entschaedigungMrd * f1 / f0 * 10) / 10;
+    p.wohnungen = w; p.flaecheJeWohnung = a;
+    update();
   }
   function markDec(c, v) {
     var d = disp(c, v);
@@ -241,6 +250,11 @@
         return;
       }
       var v = disp(c, p[c.key]);
+      if (c.key === 'entschaedigungMrd') {
+        var f = p.wohnungen * p.flaecheJeWohnung;
+        $('vgr-e-per').textContent = '≈ ' + nf(p.entschaedigungMrd * 1e9 / f, 0) + ' € je m² · ' + nf(p.entschaedigungMrd * 1e9 / p.wohnungen, 0) +
+          ' € je Wohnung (' + nf(p.wohnungen, 0) + ' Wohnungen à ' + nf(p.flaecheJeWohnung, p.flaecheJeWohnung % 1 ? 1 : 0) + ' m²)';
+      }
       if (c.range !== skip) c.range.value = v;
       c.range.setAttribute('aria-valuetext', nf(v, c.dec) + ' ' + c.unit);
       if (document.activeElement !== c.num) c.num.value = nfIn(v, c.dec, c.minDec);
