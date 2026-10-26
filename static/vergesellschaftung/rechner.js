@@ -372,10 +372,7 @@
     var tiles = [
       ['Summe der Zuschüsse in ' + H + ' Jahren', geld(res.summeZuschuesse / 1e6), Math.abs(res.summeNetto - res.summeZuschuesse) > 5e5 ? 'nominal; Saldo inkl. Überschüssen ' + geld(-res.summeNetto / 1e6, true) : 'nominal, nicht abgezinst'],
       ['Saldo im Jahr ' + H, geld(-last.belastung / 1e6, true), sf(-last.belastungJeQmMonat, 2) + ' € je m² und Monat'],
-      ['Jahre mit Zuschuss', mit.length + ' von ' + H, dauerhaft],
-      ['Eigenkapital des Landes', geld(res.eigenkapital / 1e6), '+' + pct(res.eigenkapital / HAUSHALT.schuldenstand) + ' Schuldenstand (≈ 69 Mrd. €)'],
-      ['Kredite der Anstalt', geld(res.fremdkapital / 1e6), 'außerhalb des Landeshaushalts'],
-      ['Restschuld nach ' + H + ' Jahren', geld(last.restschuld / 1e6), p.tilgung === 'nurZinsen' ? 'Kredite werden nicht getilgt' : 'Land und Anstalt']
+      ['Jahre mit Zuschuss', mit.length + ' von ' + H, dauerhaft]
     ];
     $('vgr-tiles').innerHTML = tiles.map(function (t) {
       return '<div class="tile"><div class="k">' + esc(t[0]) + '</div><div class="v num">' + esc(t[1]) + '</div><div class="s">' + esc(t[2]) + '</div></div>';
