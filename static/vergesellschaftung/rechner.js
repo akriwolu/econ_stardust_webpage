@@ -87,8 +87,7 @@
       marks: [
         { v: 0, s: 'DWE-Anleihe', t: 'Gesetzentwurf der Initiative: Zahlung vollständig in Schuldverschreibungen der Anstalt' },
         { v: 0.2, s: 'Holm/DIW', t: 'Holm et al. (2025); DIW aktuell' },
-        { v: 0.3, s: 'IMK', t: 'IMK (2026), etwa der Durchschnitt der landeseigenen Unternehmen' },
-        { v: 0.4, s: 'Dullien/Krebs', t: 'Dullien/Krebs (2020)' }
+        { v: 0.3, s: 'IMK', t: 'IMK (2026), etwa der Durchschnitt der landeseigenen Unternehmen' }
       ] },
     { key: 'laufzeitFK', url: 'nfk', label: 'Laufzeit Kredite der Anstalt', unit: 'Jahre', min: 10, max: 100, step: 1, nmin: 1, nmax: 150, nstep: 1, dec: 0,
       marks: [{ v: 40, s: 'IMK', t: 'IMK (2026)' }, { v: 50, s: 'DIW', t: 'DIW aktuell' }, { v: 100, s: 'DWE', t: 'Gesetzentwurf der Initiative' }] },
