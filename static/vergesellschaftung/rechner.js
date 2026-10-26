@@ -45,6 +45,7 @@
         { v: 8, s: 'Initiative', t: 'Initiative Deutsche Wohnen & Co enteignen: Ertragswert nach dem „Faire-Mieten-Modell“; auch Szenario des Rechnungshofs (2024)' },
         { v: 11, s: 'Initiative', t: 'Initiative: Ertragswert mit den Mieten der landeseigenen Unternehmen; auch Szenario des Rechnungshofs (2024)' },
         { v: 13.5, s: 'IMK', t: 'IMK Policy Brief 225 (2026): Ertragswert, 4 % real, 40 Jahre, zzgl. Boden' },
+        { v: 16, s: 'Sondierung', t: 'Obergrenze laut Sondierungspapier von Linke, Grünen und SPD (Oktober 2026), nach dpa-Bericht vom 21.10.2026' },
         { v: 21, s: 'Schwelle bei 8 €', t: 'DIW aktuell Nr. 126: Ab 21 Mrd. € Entschädigung muss der Landeshaushalt selbst bei 8 € Miete zuschießen' },
         { v: 29, s: 'Verkehrswert', t: 'Verkehrswert, untere Schätzung (Senat 2019; Rechnungshof 2024)' },
         { v: 36, s: 'Verkehrswert', t: 'Verkehrswert, obere Schätzung (Senat 2019; Rechnungshof 2024). Senat 2020: bis 39,5 Mrd. €' }
@@ -111,6 +112,7 @@
   var BESTAND = [
     { id: 'rh', w: 240000, a: 61, label: '240.000 Wohnungen à 61 m² (Rechnungshof, Holm et al.)' },
     { id: 'imk', w: 210000, a: 63, label: '210.000 Wohnungen à 63 m² (IMK, DWE-Entwurf)' },
+    { id: 'sond', w: 160000, a: 61, label: '160.000 Wohnungen à 61 m² (Sondierung 2026)' },
     { id: 'frei', label: 'eigene Angaben' }
   ];
 
@@ -120,6 +122,8 @@
       note: '<p><strong>DIW aktuell (Standard):</strong> Das erste Jahr entspricht Tabelle 2 im DIW aktuell Nr. 126 (13,5 Mrd. € Entschädigung, 7 € Miete, Zinsen 4 % für das Land und 5 % für die Anstalt, 20 % Eigenkapital, 50 Jahre Annuität). Ab dem zweiten Jahr wird fortgeschrieben: Die Mieten steigen um 1 % pro Jahr, wie politisch debattiert (einstellbar), die Bewirtschaftungskosten fest um 2 % pro Jahr, das Inflationsziel der EZB. Andere Entschädigungen und Mieten aus Tabelle 2 lassen sich über die Marken an den Reglern oder die Übersicht weiter unten wählen.</p>' },
     { id: 't2b', label: 'Zinsen +1 Prozentpunkt', over: { zinsEK: 0.05, zinsFK: 0.06 },
       note: '<p><strong>Zinsrisiko:</strong> wie der Standardfall, aber mit Zinsen 1 Prozentpunkt höher (5 % für das Land, 6 % für die Anstalt). Im ersten Jahr steigt der Zuschuss je nach Entschädigung um 70 bis 250 Mio. € pro Jahr.</p>' },
+    { id: 'sond', label: 'Sondierung Linke/Grüne/SPD', over: { entschaedigungMrd: 16, wohnungen: 160000, miete: 8.26 },
+      note: '<p><strong>Sondierungspapier von Linke, Grünen und SPD (Oktober 2026):</strong> rund 160.000 Wohnungen von fünf Unternehmen mit mehr als 10.000 Wohnungen in Berlin; die Entschädigung ist auf 16 Mrd. € begrenzt und soll über Kredite finanziert und aus den Mieten refinanziert werden. Die Miete ist auf das heutige Niveau gesetzt (8,26 € laut Vonovia). Zinsen, Eigenkapital, Laufzeit und die durchschnittliche Wohnungsgröße (61 m²) nennt das Papier nicht; hier gelten die Annahmen des DIW aktuell. Quelle: dpa-Bericht vom 21.10.2026.</p>' },
     { id: 'imk', label: 'IMK (rekonstruiert)', over: { entschaedigungMrd: 13.5, wohnungen: 210000, flaecheJeWohnung: 63, miete: 7.08, bewirtschaftung: 3.66, ekQuote: 0.3,
       zinsEK: 0.015, zinsFK: 0.02, laufzeitEK: 40, laufzeitFK: 40, horizont: 40, mietsteigerung: 0.02 },
       note: '<p><strong>IMK Policy Brief 225 (rekonstruiert):</strong> Das IMK nennt für den Kapitaldienst der Anstalt und des Landes (345 bzw. 135 Mio. € jährlich) keinen Zinssatz. Rechnerisch entspricht das einer 40-jährigen Annuität zu rund 2,0 % für die Anstalt und 1,5 % für das Land – plausibel nur als realer Zins – oder einer reinen Verzinsung zu rund 3,5 % ohne Tilgung (DIW aktuell Nr. 126). Mit heutigen Marktzinsen (4 % / 5 %) und sonst gleichen Annahmen müsste der Haushalt im ersten Jahr rund 210 Mio. € zuschießen. Die IMK-Miete von 7,08 € liegt knapp 1 € unter dem heutigen Niveau in den Beständen (etwa 8 €). Das IMK rechnet real; hier steigen Mieten und Kosten deshalb beide um 2 % pro Jahr.</p>' }
