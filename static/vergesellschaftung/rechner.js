@@ -69,7 +69,6 @@
     { key: 'zinsEK', url: 'rek', pct: true, label: 'Zins für das Land', unit: '%', min: 0, max: 8, step: 0.1, nmin: 0, nmax: 15, nstep: 0.05, dec: 2, main: true,
       hint: 'Zins auf die Kredite, mit denen das Land das Eigenkapital finanziert.',
       marks: [
-        { v: 0.015, s: 'IMK', t: 'Rechnerischer Zins hinter dem IMK-Kapitaldienst (40-jährige Annuität); plausibel nur als realer Zins' },
         { v: BUND30 / 100, s: 'Bund 30 J.', t: 'Rendite 30-jähriger Bundesanleihen ' + nf(BUND30, 2) + ' % (Deutsche Bundesbank, ' + ZINSSTAND + ') – die Untergrenze' },
         { v: 0.04, s: 'DIW', t: 'DIW aktuell Nr. 126, Tabelle 2: Bundesanleihe 30 Jahre plus rund 0,2 Prozentpunkte Berlin-Aufschlag' },
         { v: 0.05, s: '+1 Pp.', t: 'Sensitivität: Zinsen 1 Prozentpunkt höher als im DIW aktuell' }
@@ -77,7 +76,6 @@
     { key: 'zinsFK', url: 'rfk', pct: true, label: 'Zins für die Anstalt', unit: '%', min: 0, max: 8, step: 0.1, nmin: 0, nmax: 15, nstep: 0.05, dec: 2, main: true,
       hint: 'Zins auf die Kredite der Anstalt öffentlichen Rechts.',
       marks: [
-        { v: 0.02, s: 'IMK', t: 'Rechnerischer Zins hinter dem IMK-Kapitaldienst (40-jährige Annuität); plausibel nur als realer Zins' },
         { v: 0.05, s: 'DIW', t: 'DIW aktuell Nr. 126, Tabelle 2: mittlere Laufzeit Bund plus rund 1 Prozentpunkt (vgl. Howoge-Anleihe), vorsichtig gerundet' },
         { v: 0.06, s: '+1 Pp.', t: 'Sensitivität: Zinsen 1 Prozentpunkt höher als im DIW aktuell' }
       ] },
@@ -120,13 +118,8 @@
   var PRESETS_UI = [
     { id: 'standard', label: 'DIW aktuell (Standard)', over: {},
       note: '<p><strong>DIW aktuell (Standard):</strong> Das erste Jahr entspricht Tabelle 2 im DIW aktuell Nr. 126 (13,5 Mrd. € Entschädigung, 7 € Miete, Zinsen 4 % für das Land und 5 % für die Anstalt, 20 % Eigenkapital, 50 Jahre Annuität). Ab dem zweiten Jahr wird fortgeschrieben: Die Mieten steigen um 1 % pro Jahr, wie politisch debattiert (einstellbar), die Bewirtschaftungskosten fest um 2 % pro Jahr, das Inflationsziel der EZB. Andere Entschädigungen und Mieten aus Tabelle 2 lassen sich über die Marken an den Reglern oder die Übersicht weiter unten wählen.</p>' },
-    { id: 't2b', label: 'Zinsen +1 Prozentpunkt', over: { zinsEK: 0.05, zinsFK: 0.06 },
-      note: '<p><strong>Zinsrisiko:</strong> wie der Standardfall, aber mit Zinsen 1 Prozentpunkt höher (5 % für das Land, 6 % für die Anstalt). Im ersten Jahr steigt der Zuschuss je nach Entschädigung um 70 bis 250 Mio. € pro Jahr.</p>' },
     { id: 'sond', label: 'Sondierung Linke/Grüne/SPD', over: { entschaedigungMrd: 16, wohnungen: 160000, miete: 8 },
-      note: '<p><strong>Sondierungspapier von Linke, Grünen und SPD (Oktober 2026):</strong> rund 160.000 Wohnungen von fünf Unternehmen mit mehr als 10.000 Wohnungen in Berlin; die Entschädigung ist auf 16 Mrd. € begrenzt und soll über Kredite finanziert und aus den Mieten refinanziert werden. Die Miete ist auf etwa das heutige Niveau in den Beständen gesetzt (8 €, wie im DIW aktuell). Zinsen, Eigenkapital, Laufzeit und die durchschnittliche Wohnungsgröße (61 m²) nennt das Papier nicht; hier gelten die Annahmen des DIW aktuell. Quelle: dpa-Bericht vom 21.10.2026.</p>' },
-    { id: 'imk', label: 'IMK (rekonstruiert)', over: { entschaedigungMrd: 13.5, wohnungen: 210000, flaecheJeWohnung: 63, miete: 7.08, bewirtschaftung: 3.66, ekQuote: 0.3,
-      zinsEK: 0.015, zinsFK: 0.02, laufzeitEK: 40, laufzeitFK: 40, horizont: 40, mietsteigerung: 0.02 },
-      note: '<p><strong>IMK Policy Brief 225 (rekonstruiert):</strong> Das IMK nennt für den Kapitaldienst der Anstalt und des Landes (345 bzw. 135 Mio. € jährlich) keinen Zinssatz. Rechnerisch entspricht das einer 40-jährigen Annuität zu rund 2,0 % für die Anstalt und 1,5 % für das Land – plausibel nur als realer Zins – oder einer reinen Verzinsung zu rund 3,5 % ohne Tilgung (DIW aktuell Nr. 126). Mit heutigen Marktzinsen (4 % / 5 %) und sonst gleichen Annahmen müsste der Haushalt im ersten Jahr rund 210 Mio. € zuschießen. Die IMK-Miete von 7,08 € liegt knapp 1 € unter dem heutigen Niveau in den Beständen (etwa 8 €). Das IMK rechnet real; hier steigen Mieten und Kosten deshalb beide um 2 % pro Jahr.</p>' }
+      note: '<p><strong>Sondierungspapier von Linke, Grünen und SPD (Oktober 2026):</strong> rund 160.000 Wohnungen von fünf Unternehmen mit mehr als 10.000 Wohnungen in Berlin; die Entschädigung ist auf 16 Mrd. € begrenzt und soll über Kredite finanziert und aus den Mieten refinanziert werden. Die Miete ist auf etwa das heutige Niveau in den Beständen gesetzt (8 €, wie im DIW aktuell). Zinsen, Eigenkapital, Laufzeit und die durchschnittliche Wohnungsgröße (61 m²) nennt das Papier nicht; hier gelten die Annahmen des DIW aktuell. Quelle: dpa-Bericht vom 21.10.2026.</p>' }
   ];
 
   // ------------------------------------------------------------------ Zustand
