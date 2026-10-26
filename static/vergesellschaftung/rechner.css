@@ -115,7 +115,7 @@
 .vgr .breakeven { margin: 0.75rem 0 0; padding: 0.75rem 1rem; border: 1px solid var(--line); border-radius: 10px; font-size: 0.98rem; }
 .vgr .breakeven p:last-child { margin: 0; }
 
-.vgr .tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(11.5rem, 1fr)); gap: 0.6rem; margin-top: 0.75rem; }
+.vgr .tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.6rem; margin-top: 0.75rem; }
 .vgr .tile { border: 1px solid var(--line); border-radius: 10px; padding: 0.7rem 0.85rem; }
 .vgr .tile .k { font-size: 0.8rem; color: var(--ink-3); line-height: 1.3; min-height: 2.1em; }
 .vgr .tile .v { font-size: 1.35rem; font-weight: 600; margin-top: 0.15rem; }

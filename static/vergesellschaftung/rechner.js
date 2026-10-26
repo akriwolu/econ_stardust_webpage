@@ -369,12 +369,9 @@
     var mit = res.jahre.filter(function (j) { return j.belastung > 0; });
     var lastMit = mit.length ? mit[mit.length - 1].jahr : 0;
     var dauerhaft = !mit.length ? 'von Anfang an ohne Zuschuss' : (lastMit >= H ? 'bis zum Ende des Zeitraums' : 'ab Jahr ' + (lastMit + 1) + ' dauerhaft ohne Zuschuss');
-    var d = (p.diskontsatz === null || p.diskontsatz === undefined) ? p.zinsEK : p.diskontsatz;
     var tiles = [
       ['Summe der Zuschüsse in ' + H + ' Jahren', geld(res.summeZuschuesse / 1e6), Math.abs(res.summeNetto - res.summeZuschuesse) > 5e5 ? 'nominal; Saldo inkl. Überschüssen ' + geld(-res.summeNetto / 1e6, true) : 'nominal, nicht abgezinst'],
-      ['Barwert des Saldos', geld(-res.barwert / 1e6, true), 'abgezinst mit ' + pct(d, 1)],
       ['Saldo im Jahr ' + H, geld(-last.belastung / 1e6, true), sf(-last.belastungJeQmMonat, 2) + ' € je m² und Monat'],
-      ['Höchstes aufgelaufenes Defizit', geld(res.maxKumuliertesDefizit / 1e6), 'Summe der Zuschüsse bis zum Höchststand'],
       ['Jahre mit Zuschuss', mit.length + ' von ' + H, dauerhaft],
       ['Eigenkapital des Landes', geld(res.eigenkapital / 1e6), '+' + pct(res.eigenkapital / HAUSHALT.schuldenstand) + ' Schuldenstand (≈ 69 Mrd. €)'],
       ['Kredite der Anstalt', geld(res.fremdkapital / 1e6), 'außerhalb des Landeshaushalts'],
