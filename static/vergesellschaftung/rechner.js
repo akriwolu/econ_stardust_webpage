@@ -77,7 +77,6 @@
       hint: 'Zins auf die Kredite der Anstalt öffentlichen Rechts.',
       marks: [
         { v: 0.02, s: 'IMK', t: 'Rechnerischer Zins hinter dem IMK-Kapitaldienst (40-jährige Annuität); plausibel nur als realer Zins' },
-        { v: 0.035, s: 'DWE-Anleihe', t: 'Gesetzentwurf der Initiative: Schuldverschreibungen mit 3,5 % Zins, 100 Jahre Annuität' },
         { v: 0.05, s: 'DIW', t: 'DIW aktuell Nr. 126, Tabelle 2: mittlere Laufzeit Bund plus rund 1 Prozentpunkt (vgl. Howoge-Anleihe), vorsichtig gerundet' },
         { v: 0.06, s: '+1 Pp.', t: 'Sensitivität: Zinsen 1 Prozentpunkt höher als im DIW aktuell' }
       ] },
@@ -85,12 +84,11 @@
     { key: 'ekQuote', url: 'q', pct: true, label: 'Eigenkapitalquote', unit: '%', min: 0, max: 60, step: 1, nmin: 0, nmax: 100, nstep: 1, dec: 0, scaleMax: true,
       hint: 'Anteil der Entschädigung, den das Land als Eigenkapital einbringt (selbst kreditfinanziert).',
       marks: [
-        { v: 0, s: 'DWE-Anleihe', t: 'Gesetzentwurf der Initiative: Zahlung vollständig in Schuldverschreibungen der Anstalt' },
         { v: 0.2, s: 'Holm/DIW', t: 'Holm et al. (2025); DIW aktuell' },
         { v: 0.3, s: 'IMK', t: 'IMK (2026), etwa der Durchschnitt der landeseigenen Unternehmen' }
       ] },
     { key: 'laufzeitFK', url: 'nfk', label: 'Laufzeit Kredite der Anstalt', unit: 'Jahre', min: 10, max: 100, step: 1, nmin: 1, nmax: 150, nstep: 1, dec: 0,
-      marks: [{ v: 40, s: 'IMK', t: 'IMK (2026)' }, { v: 50, s: 'DIW', t: 'DIW aktuell' }, { v: 100, s: 'DWE', t: 'Gesetzentwurf der Initiative' }] },
+      marks: [{ v: 40, s: 'IMK', t: 'IMK (2026)' }, { v: 50, s: 'DIW', t: 'DIW aktuell' }] },
     { key: 'laufzeitEK', url: 'nek', label: 'Laufzeit Eigenkapital-Kredit', unit: 'Jahre', min: 10, max: 100, step: 1, nmin: 1, nmax: 150, nstep: 1, dec: 0,
       marks: [{ v: 40, s: 'IMK', t: 'IMK (2026)' }, { v: 50, s: 'DIW', t: 'DIW aktuell' }] },
     { key: 'tilgung', type: 'tilgung', url: 't', label: 'Tilgung' },
@@ -105,7 +103,7 @@
         { v: 4.44, s: 'Holm Plus', t: 'Holm et al. (2025), Tab. 6: erhöhte Instandsetzung' }
       ] },
     { key: 'horizont', url: 'h', label: 'Betrachtungszeitraum', unit: 'Jahre', min: 10, max: 100, step: 1, nmin: 1, nmax: 100, nstep: 1, dec: 0,
-      marks: [{ v: 40, s: 'IMK', t: 'IMK (2026)' }, { v: 50, s: 'DIW', t: 'DIW aktuell' }, { v: 100, s: 'DWE', t: 'Laufzeit im Gesetzentwurf der Initiative' }] }
+      marks: [{ v: 40, s: 'IMK', t: 'IMK (2026)' }, { v: 50, s: 'DIW', t: 'DIW aktuell' }] }
   ];
 
   var ADVANCED = ['ekQuote', 'laufzeitEK', 'laufzeitFK', 'tilgung', 'wohnungen', 'flaecheJeWohnung', 'bewirtschaftung', 'horizont'];
@@ -117,7 +115,6 @@
   ];
 
   // ------------------------------------------------------------------ Voreinstellungen
-  var DWE_TEXT = '<p><strong>Gesetzentwurf der Initiative:</strong> Die bisherigen Eigentümer erhalten statt Geld übertragbare Schuldverschreibungen der Anstalt „Gemeingut Wohnen“, verzinst mit 3,5 % und über 100 Jahre mit konstanter Annuität getilgt; das Land haftet. Liegt der Marktzins über 3,5 %, notieren die Papiere unter dem Nennwert. Die niedrigen Finanzierungskosten gehen dann teilweise zulasten der Entschädigung (und erhöhen das Rechtsrisiko).</p>';
   var PRESETS_UI = [
     { id: 'standard', label: 'DIW aktuell (Standard)', over: {},
       note: '<p><strong>DIW aktuell (Standard):</strong> Das erste Jahr entspricht Tabelle 2 im DIW aktuell Nr. 126 (13,5 Mrd. € Entschädigung, 7 € Miete, Zinsen 4 % für das Land und 5 % für die Anstalt, 20 % Eigenkapital, 50 Jahre Annuität). Ab dem zweiten Jahr wird fortgeschrieben: Die Mieten steigen um 1 % pro Jahr, wie politisch debattiert (einstellbar), die Bewirtschaftungskosten fest um 2 % pro Jahr, das Inflationsziel der EZB. Andere Entschädigungen und Mieten aus Tabelle 2 lassen sich über die Marken an den Reglern oder die Übersicht weiter unten wählen.</p>' },
@@ -125,8 +122,7 @@
       note: '<p><strong>Zinsrisiko:</strong> wie der Standardfall, aber mit Zinsen 1 Prozentpunkt höher (5 % für das Land, 6 % für die Anstalt). Im ersten Jahr steigt der Zuschuss je nach Entschädigung um 70 bis 250 Mio. € pro Jahr.</p>' },
     { id: 'imk', label: 'IMK (rekonstruiert)', over: { entschaedigungMrd: 13.5, wohnungen: 210000, flaecheJeWohnung: 63, miete: 7.08, bewirtschaftung: 3.66, ekQuote: 0.3,
       zinsEK: 0.015, zinsFK: 0.02, laufzeitEK: 40, laufzeitFK: 40, horizont: 40, mietsteigerung: 0.02 },
-      note: '<p><strong>IMK Policy Brief 225 (rekonstruiert):</strong> Das IMK nennt für den Kapitaldienst der Anstalt und des Landes (345 bzw. 135 Mio. € jährlich) keinen Zinssatz. Rechnerisch entspricht das einer 40-jährigen Annuität zu rund 2,0 % für die Anstalt und 1,5 % für das Land – plausibel nur als realer Zins – oder einer reinen Verzinsung zu rund 3,5 % ohne Tilgung (DIW aktuell Nr. 126). Mit heutigen Marktzinsen (4 % / 5 %) und sonst gleichen Annahmen müsste der Haushalt im ersten Jahr rund 210 Mio. € zuschießen. Die IMK-Miete von 7,08 € liegt knapp 1 € unter dem heutigen Niveau in den Beständen (etwa 8 €). Das IMK rechnet real; hier steigen Mieten und Kosten deshalb beide um 2 % pro Jahr.</p>' },
-    { id: 'dwe', label: 'DWE-Anleihemodell', over: { ekQuote: 0, zinsFK: 0.035, laufzeitFK: 100, horizont: 100 }, note: DWE_TEXT, kurs: true }
+      note: '<p><strong>IMK Policy Brief 225 (rekonstruiert):</strong> Das IMK nennt für den Kapitaldienst der Anstalt und des Landes (345 bzw. 135 Mio. € jährlich) keinen Zinssatz. Rechnerisch entspricht das einer 40-jährigen Annuität zu rund 2,0 % für die Anstalt und 1,5 % für das Land – plausibel nur als realer Zins – oder einer reinen Verzinsung zu rund 3,5 % ohne Tilgung (DIW aktuell Nr. 126). Mit heutigen Marktzinsen (4 % / 5 %) und sonst gleichen Annahmen müsste der Haushalt im ersten Jahr rund 210 Mio. € zuschießen. Die IMK-Miete von 7,08 € liegt knapp 1 € unter dem heutigen Niveau in den Beständen (etwa 8 €). Das IMK rechnet real; hier steigen Mieten und Kosten deshalb beide um 2 % pro Jahr.</p>' }
   ];
 
   // ------------------------------------------------------------------ Zustand
@@ -284,21 +280,11 @@
     for (var i = 0; i < PRESETS_UI.length; i++) if (same(p, presetState(PRESETS_UI[i]))) return PRESETS_UI[i];
     return null;
   }
-  function kurswert(rMarkt) {
-    // Barwert der Zahlungen auf 1 € Nennwert (Annuität bzw. ewige Verzinsung) zur Marktrendite
-    if (p.tilgung === 'nurZinsen') return p.zinsFK / rMarkt;
-    return annuitaetenfaktor(p.zinsFK, p.laufzeitFK) / annuitaetenfaktor(rMarkt, p.laufzeitFK);
-  }
   function renderPresetNote(pr) {
     document.querySelectorAll('.preset').forEach(function (b) { b.setAttribute('aria-pressed', pr && b.dataset.id === pr.id ? 'true' : 'false'); });
     var note = $('vgr-preset-note');
     if (!pr) { note.hidden = true; return; }
     var html = pr.note;
-    if (pr.kurs) {
-      var rs = [p.zinsFK, 0.04, 0.041, 0.045, 0.05].filter(function (v, i, a) { return a.indexOf(v) === i; }).sort();
-      html += '<div class="tbl-wrap"><table style="max-width:26rem"><tr><th>Marktrendite</th><th>Kurswert der Entschädigung</th></tr>' +
-        rs.map(function (r) { return '<tr><td>' + pct(r, 1) + '</td><td>' + pct(kurswert(r), 0) + ' des Nennwerts</td></tr>'; }).join('') + '</table></div>';
-    }
     note.innerHTML = html;
     note.hidden = false;
   }
