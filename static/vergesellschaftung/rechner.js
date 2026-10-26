@@ -54,13 +54,13 @@
       marks: [
         { v: 4.04, s: 'Faire Mieten', t: '„Faire-Mieten-Modell“, leistbare Nettokaltmiete (Holm et al. 2025, Kap. 1)' },
         { v: 6, s: 'Neubau-Untergrenze', t: 'Untergrenze der einkommensabhängigen Mieten im kommunalen Neubau, 6–12 € (Wahlprogramm Die Linke Berlin 2026, S. 35). Für die vergesellschafteten Bestände nennt das Programm keine Zielmiete.' },
-        { v: 7, s: 'Holm et al.', t: 'Grundmodell Holm et al. (2025); etwa die Durchschnittsmiete der landeseigenen Unternehmen' },
+        { v: 7, s: 'Ø LWU', t: 'Etwa die Durchschnittsmiete der landeseigenen Wohnungsunternehmen 2025 (7,11 €; DIW aktuell Nr. 126); auch Grundmodell Holm et al. (2025)' },
         { v: 7.08, s: 'Ø LWU (IMK)', t: 'Durchschnittsmiete der sechs landeseigenen Unternehmen (IMK 2026, Tab. 1)' },
         { v: 8, s: 'heute', t: 'Etwa das heutige Niveau in den betroffenen Beständen: 7,94 € Ende 2023 (Bernt/Holm 2023), fortgeschrieben rund 8,30 € 2026' }
       ] },
     { key: 'mietsteigerung', url: 'gm', pct: true, label: 'Mietsteigerung pro Jahr', unit: '%', min: 0, max: 3, step: 0.1, nmin: -2, nmax: 6, nstep: 0.1, dec: 1, main: true,
       marks: [
-        { v: 0, s: 'konstant', t: 'Konstante Miete, wie in Tabelle 2 des DIW aktuell' },
+        { v: 0, s: 'konstant', t: 'Konstante Miete, wie in Tabelle 2 des DIW aktuell Nr. 126' },
         { v: 0.01, s: 'Holm et al.', t: 'Grundmodell Holm et al. (2025); Wahlprogramm Die Linke: Mieterhöhungen der landeseigenen Unternehmen höchstens 1 % pro Jahr' },
         { v: 0.02, s: 'wie Kosten', t: 'Mieten steigen so schnell wie die Kosten im Standardfall (2 %)' }
       ] },
@@ -69,16 +69,16 @@
       marks: [
         { v: 0.015, s: 'IMK', t: 'Rechnerischer Zins hinter dem IMK-Kapitaldienst (40-jährige Annuität); plausibel nur als realer Zins' },
         { v: BUND30 / 100, s: 'Bund 30 J.', t: 'Rendite 30-jähriger Bundesanleihen ' + nf(BUND30, 2) + ' % (Deutsche Bundesbank, ' + ZINSSTAND + ') – die Untergrenze' },
-        { v: 0.04, s: 'DIW', t: 'DIW aktuell, Tabelle 2a: Bundesanleihe 30 Jahre plus rund 0,2 Prozentpunkte Berlin-Aufschlag' },
-        { v: 0.05, s: 'DIW +1 Pp.', t: 'DIW aktuell, Tabelle 2b: Zinsen 1 Prozentpunkt höher' }
+        { v: 0.04, s: 'DIW', t: 'DIW aktuell Nr. 126, Tabelle 2: Bundesanleihe 30 Jahre plus rund 0,2 Prozentpunkte Berlin-Aufschlag' },
+        { v: 0.05, s: '+1 Pp.', t: 'Sensitivität: Zinsen 1 Prozentpunkt höher als im DIW aktuell' }
       ] },
     { key: 'zinsFK', url: 'rfk', pct: true, label: 'Zins für die Anstalt', unit: '%', min: 0, max: 8, step: 0.1, nmin: 0, nmax: 15, nstep: 0.05, dec: 2, main: true,
       hint: 'Zins auf die Kredite der Anstalt öffentlichen Rechts.',
       marks: [
         { v: 0.02, s: 'IMK', t: 'Rechnerischer Zins hinter dem IMK-Kapitaldienst (40-jährige Annuität); plausibel nur als realer Zins' },
         { v: 0.035, s: 'DWE-Anleihe', t: 'Gesetzentwurf der Initiative: Schuldverschreibungen mit 3,5 % Zins, 100 Jahre Annuität' },
-        { v: 0.05, s: 'DIW', t: 'DIW aktuell, Tabelle 2a: mittlere Laufzeit Bund plus rund 1 Prozentpunkt (vgl. HOWOGE-Anleihe), vorsichtig gerundet' },
-        { v: 0.06, s: 'DIW +1 Pp.', t: 'DIW aktuell, Tabelle 2b: Zinsen 1 Prozentpunkt höher' }
+        { v: 0.05, s: 'DIW', t: 'DIW aktuell Nr. 126, Tabelle 2: mittlere Laufzeit Bund plus rund 1 Prozentpunkt (vgl. Howoge-Anleihe), vorsichtig gerundet' },
+        { v: 0.06, s: '+1 Pp.', t: 'Sensitivität: Zinsen 1 Prozentpunkt höher als im DIW aktuell' }
       ] },
     // Weitere Annahmen
     { key: 'ekQuote', url: 'q', pct: true, label: 'Eigenkapitalquote', unit: '%', min: 0, max: 60, step: 1, nmin: 0, nmax: 100, nstep: 1, dec: 0, scaleMax: true,
@@ -105,7 +105,7 @@
         { v: 4.44, s: 'Holm Plus', t: 'Holm et al. (2025), Tab. 6: erhöhte Instandsetzung' }
       ] },
     { key: 'kostensteigerung', url: 'gb', pct: true, label: 'Kostensteigerung pro Jahr', unit: '%', min: 0, max: 4, step: 0.1, nmin: -2, nmax: 8, nstep: 0.1, dec: 1,
-      marks: [{ v: 0, s: 'konstant', t: 'Konstante Kosten, wie in Tabelle 2 des DIW aktuell' }, { v: 0.02, s: 'Holm et al.', t: 'Holm et al. (2025): inflationsbedingt 2 % pro Jahr' }] },
+      marks: [{ v: 0, s: 'konstant', t: 'Konstante Kosten, wie in Tabelle 2 des DIW aktuell Nr. 126' }, { v: 0.02, s: 'Holm et al.', t: 'Holm et al. (2025): inflationsbedingt 2 % pro Jahr' }] },
     { key: 'horizont', url: 'h', label: 'Betrachtungszeitraum', unit: 'Jahre', min: 10, max: 100, step: 1, nmin: 1, nmax: 100, nstep: 1, dec: 0,
       marks: [{ v: 40, s: 'IMK', t: 'IMK (2026)' }, { v: 50, s: 'DIW', t: 'DIW aktuell' }, { v: 100, s: 'DWE', t: 'Laufzeit im Gesetzentwurf der Initiative' }] }
   ];
@@ -123,10 +123,10 @@
   var PRESETS_UI = [
     { id: 'standard', label: 'Standard', over: {},
       note: '<p><strong>Standard:</strong> Annahmen des DIW aktuell (Zinsen 4 % für das Land und 5 % für die Anstalt, 20 % Eigenkapital, 50 Jahre Laufzeit) mit der Dynamik nach Holm et al. (2025): Mieten +1 %, Kosten +2 % pro Jahr. Weil die Kosten schneller steigen als die Mieten, wächst die Belastung mit der Zeit.</p>' },
-    { id: 't2a', label: 'DIW Tabelle 2a', over: { mietsteigerung: 0, kostensteigerung: 0 },
-      note: '<p><strong>DIW aktuell, Tabelle 2a:</strong> Zinsen 4 % / 5 %, Miete und Kosten konstant. Die Belastung ist dann in jedem Jahr gleich hoch.</p>' },
-    { id: 't2b', label: 'DIW Tabelle 2b (Zinsen +1 Pp.)', over: { zinsEK: 0.05, zinsFK: 0.06, mietsteigerung: 0, kostensteigerung: 0 },
-      note: '<p><strong>DIW aktuell, Tabelle 2b:</strong> Zinsen 1 Prozentpunkt höher (5 % / 6 %). Die Belastung steigt je nach Entschädigung um 70 bis 250 Mio. € pro Jahr.</p>' },
+    { id: 't2a', label: 'DIW aktuell, Tabelle 2', over: { mietsteigerung: 0, kostensteigerung: 0 },
+      note: '<p><strong>DIW aktuell Nr. 126, Tabelle 2:</strong> Zinsen 4 % für das Land und 5 % für die Anstalt, Miete und Kosten konstant. Die Belastung ist dann in jedem Jahr gleich hoch.</p>' },
+    { id: 't2b', label: 'Zinsen +1 Prozentpunkt', over: { zinsEK: 0.05, zinsFK: 0.06, mietsteigerung: 0, kostensteigerung: 0 },
+      note: '<p><strong>Zinsrisiko:</strong> wie Tabelle 2 im DIW aktuell, aber mit Zinsen 1 Prozentpunkt höher (5 % / 6 %). Die Belastung steigt je nach Entschädigung um 70 bis 250 Mio. € pro Jahr.</p>' },
     { id: 'imk', label: 'IMK (rekonstruiert)', over: { entschaedigungMrd: 13.5, wohnungen: 210000, flaecheJeWohnung: 63, miete: 7.08, bewirtschaftung: 3.66, ekQuote: 0.3,
       zinsEK: 0.015, zinsFK: 0.02, laufzeitEK: 40, laufzeitFK: 40, horizont: 40, mietsteigerung: 0, kostensteigerung: 0 },
       note: '<p><strong>IMK Policy Brief 225 (rekonstruiert):</strong> Das IMK nennt keinen Zinssatz, nur den Kapitaldienst (345 Mio. € für 9,5 Mrd. € Fremdkapital, 135 Mio. € für 4 Mrd. € Eigenkapital). Rechnerisch entspricht das einer 40-jährigen Annuität zu rund 2,0 bzw. 1,5 % – plausibel nur als realer Zins – oder reiner Verzinsung zu rund 3,6 bzw. 3,4 % ohne Tilgung. Finanziert die Anstalt nominal zu heutigen Marktzinsen, entsteht im ersten Jahr ein Defizit von rund 260 Mio. €. Die IMK-Miete von 7,08 € liegt rund 15 % unter dem geschätzten heutigen Niveau in den Beständen (≈ 8,30 €).</p>' },
@@ -350,7 +350,7 @@
       var spiel = hi < 1
         ? 'Davon würde die Belastung ' + pct(lo, 0).replace(' %', '') + ' bis ' + pct(hi, 0) + ' binden.'
         : (lo >= 1 ? 'Die Belastung wäre das ' + nf(lo, 1) + '- bis ' + nf(hi, 1) + '-Fache davon.' : 'Die Belastung würde ihn ganz oder fast ganz aufbrauchen.');
-      txt = 'Das entspricht <strong>' + pct(j.belastung / H.ausgaben2027) + '</strong> des Berliner Haushalts 2027, <strong>' +
+      txt = 'Das entspricht <strong>' + pct(j.belastung / H.ausgaben2027) + '</strong> der Ausgaben des Landes 2027, <strong>' +
         pct(j.belastung / H.finanzierungsdefizit2026) + '</strong> des Finanzierungsdefizits 2026 und <strong>' +
         pct(j.belastung / H.einzelplan10_2027) + '</strong> der Ausgaben für Bildung, Jugend und Familie (Einzelplan 10). ' +
         'Der jährliche Verschuldungsspielraum unter der Schuldenbremse beträgt etwa 675 bis 800 Mio. €. ' + spiel;

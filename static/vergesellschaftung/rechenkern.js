@@ -1,6 +1,6 @@
 /*
  * Rechenkern: Haushaltsbelastung einer Vergesellschaftung großer Berliner Wohnungsbestände
- * Grundlage: DIW aktuell (Dany-Knedlik/Kholodilin/Kritikos/Kriwoluzky, Entwurf Sept. 2026), Tabelle 2
+ * Grundlage: DIW aktuell Nr. 126 (Dany-Knedlik/Kholodilin/Kritikos/Kriwoluzky, 5.10.2026), Tabelle 2
  *
  * Reine Funktion ohne Abhängigkeiten. Läuft im Browser, in Node und in JXA.
  * Vorzeichen: positiv = Zuschuss aus dem Landeshaushalt, negativ = Überschuss.
@@ -112,8 +112,8 @@ function berechne(eingabe) {
 
 // Vergleichsgrößen Landeshaushalt (siehe PROJEKTBRIEFING.md, Abschnitt 5)
 var HAUSHALT = {
-  ausgaben2026: 45.5e9,
-  ausgaben2027: 46.5e9,
+  ausgaben2026: 45.0e9,         // bereinigte Ausgaben (DIW aktuell Nr. 126, Fn.; PM SenFin 19.12.2025)
+  ausgaben2027: 45.9e9,
   finanzierungsdefizit2026: 4.6e9,
   einzelplan10_2027: 5.43e9,
   schuldenbremseSpielraumMin: 0.675e9,
@@ -123,8 +123,8 @@ var HAUSHALT = {
 
 // Voreinstellungen
 var PRESETS = {
-  diw_tabelle2a: { label: "DIW Tabelle 2a (EK 4 %, FK 5 %)", miete: 7, mietsteigerung: 0, kostensteigerung: 0 },
-  diw_tabelle2b: { label: "DIW Tabelle 2b (EK 5 %, FK 6 %)", miete: 7, zinsEK: 0.05, zinsFK: 0.06, mietsteigerung: 0, kostensteigerung: 0 },
+  diw_tabelle2a: { label: "DIW aktuell, Tabelle 2 (EK 4 %, FK 5 %)", miete: 7, mietsteigerung: 0, kostensteigerung: 0 },
+  diw_tabelle2b: { label: "Sensitivität Zinsen +1 Pp. (EK 5 %, FK 6 %)", miete: 7, zinsEK: 0.05, zinsFK: 0.06, mietsteigerung: 0, kostensteigerung: 0 },
   imk: { label: "IMK Policy Brief 225 (rekonstruiert, real)", entschaedigungMrd: 13.5, wohnungen: 210000, flaecheJeWohnung: 63,
          miete: 7.08, bewirtschaftung: 3.66, ekQuote: 0.3, zinsEK: 0.015, zinsFK: 0.02, laufzeitEK: 40, laufzeitFK: 40,
          horizont: 40, mietsteigerung: 0, kostensteigerung: 0 },
