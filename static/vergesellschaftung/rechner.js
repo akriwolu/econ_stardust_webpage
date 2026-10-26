@@ -121,12 +121,10 @@
   // ------------------------------------------------------------------ Voreinstellungen
   var DWE_TEXT = '<p><strong>Gesetzentwurf der Initiative:</strong> Die bisherigen Eigentümer erhalten statt Geld übertragbare Schuldverschreibungen der Anstalt „Gemeingut Wohnen“, verzinst mit 3,5 % und über 100 Jahre mit konstanter Annuität getilgt; das Land haftet. Liegt der Marktzins über 3,5 %, notieren die Papiere unter dem Nennwert. Die niedrigen Finanzierungskosten gehen dann teilweise zulasten der Entschädigung (und erhöhen das Rechtsrisiko).</p>';
   var PRESETS_UI = [
-    { id: 'standard', label: 'Standard', over: {},
-      note: '<p><strong>Standard:</strong> Annahmen des DIW aktuell (Zinsen 4 % für das Land und 5 % für die Anstalt, 20 % Eigenkapital, 50 Jahre Laufzeit) mit der Dynamik nach Holm et al. (2025): Mieten +1 %, Kosten +2 % pro Jahr. Weil die Kosten schneller steigen als die Mieten, wächst die Belastung mit der Zeit.</p>' },
-    { id: 't2a', label: 'DIW aktuell, Tabelle 2', over: { mietsteigerung: 0, kostensteigerung: 0 },
-      note: '<p><strong>DIW aktuell Nr. 126, Tabelle 2:</strong> Zinsen 4 % für das Land und 5 % für die Anstalt, Miete und Kosten konstant. Die Belastung ist dann in jedem Jahr gleich hoch.</p>' },
-    { id: 't2b', label: 'Zinsen +1 Prozentpunkt', over: { zinsEK: 0.05, zinsFK: 0.06, mietsteigerung: 0, kostensteigerung: 0 },
-      note: '<p><strong>Zinsrisiko:</strong> wie Tabelle 2 im DIW aktuell, aber mit Zinsen 1 Prozentpunkt höher (5 % / 6 %). Die Belastung steigt je nach Entschädigung um 70 bis 250 Mio. € pro Jahr.</p>' },
+    { id: 'standard', label: 'DIW aktuell (Standard)', over: {},
+      note: '<p><strong>DIW aktuell (Standard):</strong> Das erste Jahr entspricht Tabelle 2 im DIW aktuell Nr. 126 (13,5 Mrd. € Entschädigung, 7 € Miete, Zinsen 4 % für das Land und 5 % für die Anstalt, 20 % Eigenkapital, 50 Jahre Annuität). Ab dem zweiten Jahr wird mit den Annahmen zur Miet- und Kostensteigerung fortgeschrieben; voreingestellt sind Mieten +1 % und Kosten +2 % pro Jahr (Holm et al. 2025). Andere Entschädigungen und Mieten aus Tabelle 2 lassen sich über die Marken an den Reglern oder die Übersicht weiter unten wählen.</p>' },
+    { id: 't2b', label: 'Zinsen +1 Prozentpunkt', over: { zinsEK: 0.05, zinsFK: 0.06 },
+      note: '<p><strong>Zinsrisiko:</strong> wie der Standardfall, aber mit Zinsen 1 Prozentpunkt höher (5 % für das Land, 6 % für die Anstalt). Im ersten Jahr steigt der Zuschuss je nach Entschädigung um 70 bis 250 Mio. € pro Jahr.</p>' },
     { id: 'imk', label: 'IMK (rekonstruiert)', over: { entschaedigungMrd: 13.5, wohnungen: 210000, flaecheJeWohnung: 63, miete: 7.08, bewirtschaftung: 3.66, ekQuote: 0.3,
       zinsEK: 0.015, zinsFK: 0.02, laufzeitEK: 40, laufzeitFK: 40, horizont: 40, mietsteigerung: 0, kostensteigerung: 0 },
       note: '<p><strong>IMK Policy Brief 225 (rekonstruiert):</strong> Das IMK nennt für den Kapitaldienst der Anstalt und des Landes (345 bzw. 135 Mio. € jährlich) keinen Zinssatz. Rechnerisch entspricht das einer 40-jährigen Annuität zu rund 2,0 % für die Anstalt und 1,5 % für das Land – plausibel nur als realer Zins – oder einer reinen Verzinsung zu rund 3,5 % ohne Tilgung (DIW aktuell Nr. 126). Mit heutigen Marktzinsen (4 % / 5 %) und sonst gleichen Annahmen müsste der Haushalt im ersten Jahr rund 210 Mio. € zuschießen. Die IMK-Miete von 7,08 € liegt knapp 1 € unter dem heutigen Niveau in den Beständen (etwa 8 €).</p>' },
@@ -336,6 +334,7 @@
     $('vgr-hero-tag').textContent = zus ? 'Zuschuss' : (ueb ? 'Überschuss' : 'ausgeglichen');
     $('vgr-hero-qm').textContent = sf(-j.belastungJeQmMonat, 2) + ' €';
     $('vgr-hero-we').textContent = sf(-j.belastungJeWohnungMonat, 0) + ' €';
+    $('vgr-hero-note').innerHTML = nb(heroNote());
     $('vgr-mini-v').textContent = sf(-B, 0) + ' Mio. € pro Jahr';
     $('vgr-mini-t').textContent = zus ? 'Zuschuss' : (ueb ? 'Überschuss' : 'ausgeglichen');
     $('vgr-mini').classList.toggle('is-ueberschuss', !zus);
@@ -379,6 +378,17 @@
     if (p.kostensteigerung > p.mietsteigerung) be += ' Da die Kosten schneller steigen als die Mieten, reicht das nur im ersten Jahr.';
     be += '</p>';
     $('vgr-breakeven').innerHTML = nb(be);
+  }
+
+  function heroNote() {
+    var s = STANDARD, ok = ['zinsEK', 'zinsFK', 'ekQuote', 'laufzeitEK', 'laufzeitFK', 'wohnungen', 'flaecheJeWohnung', 'bewirtschaftung', 'tilgung']
+      .every(function (k) { return typeof s[k] === 'number' ? Math.abs(p[k] - s[k]) < 1e-9 : p[k] === s[k]; });
+    var inT2 = ok && [8, 13.5, 21, 29].some(function (e) { return Math.abs(p.entschaedigungMrd - e) < 1e-9; }) &&
+      [6, 7, 8].some(function (m) { return Math.abs(p.miete - m) < 1e-9; });
+    var t = inT2 ? 'Das erste Jahr entspricht Tabelle 2 im DIW aktuell (' + nf(p.entschaedigungMrd, p.entschaedigungMrd % 1 ? 1 : 0) + ' Mrd. €, ' + nf(p.miete, 0) + ' € Miete). ' : '';
+    if (Math.abs(p.mietsteigerung) < 1e-12 && Math.abs(p.kostensteigerung) < 1e-12) t += 'Miete und Kosten bleiben konstant, der Saldo ist in allen Jahren gleich.';
+    else t += 'Ab dem zweiten Jahr fortgeschrieben mit Mieten ' + sf(p.mietsteigerung * 100, 1) + ' % und Kosten ' + sf(p.kostensteigerung * 100, 1) + ' % pro Jahr.';
+    return t;
   }
 
   function renderTiles() {
