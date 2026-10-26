@@ -53,7 +53,6 @@
     { key: 'miete', url: 'm', label: 'Miete im ersten Jahr', unit: '€/m²', minDec: 2, min: 4, max: 10, step: 0.05, nmin: 0, nmax: 20, nstep: 0.01, dec: 2, main: true,
       hint: 'Nettokaltmiete je m² und Monat, die in den vergesellschafteten Wohnungen verlangt wird.',
       marks: [
-        { v: 4.04, s: 'Faire Mieten', t: '„Faire-Mieten-Modell“, leistbare Nettokaltmiete (Holm et al. 2025, Kap. 1)' },
         { v: 6, s: 'Neubau-Untergrenze', t: 'Untergrenze der einkommensabhängigen Mieten im kommunalen Neubau, 6–12 € (Wahlprogramm Die Linke Berlin 2026, S. 35). Für die vergesellschafteten Bestände nennt das Programm keine Zielmiete.' },
         { v: 7, s: 'Ø LWU', t: 'Etwa die Durchschnittsmiete der landeseigenen Wohnungsunternehmen 2025 (7,11 €; DIW aktuell Nr. 126); auch Grundmodell Holm et al. (2025)' },
         { v: 8, s: 'heute', t: 'Etwa das heutige Mietniveau in den betroffenen Beständen (DIW aktuell Nr. 126, nach Geschäftsberichten von Adler Real Estate, Grand City Properties und Vonovia)' }
@@ -564,7 +563,7 @@
   }
 
   // ------------------------------------------------------------------ Matrix (wie Tabelle 2)
-  var M_E = [8, 11, 13.5, 21, 29, 36], M_M = [4.04, 6, 7, 8, 9];
+  var M_E = [8, 11, 13.5, 21, 29, 36], M_M = [6, 7, 8, 9];
   function withCur(list, v) { var l = list.slice(); if (!l.some(function (x) { return Math.abs(x - v) < 1e-9; })) l.push(v); return l.sort(function (a, b) { return a - b; }); }
   function renderMatrix() {
     var Es = withCur(M_E, p.entschaedigungMrd), Ms = withCur(M_M, p.miete);
