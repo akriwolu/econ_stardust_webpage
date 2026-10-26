@@ -82,3 +82,9 @@ enableEmoji = true
     title = "Writing"
     url = "/writing/"
     weight = 4
+
+  [[menu.header]]
+    name = "Rechner Vergesellschaftung"
+    title = "Was kostet die Vergesellschaftung den Berliner Haushalt?"
+    url = "/vergesellschaftung/"
+    weight = 5
