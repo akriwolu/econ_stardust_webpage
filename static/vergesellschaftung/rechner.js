@@ -44,7 +44,7 @@
       marks: [
         { v: 8, s: 'Initiative', t: 'Initiative Deutsche Wohnen & Co enteignen: Ertragswert nach dem „Faire-Mieten-Modell“; auch Szenario des Rechnungshofs (2024)' },
         { v: 11, s: 'Initiative', t: 'Initiative: Ertragswert mit den Mieten der landeseigenen Unternehmen; auch Szenario des Rechnungshofs (2024)' },
-        { v: 13.5, s: 'IMK', t: 'IMK Policy Brief 225 (2026): Ertragswert, 4 % real, 40 Jahre, zzgl. Boden' },
+        { v: 13.5, s: 'DIW Standard', t: 'Standardfall: Zeile in Tabelle 2 im DIW aktuell Nr. 126' },
         { v: 16, s: 'Sondierung', t: 'Obergrenze laut Sondierungspapier von Linke, Grünen und SPD (Oktober 2026), nach dpa-Bericht vom 21.10.2026' },
         { v: 21, s: 'Schwelle bei 8 €', t: 'DIW aktuell Nr. 126: Ab 21 Mrd. € Entschädigung muss der Landeshaushalt selbst bei 8 € Miete zuschießen' },
         { v: 29, s: 'Verkehrswert', t: 'Verkehrswert, untere Schätzung (Senat 2019; Rechnungshof 2024)' },
@@ -56,7 +56,6 @@
         { v: 4.04, s: 'Faire Mieten', t: '„Faire-Mieten-Modell“, leistbare Nettokaltmiete (Holm et al. 2025, Kap. 1)' },
         { v: 6, s: 'Neubau-Untergrenze', t: 'Untergrenze der einkommensabhängigen Mieten im kommunalen Neubau, 6–12 € (Wahlprogramm Die Linke Berlin 2026, S. 35). Für die vergesellschafteten Bestände nennt das Programm keine Zielmiete.' },
         { v: 7, s: 'Ø LWU', t: 'Etwa die Durchschnittsmiete der landeseigenen Wohnungsunternehmen 2025 (7,11 €; DIW aktuell Nr. 126); auch Grundmodell Holm et al. (2025)' },
-        { v: 7.08, s: 'Ø LWU (IMK)', t: 'Durchschnittsmiete der sechs landeseigenen Unternehmen (IMK 2026, Tab. 1)' },
         { v: 8, s: 'heute', t: 'Etwa das heutige Mietniveau in den betroffenen Beständen (DIW aktuell Nr. 126, nach Geschäftsberichten von Adler Real Estate, Grand City Properties und Vonovia)' }
       ] },
     { key: 'mietsteigerung', url: 'gm', pct: true, label: 'Mietsteigerung pro Jahr', unit: '%', min: 0, max: 3, step: 0.1, nmin: -2, nmax: 6, nstep: 0.1, dec: 1, main: true,
@@ -70,39 +69,35 @@
       hint: 'Zins auf die Kredite, mit denen das Land das Eigenkapital finanziert.',
       marks: [
         { v: BUND30 / 100, s: 'Bund 30 J.', t: 'Rendite 30-jähriger Bundesanleihen ' + nf(BUND30, 2) + ' % (Deutsche Bundesbank, ' + ZINSSTAND + ') – die Untergrenze' },
-        { v: 0.04, s: 'DIW', t: 'DIW aktuell Nr. 126, Tabelle 2: Bundesanleihe 30 Jahre plus rund 0,2 Prozentpunkte Berlin-Aufschlag' },
-        { v: 0.05, s: '+1 Pp.', t: 'Sensitivität: Zinsen 1 Prozentpunkt höher als im DIW aktuell' }
+        { v: 0.04, s: 'DIW', t: 'DIW aktuell Nr. 126, Tabelle 2: Bundesanleihe 30 Jahre plus rund 0,2 Prozentpunkte Berlin-Aufschlag' }
       ] },
     { key: 'zinsFK', url: 'rfk', pct: true, label: 'Zins für die Anstalt', unit: '%', min: 0, max: 8, step: 0.1, nmin: 0, nmax: 15, nstep: 0.05, dec: 2, main: true,
       hint: 'Zins auf die Kredite der Anstalt öffentlichen Rechts.',
       marks: [
-        { v: 0.05, s: 'DIW', t: 'DIW aktuell Nr. 126, Tabelle 2: mittlere Laufzeit Bund plus rund 1 Prozentpunkt (vgl. Howoge-Anleihe), vorsichtig gerundet' },
-        { v: 0.06, s: '+1 Pp.', t: 'Sensitivität: Zinsen 1 Prozentpunkt höher als im DIW aktuell' }
+        { v: 0.05, s: 'DIW', t: 'DIW aktuell Nr. 126, Tabelle 2: mittlere Laufzeit Bund plus rund 1 Prozentpunkt (vgl. Howoge-Anleihe), vorsichtig gerundet' }
       ] },
     // Weitere Annahmen
     { key: 'ekQuote', url: 'q', pct: true, label: 'Eigenkapitalquote', unit: '%', min: 0, max: 60, step: 1, nmin: 0, nmax: 100, nstep: 1, dec: 0, scaleMax: true,
       hint: 'Anteil der Entschädigung, den das Land als Eigenkapital einbringt (selbst kreditfinanziert).',
       marks: [
-        { v: 0.2, s: 'Holm/DIW', t: 'Holm et al. (2025); DIW aktuell' },
-        { v: 0.3, s: 'IMK', t: 'IMK (2026), etwa der Durchschnitt der landeseigenen Unternehmen' }
+        { v: 0.2, s: 'Holm/DIW', t: 'Holm et al. (2025); DIW aktuell' }
       ] },
     { key: 'laufzeitFK', url: 'nfk', label: 'Laufzeit Kredite der Anstalt', unit: 'Jahre', min: 10, max: 100, step: 1, nmin: 1, nmax: 150, nstep: 1, dec: 0,
-      marks: [{ v: 40, s: 'IMK', t: 'IMK (2026)' }, { v: 50, s: 'DIW', t: 'DIW aktuell' }] },
+      marks: [{ v: 50, s: 'DIW', t: 'DIW aktuell' }] },
     { key: 'laufzeitEK', url: 'nek', label: 'Laufzeit Eigenkapital-Kredit', unit: 'Jahre', min: 10, max: 100, step: 1, nmin: 1, nmax: 150, nstep: 1, dec: 0,
-      marks: [{ v: 40, s: 'IMK', t: 'IMK (2026)' }, { v: 50, s: 'DIW', t: 'DIW aktuell' }] },
+      marks: [{ v: 50, s: 'DIW', t: 'DIW aktuell' }] },
     { key: 'tilgung', type: 'tilgung', url: 't', label: 'Tilgung' },
     { key: 'bestand', type: 'bestand', label: 'Bestand' },
     { key: 'bewirtschaftung', url: 'b', label: 'Bewirtschaftungskosten', unit: '€/m²', minDec: 2, min: 2, max: 6, step: 0.01, nmin: 0, nmax: 15, nstep: 0.01, dec: 2,
       hint: 'Je m² und Monat im ersten Jahr: Instandhaltung, Modernisierung, Verwaltung, Mietausfall, nicht umlagefähige Betriebskosten.',
       marks: [
         { v: 2.94, s: 'Holm Basis', t: 'Holm et al. (2025), Tab. 4' },
-        { v: 3.66, s: 'IMK', t: 'IMK (2026): Instandhaltung und Modernisierung 2,70 € (Rechnungshof, fortgeschrieben) + 0,52 + 0,14 + 0,30' },
         { v: 3.73, s: 'LWU (Standard)', t: 'Holm et al. (2025), Tab. 5, landeseigene Unternehmen: 1,77 + 1,00 + 0,52 + 0,14 + 0,30' },
         { v: 4.40, s: 'IW Köln', t: 'IW Köln (2026): realistischere Modernisierungskosten (13–25 statt 6–12 €/m² im Jahr)' },
         { v: 4.44, s: 'Holm Plus', t: 'Holm et al. (2025), Tab. 6: erhöhte Instandsetzung' }
       ] },
     { key: 'horizont', url: 'h', label: 'Betrachtungszeitraum', unit: 'Jahre', min: 10, max: 100, step: 1, nmin: 1, nmax: 100, nstep: 1, dec: 0,
-      marks: [{ v: 40, s: 'IMK', t: 'IMK (2026)' }, { v: 50, s: 'DIW', t: 'DIW aktuell' }] }
+      marks: [{ v: 50, s: 'DIW', t: 'DIW aktuell' }] }
   ];
 
   var ADVANCED = ['ekQuote', 'laufzeitEK', 'laufzeitFK', 'tilgung', 'wohnungen', 'flaecheJeWohnung', 'bewirtschaftung', 'horizont'];
