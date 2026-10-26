@@ -46,9 +46,7 @@
         { v: 11, s: 'Initiative', t: 'Initiative: Ertragswert mit den Mieten der landeseigenen Unternehmen; auch Szenario des Rechnungshofs (2024)' },
         { v: 13.5, s: 'DIW Standard', t: 'Standardfall: Zeile in Tabelle 2 im DIW aktuell Nr. 126' },
         { v: 16, s: 'Sondierung', t: 'Obergrenze laut Sondierungspapier von Linke, Grünen und SPD (Oktober 2026), nach dpa-Bericht vom 21.10.2026' },
-        { v: 21, s: 'Schwelle bei 8 €', t: 'DIW aktuell Nr. 126: Ab 21 Mrd. € Entschädigung muss der Landeshaushalt selbst bei 8 € Miete zuschießen' },
-        { v: 29, s: 'Verkehrswert', t: 'Verkehrswert, untere Schätzung (Senat 2019; Rechnungshof 2024)' },
-        { v: 36, s: 'Verkehrswert', t: 'Verkehrswert, obere Schätzung (Senat 2019; Rechnungshof 2024). Senat 2020: bis 39,5 Mrd. €' }
+        { v: 29, s: 'Verkehrswert', t: 'Verkehrswert, untere Schätzung (Senat 2019; Rechnungshof 2024)' }
       ] },
     { key: 'miete', url: 'm', label: 'Miete im ersten Jahr', unit: '€/m²', minDec: 2, min: 4, max: 10, step: 0.05, nmin: 0, nmax: 20, nstep: 0.01, dec: 2, main: true,
       hint: 'Nettokaltmiete je m² und Monat, die in den vergesellschafteten Wohnungen verlangt wird.',
@@ -563,7 +561,7 @@
   }
 
   // ------------------------------------------------------------------ Matrix (wie Tabelle 2)
-  var M_E = [8, 11, 13.5, 21, 29, 36], M_M = [6, 7, 8, 9];
+  var M_E = [8, 11, 13.5, 16, 21, 29], M_M = [6, 7, 8, 9];
   function withCur(list, v) { var l = list.slice(); if (!l.some(function (x) { return Math.abs(x - v) < 1e-9; })) l.push(v); return l.sort(function (a, b) { return a - b; }); }
   function renderMatrix() {
     var Es = withCur(M_E, p.entschaedigungMrd), Ms = withCur(M_M, p.miete);
