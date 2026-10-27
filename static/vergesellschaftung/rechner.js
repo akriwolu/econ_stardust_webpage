@@ -42,9 +42,7 @@
     { key: 'entschaedigungMrd', url: 'e', label: 'Entschädigung', unit: 'Mrd. €', min: 5, max: 40, step: 0.5, nmin: 0, nmax: 80, nstep: 0.1, dec: 1, main: true,
       hint: 'Was das Land den bisherigen Eigentümern insgesamt zahlt.',
       marks: [
-        { v: 8, s: 'Initiative', t: 'Initiative Deutsche Wohnen & Co enteignen: Ertragswert nach dem „Faire-Mieten-Modell“; auch Szenario des Rechnungshofs (2024)' },
-        { v: 11, s: 'Initiative', t: 'Initiative: Ertragswert mit den Mieten der landeseigenen Unternehmen; auch Szenario des Rechnungshofs (2024)' },
-        { v: 13.5, s: 'DIW Standard', t: 'Standardfall: Zeile in Tabelle 2 im DIW aktuell Nr. 126' },
+        { v: 13.5, s: 'DIW aktuell', t: 'Standardfall: Zeile in Tabelle 2 im DIW aktuell Nr. 126' },
         { v: 16, s: 'Sondierung', t: 'Obergrenze laut Sondierungspapier von Linke, Grünen und SPD (Oktober 2026), nach dpa-Bericht vom 21.10.2026' },
         { v: 29, s: 'Verkehrswert', t: 'Verkehrswert, untere Schätzung (Senat 2019; Rechnungshof 2024)' }
       ] },
