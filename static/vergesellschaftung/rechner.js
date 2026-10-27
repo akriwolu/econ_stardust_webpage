@@ -377,12 +377,13 @@
     var dauerhaft = !mit.length ? 'von Anfang an ohne Zuschuss' : (lastMit >= H ? 'bis zum Ende des Zeitraums' : 'ab Jahr ' + (lastMit + 1) + ' dauerhaft ohne Zuschuss');
     var tiles = [
       ['Summe der Zuschüsse in ' + H + ' Jahren', geld(res.summeZuschuesse / 1e6), Math.abs(res.summeNetto - res.summeZuschuesse) > 5e5 ? 'nominal; Saldo inkl. Überschüssen ' + geld(-res.summeNetto / 1e6, true) : 'nominal, nicht abgezinst'],
-      ['Barwert des Saldos', geld(-res.barwert / 1e6, true), 'abgezinst mit ' + pct(p.diskontsatz == null ? p.zinsEK : p.diskontsatz, 1)],
-      ['Saldo im Jahr ' + H, geld(-last.belastung / 1e6, true), sf(-last.belastungJeQmMonat, 2) + ' € je m² und Monat'],
+      ['Barwert des Saldos', geld(-res.barwert / 1e6, true), (res.barwert > 5e5 ? 'Zuschuss' : res.barwert < -5e5 ? 'Überschuss' : 'ausgeglichen') + ' über ' + H + ' Jahre, abgezinst mit ' + pct(p.diskontsatz == null ? p.zinsEK : p.diskontsatz, 1), -res.barwert],
+      ['Saldo im Jahr ' + H, geld(-last.belastung / 1e6, true), (last.belastung > 5e5 ? 'Zuschuss, ' : last.belastung < -5e5 ? 'Überschuss, ' : '') + sf(-last.belastungJeQmMonat, 2) + ' € je m² und Monat', -last.belastung],
       ['Jahre mit Zuschuss', mit.length + ' von ' + H, dauerhaft]
     ];
     $('vgr-tiles').innerHTML = tiles.map(function (t) {
-      return '<div class="tile"><div class="k">' + esc(t[0]) + '</div><div class="v num">' + esc(t[1]) + '</div><div class="s">' + esc(t[2]) + '</div></div>';
+      var cls = t[3] === undefined || Math.abs(t[3]) < 5e5 ? '' : (t[3] < 0 ? ' neg' : ' pos');
+      return '<div class="tile"><div class="k">' + esc(t[0]) + '</div><div class="v num' + cls + '">' + esc(t[1]) + '</div><div class="s">' + esc(t[2]) + '</div></div>';
     }).join('');
   }
 
