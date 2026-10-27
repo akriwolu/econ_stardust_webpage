@@ -1,0 +1,677 @@
+/*
+ * Bedienoberfläche des Rechners „Was kostet die Vergesellschaftung den Berliner Haushalt?“
+ * Rechnet ausschließlich mit berechne() aus rechenkern.js. Keine Abhängigkeiten, kein Tracking.
+ */
+(function () {
+  'use strict';
+
+  var ZINSSTAND = '20.10.2026';
+  var BUND30 = 3.79;
+  var SVG_NS = 'http://www.w3.org/2000/svg';
+  var COL = { zuschuss: '#c4423a', ueberschuss: '#009b8a', ink3: '#6b7370', hover: '#1f2623' };
+
+  // ------------------------------------------------------------------ Format
+  function clean(x, d) { var f = Math.pow(10, d); return Math.abs(x) < 0.5 / f ? 0 : x; }
+  function nf(x, d) {
+    x = clean(x, d);
+    return new Intl.NumberFormat('de-DE', { minimumFractionDigits: d, maximumFractionDigits: d }).format(x).replace('-', '−');
+  }
+  function sf(x, d) { x = clean(x, d); if (x === 0) return nf(0, d); return (x > 0 ? '+' : '−') + nf(Math.abs(x), d); }
+  function geld(xMio, signed) {
+    var f = signed ? sf : nf;
+    if (Math.abs(xMio) >= 999.5) return f(xMio / 1000, 1) + ' Mrd. €';
+    return f(xMio, 0) + ' Mio. €';
+  }
+  function pct(x, d) { return nf(x * 100, d === undefined ? 1 : d) + ' %'; }
+  function nfIn(x, maxD, minD) {
+    return new Intl.NumberFormat('de-DE', { minimumFractionDigits: minD || 0, maximumFractionDigits: maxD }).format(clean(x, maxD)).replace('-', '\u2212');
+  }
+  function parseDe(s) {
+    s = String(s).trim().replace(/\s|\u00a0/g, '').replace('\u2212', '-').replace(/[€%]/g, '');
+    if (s.indexOf(',') >= 0) s = s.replace(/\./g, '').replace(',', '.');
+    else if (/^-?\d{1,3}(\.\d{3})+$/.test(s)) s = s.replace(/\./g, '');
+    return parseFloat(s);
+  }
+  function nb(h) { return h.replace(/(\d) (Mrd\.|Mio\.) €/g, '$1\u00a0$2\u00a0€').replace(/(\d) (€|%)/g, '$1\u00a0$2'); }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function $(id) { return document.getElementById(id); }
+
+  // ------------------------------------------------------------------ Eingaben
+  // pct: Wert intern als Anteil, Anzeige in Prozent
+  var CONTROLS = [
+    { key: 'entschaedigungMrd', url: 'e', label: 'Entschädigung', unit: 'Mrd. €', min: 5, max: 40, step: 0.5, nmin: 0, nmax: 80, nstep: 0.1, dec: 1, main: true,
+      hint: 'Was das Land den bisherigen Eigentümern insgesamt zahlt.',
+      marks: [
+        { v: 13.5, s: 'DIW aktuell', t: 'Standardfall: Zeile in Tabelle 2 im DIW aktuell Nr. 126' },
+        { v: 16, s: 'Sondierung', t: 'Obergrenze laut Sondierungspapier von Linke, Grünen und SPD (Oktober 2026), nach dpa-Bericht vom 21.10.2026' },
+        { v: 29, s: 'Verkehrswert', t: 'Verkehrswert, untere Schätzung (Senat 2019; Rechnungshof 2024)' }
+      ] },
+    { key: 'bestand', type: 'bestand', label: 'Bestand', main: true },
+    { key: 'miete', url: 'm', label: 'Miete im ersten Jahr', unit: '€/m²', minDec: 2, min: 4, max: 10, step: 0.05, nmin: 0, nmax: 20, nstep: 0.01, dec: 2, main: true,
+      hint: 'Nettokaltmiete je m² und Monat, die in den vergesellschafteten Wohnungen verlangt wird.',
+      marks: [
+        { v: 6, s: 'Neubau-Untergrenze', t: 'Untergrenze der einkommensabhängigen Mieten im kommunalen Neubau, 6–12 € (Wahlprogramm Die Linke Berlin 2026, S. 35). Für die vergesellschafteten Bestände nennt das Programm keine Zielmiete.' },
+        { v: 7, s: 'Ø LWU', t: 'Etwa die Durchschnittsmiete der landeseigenen Wohnungsunternehmen 2025 (7,11 €; DIW aktuell Nr. 126); auch Grundmodell Holm et al. (2025)' },
+        { v: 8, s: 'heute', t: 'Etwa das heutige Mietniveau in den betroffenen Beständen (DIW aktuell Nr. 126, nach Geschäftsberichten von Adler Real Estate, Grand City Properties und Vonovia)' }
+      ] },
+    { key: 'mietsteigerung', url: 'gm', pct: true, label: 'Mietsteigerung pro Jahr', unit: '%', min: 0, max: 3, step: 0.1, nmin: -2, nmax: 6, nstep: 0.1, dec: 1, main: true,
+      hint: 'Ab dem zweiten Jahr. Die Bewirtschaftungskosten steigen fest mit 2 % pro Jahr, dem Inflationsziel der EZB.',
+      marks: [
+        { v: 0, s: 'konstant', t: 'Mieten bleiben nominal konstant; real sinken sie mit der Inflation' },
+        { v: 0.01, s: 'Debatte', t: 'Politisch debattiert: Wahlprogramm Die Linke Berlin 2026, Mieterhöhungen der landeseigenen Unternehmen höchstens 1 % pro Jahr; auch Grundmodell Holm et al. (2025)' },
+        { v: 0.02, s: 'wie Inflation', t: 'Mieten steigen mit dem Inflationsziel der EZB, also so schnell wie die Kosten' }
+      ] },
+    { key: 'zinsEK', url: 'rek', pct: true, label: 'Zins für das Land', unit: '%', min: 0, max: 8, step: 0.1, nmin: 0, nmax: 15, nstep: 0.05, dec: 2, main: true,
+      hint: 'Zins auf die Kredite, mit denen das Land das Eigenkapital finanziert.',
+      marks: [
+        { v: BUND30 / 100, s: 'Bund 30 J.', t: 'Rendite 30-jähriger Bundesanleihen ' + nf(BUND30, 2) + ' % (Deutsche Bundesbank, ' + ZINSSTAND + ') – die Untergrenze' },
+        { v: 0.04, s: 'DIW', t: 'DIW aktuell Nr. 126, Tabelle 2: Bundesanleihe 30 Jahre plus rund 0,2 Prozentpunkte Berlin-Aufschlag' }
+      ] },
+    { key: 'zinsFK', url: 'rfk', pct: true, label: 'Zins für die Anstalt', unit: '%', min: 0, max: 8, step: 0.1, nmin: 0, nmax: 15, nstep: 0.05, dec: 2, main: true,
+      hint: 'Zins auf die Kredite der Anstalt öffentlichen Rechts.',
+      marks: [
+        { v: 0.05, s: 'DIW', t: 'DIW aktuell Nr. 126, Tabelle 2: mittlere Laufzeit Bund plus rund 1 Prozentpunkt (vgl. Howoge-Anleihe), vorsichtig gerundet' }
+      ] },
+    // Weitere Annahmen
+    { key: 'ekQuote', url: 'q', pct: true, label: 'Eigenkapitalquote', unit: '%', min: 0, max: 60, step: 1, nmin: 0, nmax: 100, nstep: 1, dec: 0, scaleMax: true,
+      hint: 'Anteil der Entschädigung, den das Land als Eigenkapital einbringt (selbst kreditfinanziert).',
+      marks: [
+        { v: 0.2, s: 'Holm/DIW', t: 'Holm et al. (2025); DIW aktuell' }
+      ] },
+    { key: 'laufzeitFK', url: 'nfk', label: 'Laufzeit Kredite der Anstalt', unit: 'Jahre', min: 10, max: 100, step: 1, nmin: 1, nmax: 150, nstep: 1, dec: 0,
+      marks: [{ v: 50, s: 'DIW', t: 'DIW aktuell' }] },
+    { key: 'laufzeitEK', url: 'nek', label: 'Laufzeit Eigenkapital-Kredit', unit: 'Jahre', min: 10, max: 100, step: 1, nmin: 1, nmax: 150, nstep: 1, dec: 0,
+      marks: [{ v: 50, s: 'DIW', t: 'DIW aktuell' }] },
+    { key: 'tilgung', type: 'tilgung', url: 't', label: 'Tilgung' },
+    { key: 'bewirtschaftung', url: 'b', label: 'Bewirtschaftungskosten', unit: '€/m²', minDec: 2, min: 2, max: 6, step: 0.01, nmin: 0, nmax: 15, nstep: 0.01, dec: 2,
+      hint: 'Je m² und Monat im ersten Jahr: Instandhaltung, Modernisierung, Verwaltung, Mietausfall, nicht umlagefähige Betriebskosten.',
+      marks: [
+        { v: 2.94, s: 'Holm Basis', t: 'Holm et al. (2025), Tab. 4' },
+        { v: 3.73, s: 'LWU (Standard)', t: 'Holm et al. (2025), Tab. 5, landeseigene Unternehmen: 1,77 + 1,00 + 0,52 + 0,14 + 0,30' },
+        { v: 4.40, s: 'IW Köln', t: 'IW Köln (2026): realistischere Modernisierungskosten (13–25 statt 6–12 €/m² im Jahr)' },
+        { v: 4.44, s: 'Holm Plus', t: 'Holm et al. (2025), Tab. 6: erhöhte Instandsetzung' }
+      ] },
+    { key: 'horizont', url: 'h', label: 'Betrachtungszeitraum', unit: 'Jahre', min: 10, max: 100, step: 1, nmin: 1, nmax: 100, nstep: 1, dec: 0,
+      marks: [{ v: 50, s: 'DIW', t: 'DIW aktuell' }] }
+  ];
+
+  var ADVANCED = ['ekQuote', 'laufzeitEK', 'laufzeitFK', 'tilgung', 'bewirtschaftung', 'horizont'];
+
+  var BESTAND = [
+    { id: 'rh', w: 240000, a: 61, label: '240.000 Wohnungen à 61 m² (Rechnungshof, Holm et al.)' },
+    { id: 'imk', w: 210000, a: 63, label: '210.000 Wohnungen à 63 m² (IMK, DWE-Entwurf)' },
+    { id: 'sond', w: 160000, a: 61, label: '160.000 Wohnungen à 61 m² (Sondierung 2026)' },
+    { id: 'frei', label: 'eigene Angaben' }
+  ];
+
+  // ------------------------------------------------------------------ Voreinstellungen
+  var PRESETS_UI = [
+    { id: 'standard', label: 'DIW aktuell (Standard)', over: {},
+      note: '<p><strong>DIW aktuell (Standard):</strong> Das erste Jahr entspricht Tabelle 2 im DIW aktuell Nr. 126 (13,5 Mrd. € Entschädigung, 7 € Miete, Zinsen 4 % für das Land und 5 % für die Anstalt, 20 % Eigenkapital, 50 Jahre Annuität). Ab dem zweiten Jahr wird fortgeschrieben: Die Mieten steigen um 1 % pro Jahr, wie politisch debattiert (einstellbar), die Bewirtschaftungskosten fest um 2 % pro Jahr, das Inflationsziel der EZB. Andere Entschädigungen und Mieten aus Tabelle 2 lassen sich über die Marken an den Reglern oder die Übersicht weiter unten wählen.</p>' },
+    { id: 'sond', label: 'Sondierung Linke/Grüne/SPD', over: { entschaedigungMrd: 16, wohnungen: 160000, miete: 8 },
+      note: '<p><strong>Sondierungspapier von Linke, Grünen und SPD (Oktober 2026):</strong> rund 160.000 Wohnungen von fünf Unternehmen mit mehr als 10.000 Wohnungen in Berlin; die Entschädigung ist auf 16 Mrd. € begrenzt und soll über Kredite finanziert und aus den Mieten refinanziert werden. Die Miete ist auf etwa das heutige Niveau in den Beständen gesetzt (8 €, wie im DIW aktuell). Zinsen, Eigenkapital, Laufzeit und die durchschnittliche Wohnungsgröße (61 m²) nennt das Papier nicht; hier gelten die Annahmen des DIW aktuell. Quelle: dpa-Bericht vom 21.10.2026.</p>' }
+  ];
+
+  // ------------------------------------------------------------------ Zustand
+  var p = {};
+  function standard() { var s = {}; for (var k in STANDARD) s[k] = STANDARD[k]; return s; }
+  function presetState(pr) { var s = standard(); for (var k in pr.over) s[k] = pr.over[k]; return s; }
+  var KEYS = ['entschaedigungMrd', 'wohnungen', 'flaecheJeWohnung', 'miete', 'mietsteigerung', 'bewirtschaftung', 'kostensteigerung',
+    'ekQuote', 'zinsEK', 'zinsFK', 'laufzeitEK', 'laufzeitFK', 'tilgung', 'horizont'];
+  function same(a, b) {
+    for (var i = 0; i < KEYS.length; i++) {
+      var k = KEYS[i];
+      if (typeof a[k] === 'number') { if (Math.abs(a[k] - b[k]) > 1e-9) return false; } else if (a[k] !== b[k]) return false;
+    }
+    return true;
+  }
+  function ctl(key) { for (var i = 0; i < CONTROLS.length; i++) if (CONTROLS[i].key === key) return CONTROLS[i]; }
+
+  // ------------------------------------------------------------------ URL
+  function readUrl() {
+    var q = new URLSearchParams(location.search);
+    CONTROLS.forEach(function (c) {
+      if (!c.url || !q.has(c.url)) return;
+      if (c.type === 'tilgung') { p.tilgung = q.get('t') === 'z' ? 'nurZinsen' : 'annuitaet'; return; }
+      var v = parseFloat(String(q.get(c.url)).replace(',', '.'));
+      if (!isFinite(v)) return;
+      if (c.pct) v = v / 100;
+      p[c.key] = clampCtl(c, v);
+    });
+    var w = parseFloat(q.get('w')), a = parseFloat(q.get('a'));
+    if (isFinite(w) && w > 0) p.wohnungen = Math.round(w);
+    if (isFinite(a) && a > 0) p.flaecheJeWohnung = a;
+  }
+  var urlTimer = null;
+  function writeUrl() {
+    clearTimeout(urlTimer);
+    urlTimer = setTimeout(function () {
+      var s = standard(), q = new URLSearchParams();
+      CONTROLS.forEach(function (c) {
+        if (!c.url) return;
+        if (c.type === 'tilgung') { if (p.tilgung !== s.tilgung) q.set('t', p.tilgung === 'nurZinsen' ? 'z' : 'a'); return; }
+        if (Math.abs(p[c.key] - s[c.key]) > 1e-9) q.set(c.url, String(+(c.pct ? p[c.key] * 100 : p[c.key]).toFixed(4)));
+      });
+      if (p.wohnungen !== s.wohnungen) q.set('w', p.wohnungen);
+      if (p.flaecheJeWohnung !== s.flaecheJeWohnung) q.set('a', p.flaecheJeWohnung);
+      var qs = q.toString();
+      try { history.replaceState(null, '', location.pathname + (qs ? '?' + qs : '') + location.hash); } catch (e) { /* z. B. file:// */ }
+    }, 250);
+  }
+
+  // ------------------------------------------------------------------ Eingabeelemente bauen
+  function clampCtl(c, v) {
+    var lo = c.pct ? c.nmin / 100 : c.nmin, hi = c.pct ? c.nmax / 100 : c.nmax;
+    return Math.min(hi, Math.max(lo, v));
+  }
+  function disp(c, v) { return c.pct ? v * 100 : v; }
+
+  function buildControls() {
+    var main = $('vgr-main-controls'), more = $('vgr-more-controls');
+    CONTROLS.forEach(function (c) {
+      var el = document.createElement('div');
+      el.className = 'ctl';
+      var id = 'vgr-' + (c.url || c.key);
+      if (c.type === 'tilgung') {
+        el.innerHTML = '<span class="lbl" id="' + id + '-lbl">Tilgung</span>' +
+          '<p class="hint">Annuität: Kredite werden über die Laufzeit vollständig getilgt. Nur Zinsen: Kredite werden dauerhaft verlängert, die Schuld bleibt bestehen.</p>' +
+          '<div class="seg" role="radiogroup" aria-labelledby="' + id + '-lbl">' +
+          '<label><input type="radio" name="vgr-tilgung" value="annuitaet"> Annuität</label>' +
+          '<label><input type="radio" name="vgr-tilgung" value="nurZinsen"> nur Zinsen</label></div>';
+        el.addEventListener('change', function (e) { p.tilgung = e.target.value; update(); });
+      } else if (c.type === 'bestand') {
+        el.innerHTML = '<label for="vgr-bestand">Bestand</label>' +
+          '<p class="hint">Wie viele Wohnungen vergesellschaftet werden.</p>' +
+          '<select id="vgr-bestand">' + BESTAND.map(function (b) { return '<option value="' + b.id + '">' + esc(b.label) + '</option>'; }).join('') + '</select>' +
+          '<div class="pair"><span class="valbox"><label for="vgr-w">Wohnungen</label><input id="vgr-w" type="text" inputmode="numeric" autocomplete="off"></span>' +
+          '<span class="valbox"><label for="vgr-a">m² je Wohnung</label><input id="vgr-a" type="text" inputmode="decimal" autocomplete="off"></span></div>' +
+          '<label class="chk"><input type="checkbox" id="vgr-scale" checked> Entschädigung je m² beibehalten: Bei einem anderen Bestand passt sich der Gesamtbetrag an.</label>';
+        el.querySelector('select').addEventListener('change', function (e) {
+          var b = BESTAND.filter(function (x) { return x.id === e.target.value; })[0];
+          if (b && b.w) setBestand(b.w, b.a); else update();
+        });
+        el.querySelector('#vgr-w').addEventListener('change', function (e) { var v = parseDe(e.target.value); if (v >= 1000) setBestand(Math.round(v), p.flaecheJeWohnung); else update(); });
+        el.querySelector('#vgr-a').addEventListener('change', function (e) { var v = parseDe(e.target.value); if (v >= 10) setBestand(p.wohnungen, v); else update(); });
+      } else {
+        var marks = (c.marks || []).map(function (m, i) {
+          return '<button type="button" class="mark" data-i="' + i + '" title="' + esc(m.t) + '" aria-label="' + esc(nf(disp(c, m.v), c.dec) + ' ' + c.unit + ': ' + m.t) + '"><b>' +
+            nf(disp(c, m.v), markDec(c, m.v)) + '</b> ' + esc(m.s) + '</button>';
+        }).join('');
+        el.innerHTML = '<div class="ctl-head"><label for="' + id + '">' + esc(c.label) + '</label>' +
+          '<span class="valbox"><input id="' + id + '-n" type="text" inputmode="decimal" autocomplete="off" aria-label=""' + esc(c.label + ' in ' + c.unit) + '">' + esc(c.unit) + '</span></div>' +
+          (c.hint ? '<p class="hint">' + esc(c.hint) + '</p>' : '') +
+          '<input type="range" id="' + id + '" min="' + c.min + '" max="' + c.max + '" step="' + c.step + '">' +
+          (c.key === 'entschaedigungMrd' ? '<p class="per" id="vgr-e-per" aria-live="polite"></p>' : '') +
+          (marks ? '<div class="marks" aria-label="Werte aus der Debatte">' + marks + '</div>' : '');
+        var range = el.querySelector('input[type=range]'), num = el.querySelector('input[type=text]');
+        range.addEventListener('input', function () { p[c.key] = c.pct ? parseFloat(range.value) / 100 : parseFloat(range.value); update(range); });
+        num.addEventListener('keydown', function (e) { if (e.key === 'Enter') num.blur(); });
+        num.addEventListener('change', function () {
+          var v = parseDe(num.value);
+          if (isFinite(v)) p[c.key] = clampCtl(c, c.pct ? v / 100 : v);
+          if (c.key === 'laufzeitEK' || c.key === 'laufzeitFK' || c.key === 'horizont') p[c.key] = Math.round(p[c.key]);
+          update();
+        });
+        el.querySelectorAll('.mark').forEach(function (b) {
+          b.addEventListener('click', function () { p[c.key] = c.marks[+b.dataset.i].v; update(); });
+        });
+        c.range = range; c.num = num; c.el = el;
+      }
+      (c.main ? main : more).appendChild(el);
+    });
+  }
+  // Bestand ändern; auf Wunsch bleibt die Entschädigung je m² gleich und der Gesamtbetrag skaliert mit der Fläche
+  function setBestand(w, a) {
+    var f0 = p.wohnungen * p.flaecheJeWohnung, f1 = w * a;
+    if ($('vgr-scale').checked && f0 > 0) p.entschaedigungMrd = Math.round(p.entschaedigungMrd * f1 / f0 * 10) / 10;
+    p.wohnungen = w; p.flaecheJeWohnung = a;
+    update();
+  }
+  function markDec(c, v) {
+    var d = disp(c, v);
+    if (Math.abs(d - Math.round(d)) < 1e-9) return 0;
+    if (Math.abs(d * 10 - Math.round(d * 10)) < 1e-9) return 1;
+    return 2;
+  }
+
+  function syncControls(skip) {
+    CONTROLS.forEach(function (c) {
+      if (c.type === 'tilgung') {
+        document.querySelectorAll('input[name=vgr-tilgung]').forEach(function (r) { r.checked = r.value === p.tilgung; });
+        return;
+      }
+      if (c.type === 'bestand') {
+        var match = BESTAND.filter(function (b) { return b.w === p.wohnungen && b.a === p.flaecheJeWohnung; })[0];
+        $('vgr-bestand').value = match ? match.id : 'frei';
+        if (document.activeElement !== $('vgr-w')) $('vgr-w').value = nfIn(p.wohnungen, 0);
+        if (document.activeElement !== $('vgr-a')) $('vgr-a').value = nfIn(p.flaecheJeWohnung, 1);
+        return;
+      }
+      var v = disp(c, p[c.key]);
+      if (c.key === 'entschaedigungMrd') {
+        var f = p.wohnungen * p.flaecheJeWohnung;
+        $('vgr-e-per').textContent = '≈ ' + nf(p.entschaedigungMrd * 1e9 / f, 0) + ' € je m² · ' + nf(p.entschaedigungMrd * 1e9 / p.wohnungen, 0) +
+          ' € je Wohnung (' + nf(p.wohnungen, 0) + ' Wohnungen à ' + nf(p.flaecheJeWohnung, p.flaecheJeWohnung % 1 ? 1 : 0) + ' m²)';
+      }
+      if (c.range !== skip) c.range.value = v;
+      c.range.setAttribute('aria-valuetext', nf(v, c.dec) + ' ' + c.unit);
+      if (document.activeElement !== c.num) c.num.value = nfIn(v, c.dec, c.minDec);
+      c.el.querySelectorAll('.mark').forEach(function (b) {
+        b.classList.toggle('is-on', Math.abs(c.marks[+b.dataset.i].v - p[c.key]) < 1e-9);
+      });
+    });
+  }
+
+  // ------------------------------------------------------------------ Voreinstellungen
+  function buildPresets() {
+    var box = $('vgr-presets');
+    box.style.display = 'contents';
+    PRESETS_UI.forEach(function (pr) {
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = 'preset'; b.textContent = pr.label; b.dataset.id = pr.id;
+      b.setAttribute('aria-pressed', 'false');
+      b.addEventListener('click', function () {
+        p = presetState(pr); update();
+        if (ADVANCED.some(function (k) { return p[k] !== STANDARD[k]; })) $('vgr-more').open = true;
+      });
+      box.appendChild(b);
+    });
+  }
+  function activePreset() {
+    for (var i = 0; i < PRESETS_UI.length; i++) if (same(p, presetState(PRESETS_UI[i]))) return PRESETS_UI[i];
+    return null;
+  }
+  function renderPresetNote(pr) {
+    document.querySelectorAll('.preset').forEach(function (b) { b.setAttribute('aria-pressed', pr && b.dataset.id === pr.id ? 'true' : 'false'); });
+    var note = $('vgr-preset-note');
+    if (!pr) { note.hidden = true; return; }
+    var html = pr.note;
+    note.innerHTML = html;
+    note.hidden = false;
+  }
+
+  // ------------------------------------------------------------------ Ergebnis
+  var res = null, view = 'jahr', matrixUnit = 'mio';
+
+  function update(skipEl) {
+    p.kostensteigerung = STANDARD.kostensteigerung;   // fest: Inflationsziel der EZB
+    res = berechne(p);
+    syncControls(skipEl);
+    renderPresetNote(activePreset());
+    renderHero();
+    renderTiles();
+    drawChart();
+    renderYearTable();
+    renderMatrix();
+    writeUrl();
+  }
+
+  function kdFaktor() {
+    var fEK = p.tilgung === 'nurZinsen' ? p.zinsEK : annuitaetenfaktor(p.zinsEK, p.laufzeitEK);
+    var fFK = p.tilgung === 'nurZinsen' ? p.zinsFK : annuitaetenfaktor(p.zinsFK, p.laufzeitFK);
+    return p.ekQuote * fEK + (1 - p.ekQuote) * fFK;
+  }
+
+  function renderHero() {
+    var j = res.jahr1, B = j.belastung / 1e6;  // B > 0: Zuschuss; angezeigt wird der Saldo −B
+    var zus = B > 0.5, ueb = B < -0.5;
+    $('vgr-hero').classList.toggle('is-ueberschuss', !zus);
+    $('vgr-hero-value').innerHTML = esc(sf(-B, 0)) + '<span class="hero-unit">Mio. € pro Jahr</span>';
+    $('vgr-hero-tag').textContent = zus ? 'Zuschuss' : (ueb ? 'Überschuss' : 'ausgeglichen');
+    $('vgr-hero-qm').textContent = sf(-j.belastungJeQmMonat, 2) + ' €';
+    $('vgr-hero-we').textContent = sf(-j.belastungJeWohnungMonat, 0) + ' €';
+    $('vgr-hero-note').innerHTML = nb(heroNote());
+    $('vgr-mini-v').textContent = sf(-B, 0) + ' Mio. € pro Jahr';
+    $('vgr-mini-t').textContent = zus ? 'Zuschuss' : (ueb ? 'Überschuss' : 'ausgeglichen');
+    $('vgr-mini').classList.toggle('is-ueberschuss', !zus);
+    $('vgr-br-rein').textContent = geld(j.reinertrag / 1e6);
+    $('vgr-br-land').textContent = geld(j.kapitaldienstLand / 1e6);
+    $('vgr-br-aoer').textContent = geld(j.kapitaldienstAnstalt / 1e6);
+
+    // Einordnung
+    var H = HAUSHALT, txt;
+    if (zus) {
+      txt = 'Das entspricht <strong>' + pct(j.belastung / H.ausgaben2027) + '</strong> der Ausgaben des Landes 2027 und <strong>' +
+        pct(j.belastung / H.finanzierungsdefizit2026) + '</strong> des Finanzierungsdefizits 2026.';
+    } else {
+      txt = 'Im ersten Jahr decken die Mieten Bewirtschaftung, Zins und Tilgung. ' +
+        (ueb ? 'Es bleibt ein Überschuss von <strong>' + geld(-B) + '</strong>, der an das Land fließen kann.' : '');
+    }
+    var later = null;
+    for (var t = 1; t < res.jahre.length; t++) if ((res.jahre[t].belastung > 0) !== (res.jahre[0].belastung > 0)) { later = res.jahre[t]; break; }
+    if (later && later.belastung > 0) txt += ' Weil die Kosten schneller steigen als die Mieten, sind <strong>ab Jahr ' + later.jahr + '</strong> Zuschüsse nötig.';
+    if (later && later.belastung <= 0) txt += ' Weil die Mieten schneller steigen als die Kosten, ist <strong>ab Jahr ' + later.jahr + '</strong> kein Zuschuss mehr nötig.';
+    $('vgr-context').innerHTML = nb(txt);
+
+    // Break-even
+    var f = kdFaktor(), rein = j.reinertrag;
+    var emax = rein > 0 ? rein / f / 1e9 : 0;
+    var mmin = p.bewirtschaftung + j.kapitaldienst / res.flaeche / 12;
+    var be = '<p>';
+    if (rein > 0) {
+      be += 'Bei diesen Zinsen und einer Miete von ' + nf(p.miete, 2) + ' € trägt sich im ersten Jahr eine Entschädigung von höchstens <strong>' + nf(emax, 1) + ' Mrd. €</strong>. ';
+    } else {
+      be += 'Bei einer Miete von ' + nf(p.miete, 2) + ' € decken die Mieten nicht einmal die Bewirtschaftungskosten – jede Entschädigung muss vollständig aus dem Haushalt bedient werden. ';
+    }
+    be += 'Bei einer Entschädigung von ' + nf(p.entschaedigungMrd, 1) + ' Mrd. € ist mindestens eine Miete von <strong>' + nf(mmin, 2) + ' €</strong> je m² nötig, damit im ersten Jahr kein Zuschuss anfällt';
+    be += mmin > p.miete ? ' – ' + nf(mmin - p.miete, 2) + ' € mehr als angenommen.' : '.';
+    if (p.kostensteigerung > p.mietsteigerung) be += ' Da die Kosten schneller steigen als die Mieten, reicht das nur im ersten Jahr.';
+    be += '</p>';
+    $('vgr-breakeven').innerHTML = nb(be);
+  }
+
+  function heroNote() {
+    var s = STANDARD, ok = ['zinsEK', 'zinsFK', 'ekQuote', 'laufzeitEK', 'laufzeitFK', 'wohnungen', 'flaecheJeWohnung', 'bewirtschaftung', 'tilgung']
+      .every(function (k) { return typeof s[k] === 'number' ? Math.abs(p[k] - s[k]) < 1e-9 : p[k] === s[k]; });
+    var inT2 = ok && [8, 13.5, 21, 29].some(function (e) { return Math.abs(p.entschaedigungMrd - e) < 1e-9; }) &&
+      [6, 7, 8].some(function (m) { return Math.abs(p.miete - m) < 1e-9; });
+    var t = inT2 ? 'Das erste Jahr entspricht Tabelle 2 im DIW aktuell (' + nf(p.entschaedigungMrd, p.entschaedigungMrd % 1 ? 1 : 0) + ' Mrd. €, ' + nf(p.miete, 0) + ' € Miete). ' : '';
+    t += 'Ab dem zweiten Jahr fortgeschrieben mit Mieten ' + sf(p.mietsteigerung * 100, 1) + ' % und Kosten ' + sf(p.kostensteigerung * 100, 1) + ' % pro Jahr (Inflationsziel der EZB).';
+    return t;
+  }
+
+  function renderTiles() {
+    var H = res.jahre.length, last = res.jahre[H - 1];
+    var mit = res.jahre.filter(function (j) { return j.belastung > 0; });
+    var lastMit = mit.length ? mit[mit.length - 1].jahr : 0;
+    var dauerhaft = !mit.length ? 'von Anfang an ohne Zuschuss' : (lastMit >= H ? 'bis zum Ende des Zeitraums' : 'ab Jahr ' + (lastMit + 1) + ' dauerhaft ohne Zuschuss');
+    var tiles = [
+      ['Summe der Zuschüsse in ' + H + ' Jahren', geld(res.summeZuschuesse / 1e6), Math.abs(res.summeNetto - res.summeZuschuesse) > 5e5 ? 'nominal; Saldo inkl. Überschüssen ' + geld(-res.summeNetto / 1e6, true) : 'nominal, nicht abgezinst'],
+      ['Barwert des Saldos', geld(-res.barwert / 1e6, true), (res.barwert > 5e5 ? 'Zuschuss' : res.barwert < -5e5 ? 'Überschuss' : 'ausgeglichen') + ' über ' + H + ' Jahre, abgezinst mit ' + pct(p.diskontsatz == null ? p.zinsEK : p.diskontsatz, 1), -res.barwert],
+      ['Saldo im Jahr ' + H, geld(-last.belastung / 1e6, true), (last.belastung > 5e5 ? 'Zuschuss, ' : last.belastung < -5e5 ? 'Überschuss, ' : '') + sf(-last.belastungJeQmMonat, 2) + ' € je m² und Monat', -last.belastung],
+      ['Jahre mit Zuschuss', mit.length + ' von ' + H, dauerhaft]
+    ];
+    $('vgr-tiles').innerHTML = tiles.map(function (t) {
+      var cls = t[3] === undefined || Math.abs(t[3]) < 5e5 ? '' : (t[3] < 0 ? ' neg' : ' pos');
+      return '<div class="tile"><div class="k">' + esc(t[0]) + '</div><div class="v num' + cls + '">' + esc(t[1]) + '</div><div class="s">' + esc(t[2]) + '</div></div>';
+    }).join('');
+  }
+
+  // ------------------------------------------------------------------ Diagramm (SVG, ohne Bibliothek)
+  function niceTicks(lo, hi, n) {
+    if (lo === hi) { lo -= 1; hi += 1; }
+    var span = hi - lo, step = Math.pow(10, Math.floor(Math.log10(span / n)));
+    var err = span / n / step;
+    if (err >= 7.5) step *= 10; else if (err >= 3.5) step *= 5; else if (err >= 1.5) step *= 2;
+    var t0 = Math.floor(lo / step) * step, t1 = Math.ceil(hi / step) * step, out = [];
+    for (var v = t0; v <= t1 + step / 2; v += step) out.push(Math.abs(v) < step / 1e6 ? 0 : v);
+    return out;
+  }
+  function svgEl(name, attrs, parent) {
+    var e = document.createElementNS(SVG_NS, name);
+    for (var k in attrs) e.setAttribute(k, attrs[k]);
+    if (parent) parent.appendChild(e);
+    return e;
+  }
+  function barPath(x, w, y0, y1, r) {
+    // rundes Ende an der Datenseite, eckig an der Nulllinie
+    var up = y1 < y0, h = Math.abs(y1 - y0);
+    r = Math.min(r, w / 2, h);
+    if (h < 0.5) return '';
+    if (up) return 'M' + x + ',' + y0 + 'V' + (y1 + r) + 'Q' + x + ',' + y1 + ' ' + (x + r) + ',' + y1 + 'H' + (x + w - r) + 'Q' + (x + w) + ',' + y1 + ' ' + (x + w) + ',' + (y1 + r) + 'V' + y0 + 'Z';
+    return 'M' + x + ',' + y0 + 'V' + (y1 - r) + 'Q' + x + ',' + y1 + ' ' + (x + r) + ',' + y1 + 'H' + (x + w - r) + 'Q' + (x + w) + ',' + y1 + ' ' + (x + w) + ',' + (y1 - r) + 'V' + y0 + 'Z';
+  }
+
+  function chartData() {
+    var J = res.jahre;
+    if (view === 'qm') {
+      return {
+        kind: 'lines',
+        title: 'Miete und Kosten je m² und Monat',
+        sub: 'Kosten = Bewirtschaftung + Kapitaldienst (Zins und Tilgung). Liegen die Kosten über der Miete, muss der Haushalt die Lücke schließen.',
+        unit: '€',
+        series: [
+          { name: 'Miete', color: COL.ueberschuss, values: J.map(function (j) { return j.miete; }) },
+          { name: 'Kosten', color: COL.zuschuss, values: J.map(function (j) { return j.bewirtschaftungJeQm + j.kapitaldienst / res.flaeche / 12; }) }
+        ],
+        fmtTick: function (v) { return nf(v, v % 1 ? 1 : 0); }
+      };
+    }
+    var kum = view === 'kum';
+    return {
+      kind: 'bars',
+      title: kum ? 'Aufgelaufener Saldo' : 'Jährlicher Saldo für den Landeshaushalt',
+      sub: kum ? 'Summe der Überschüsse (positiv) und Zuschüsse (negativ) bis zum jeweiligen Jahr, in Mrd. €, nominal.' : 'Mio. € pro Jahr, nominal. Positiv: Überschuss; negativ: Zuschuss aus dem Landeshaushalt.',
+      unit: kum ? 'Mrd. €' : 'Mio. €',
+      values: J.map(function (j) { return kum ? -j.kumuliert / 1e9 : -j.belastung / 1e6; }),
+      fmtTick: function (v) { return kum ? nf(v, Math.abs(v) < 10 && v % 1 ? 1 : 0) : nf(v, 0); }
+    };
+  }
+
+  function drawChart() {
+    var box = $('vgr-chart'), tip = $('vgr-tooltip');
+    var old = box.querySelector('svg'); if (old) box.removeChild(old);
+    var D = chartData(), J = res.jahre, n = J.length;
+    $('vgr-chart-title').textContent = D.title;
+    $('vgr-chart-sub').textContent = D.sub;
+    $('vgr-legend').innerHTML = D.kind === 'bars'
+      ? '<span><i style="background:' + COL.zuschuss + '"></i>Zuschuss</span><span><i style="background:' + COL.ueberschuss + '"></i>Überschuss</span>'
+      : D.series.map(function (s) { return '<span><i class="line" style="background:' + s.color + '"></i>' + s.name + '</span>'; }).join('');
+
+    var W = Math.max(300, box.clientWidth || 600), Hh = Math.round(Math.min(340, Math.max(220, W * 0.45)));
+    var m = { l: 46, r: D.kind === 'lines' ? 92 : 14, t: 26, b: 28 };
+    var pw = W - m.l - m.r, ph = Hh - m.t - m.b;
+    var all = D.kind === 'bars' ? D.values : D.series[0].values.concat(D.series[1].values);
+    var lo = Math.min.apply(null, all), hi = Math.max.apply(null, all);
+    if (D.kind === 'bars') { lo = Math.min(0, lo); hi = Math.max(0, hi); } else { lo = Math.min(0, lo); }
+    var ticks = niceTicks(lo, hi, 5); lo = ticks[0]; hi = ticks[ticks.length - 1];
+    var y = function (v) { return m.t + ph - (v - lo) / (hi - lo) * ph; };
+    var band = pw / n, xc = function (i) { return m.l + band * (i + 0.5); };
+
+    var svg = svgEl('svg', { viewBox: '0 0 ' + W + ' ' + Hh, role: 'img', 'aria-label': chartSummary(D) });
+    // Gitter und Achsen
+    ticks.forEach(function (t) {
+      svgEl('line', { x1: m.l, x2: W - m.r, y1: y(t), y2: y(t), 'class': t === 0 ? 'zero' : 'grid' }, svg);
+      var tx = svgEl('text', { x: m.l - 6, y: y(t) + 3.5, 'text-anchor': 'end' }, svg); tx.textContent = D.fmtTick(t);
+    });
+    var stepYears = n <= 20 ? 2 : n <= 50 ? 10 : 20;
+    for (var i = 0; i < n; i++) {
+      var yr = i + 1;
+      if ((yr === 1 || yr % stepYears === 0) && (n - yr >= stepYears / 2 || yr === n || n < 10)) {
+        var tx2 = svgEl('text', { x: xc(i), y: Hh - 8, 'text-anchor': 'middle' }, svg); tx2.textContent = yr;
+      }
+    }
+    var ul = svgEl('text', { x: 0, y: 10, 'text-anchor': 'start' }, svg); ul.textContent = D.unit;
+
+
+    var hl = svgEl('line', { x1: 0, x2: 0, y1: m.t, y2: m.t + ph, stroke: COL.hover, 'stroke-width': 1, opacity: 0 }, svg);
+
+    if (D.kind === 'bars') {
+      var bw = Math.max(1, Math.min(24, band - 2)), r = 4;
+      D.values.forEach(function (v, i) {
+        var d = barPath(xc(i) - bw / 2, bw, y(0), y(v), r);
+        if (d) svgEl('path', { d: d, fill: v < 0 ? COL.zuschuss : COL.ueberschuss }, svg);
+      });
+      // Direktbeschriftung: letztes Jahr
+      var lv = D.values[n - 1], lt = svgEl('text', { x: Math.min(xc(n - 1), W - m.r), y: lv >= 0 ? y(lv) - 6 : y(lv) + 14, 'text-anchor': 'end', style: 'fill:#1f2623;font-weight:600' }, svg);
+      lt.textContent = (n > 1 ? 'Jahr ' + n + ': ' : '') + sf(lv, view === 'kum' ? 1 : 0);
+    } else {
+      var s0 = D.series[0].values, s1 = D.series[1].values;
+      for (var k = 0; k < n - 1; k++) {
+        var gap = (s1[k] - s0[k]) + (s1[k + 1] - s0[k + 1]);
+        svgEl('polygon', {
+          points: [xc(k), y(s0[k]), xc(k + 1), y(s0[k + 1]), xc(k + 1), y(s1[k + 1]), xc(k), y(s1[k])].join(' '),
+          fill: gap > 0 ? COL.zuschuss : COL.ueberschuss, opacity: 0.12
+        }, svg);
+      }
+      D.series.forEach(function (s) {
+        var pts = s.values.map(function (v, i) { return xc(i) + ',' + y(v); }).join(' ');
+        if (n === 1) svgEl('circle', { cx: xc(0), cy: y(s.values[0]), r: 4, fill: s.color }, svg);
+        else svgEl('polyline', { points: pts, fill: 'none', stroke: s.color, 'stroke-width': 2, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' }, svg);
+      });
+      // Endbeschriftung mit Abstand, falls nah beieinander
+      var e0 = y(s0[n - 1]), e1 = y(s1[n - 1]);
+      if (Math.abs(e0 - e1) < 14) { var mid = (e0 + e1) / 2; if (e0 <= e1) { e0 = mid - 7; e1 = mid + 7; } else { e0 = mid + 7; e1 = mid - 7; } }
+      [[D.series[0], e0, s0[n - 1]], [D.series[1], e1, s1[n - 1]]].forEach(function (a) {
+        var t = svgEl('text', { x: W - m.r + 8, y: a[1] + 4, style: 'fill:#1f2623' }, svg);
+        t.textContent = a[0].name + ' ' + nf(a[2], 2) + ' €';
+      });
+    }
+
+    // Hover-Schicht
+    var hit = svgEl('rect', { x: m.l, y: m.t, width: pw, height: ph, fill: 'transparent', style: 'cursor:crosshair' }, svg);
+    function show(evt) {
+      var rect = svg.getBoundingClientRect(), scale = W / rect.width;
+      var px = (evt.clientX - rect.left) * scale;
+      var i = Math.max(0, Math.min(n - 1, Math.floor((px - m.l) / band)));
+      var j = J[i];
+      hl.setAttribute('x1', xc(i)); hl.setAttribute('x2', xc(i)); hl.setAttribute('opacity', 0.35);
+      var rows;
+      if (D.kind === 'bars') {
+        rows = [
+          ['Saldo', geld(-j.belastung / 1e6, true)],
+          ['aufgelaufen', geld(-j.kumuliert / 1e6, true)],
+          ['Reinertrag', geld(j.reinertrag / 1e6)],
+          ['Kapitaldienst', geld(j.kapitaldienst / 1e6)]
+        ];
+      } else {
+        rows = [
+          ['<span class="sw" style="background:' + COL.ueberschuss + '"></span>Miete', nf(j.miete, 2) + ' €'],
+          ['<span class="sw" style="background:' + COL.zuschuss + '"></span>Kosten', nf(j.bewirtschaftungJeQm + j.kapitaldienst / res.flaeche / 12, 2) + ' €'],
+          ['davon Bewirtschaftung', nf(j.bewirtschaftungJeQm, 2) + ' €'],
+          ['Saldo je m²', sf(-j.belastungJeQmMonat, 2) + ' €']
+        ];
+      }
+      tip.innerHTML = '<div class="t">Jahr ' + j.jahr + '</div>' + rows.map(function (r) { return '<div class="r"><span>' + r[0] + '</span><b>' + r[1] + '</b></div>'; }).join('');
+      tip.hidden = false;
+      var bx = box.getBoundingClientRect(), tx = evt.clientX - bx.left + 14, ty = evt.clientY - bx.top - 10;
+      if (tx + tip.offsetWidth > bx.width) tx = evt.clientX - bx.left - tip.offsetWidth - 14;
+      tip.style.left = Math.max(0, tx) + 'px'; tip.style.top = Math.max(0, ty) + 'px';
+    }
+    function hide() { tip.hidden = true; hl.setAttribute('opacity', 0); }
+    hit.addEventListener('pointermove', show);
+    hit.addEventListener('pointerdown', show);
+    hit.addEventListener('pointerleave', hide);
+    box.insertBefore(svg, tip);
+  }
+  function chartSummary(D) {
+    var J = res.jahre, n = J.length;
+    if (D.kind === 'lines') return 'Liniendiagramm: Miete steigt von ' + nf(J[0].miete, 2) + ' € auf ' + nf(J[n - 1].miete, 2) + ' € je m² und Monat; die Kosten liegen im ersten Jahr bei ' +
+      nf(J[0].bewirtschaftungJeQm + J[0].kapitaldienst / res.flaeche / 12, 2) + ' €. Alle Werte in der Tabelle unter dem Diagramm.';
+    return 'Säulendiagramm über ' + n + ' Jahre: Saldo im ersten Jahr ' + geld(-J[0].belastung / 1e6, true) + ', im letzten Jahr ' + geld(-J[n - 1].belastung / 1e6, true) +
+      ', aufgelaufen ' + geld(-J[n - 1].kumuliert / 1e6, true) + '. Alle Werte in der Tabelle unter dem Diagramm.';
+  }
+
+  function renderYearTable() {
+    var rows = res.jahre.map(function (j) {
+      return '<tr><td>' + j.jahr + '</td><td>' + nf(j.miete, 2) + '</td><td>' + nf(j.bewirtschaftungJeQm, 2) + '</td><td>' + nf(j.reinertrag / 1e6, 1) + '</td><td>' +
+        nf(j.kapitaldienstLand / 1e6, 1) + '</td><td>' + nf(j.kapitaldienstAnstalt / 1e6, 1) + '</td><td>' + sf(-j.belastung / 1e6, 1) + '</td><td>' + sf(-j.belastungJeQmMonat, 2) +
+        '</td><td>' + sf(-j.kumuliert / 1e6, 0) + '</td><td>' + nf(j.restschuld / 1e6, 0) + '</td></tr>';
+    }).join('');
+    $('vgr-yeartable').innerHTML = '<table><thead><tr><th>Jahr</th><th>Miete €/m²</th><th>Bewirt. €/m²</th><th>Reinertrag Mio. €</th><th>KD Land Mio. €</th><th>KD Anstalt Mio. €</th>' +
+      '<th>Saldo Mio. €</th><th>Saldo €/m²</th><th>Aufgelaufen Mio. €</th><th>Restschuld Mio. €</th></tr></thead><tbody>' + rows + '</tbody></table>';
+  }
+
+  // ------------------------------------------------------------------ Matrix (wie Tabelle 2)
+  var M_E = [8, 11, 13.5, 16, 21, 29], M_M = [6, 7, 8, 9];
+  function withCur(list, v) { var l = list.slice(); if (!l.some(function (x) { return Math.abs(x - v) < 1e-9; })) l.push(v); return l.sort(function (a, b) { return a - b; }); }
+  function renderMatrix() {
+    var Es = withCur(M_E, p.entschaedigungMrd), Ms = withCur(M_M, p.miete);
+    var head = '<thead><tr><th scope="col">Entschädigung \\ Miete</th>' + Ms.map(function (mm) { return '<th scope="col">' + nf(mm, 2) + ' €</th>'; }).join('') + '</tr></thead>';
+    var body = Es.map(function (e) {
+      return '<tr><th scope="row">' + nf(e, e % 1 ? 1 : 0) + ' Mrd. €</th>' + Ms.map(function (mm) {
+        var q = {}; for (var k in p) q[k] = p[k];
+        q.entschaedigungMrd = e; q.miete = mm; q.horizont = 1;
+        var j = berechne(q).jahr1, v = matrixUnit === 'mio' ? -j.belastung / 1e6 : -j.belastungJeQmMonat;
+        var d = matrixUnit === 'mio' ? 0 : 2, txt = sf(v, d);
+        var cls = clean(v, d) < 0 ? 'pos' : (clean(v, d) > 0 ? 'neg' : '');  // pos = Zuschuss (rot), neg = Überschuss (grün)
+        if (Math.abs(e - p.entschaedigungMrd) < 1e-9 && Math.abs(mm - p.miete) < 1e-9) cls += ' cur';
+        return '<td class="' + cls + '"><button type="button" data-e="' + e + '" data-m="' + mm + '" aria-label="' + esc(nf(e, 1) + ' Mrd. € Entschädigung, ' + nf(mm, 2) + ' € Miete: ' + txt + (matrixUnit === 'mio' ? ' Mio. €' : ' € je m²')) + '">' + txt + '</button></td>';
+      }).join('') + '</tr>';
+    }).join('');
+    $('vgr-matrix').innerHTML = head + '<tbody>' + body + '</tbody>';
+    $('vgr-matrix-params').textContent = 'Zins Land ' + pct(p.zinsEK, 1) + ', Zins Anstalt ' + pct(p.zinsFK, 1) + ', Eigenkapital ' + pct(p.ekQuote, 0) +
+      ', Laufzeit ' + p.laufzeitFK + ' Jahre, Bewirtschaftung ' + nf(p.bewirtschaftung, 2) + ' €/m²';
+  }
+
+  // ------------------------------------------------------------------ Downloads
+  function csv() {
+    writeUrlNow();
+    var c = function (x, d) { return nf(x, d).replace(/ |\./g, '').replace('−', '-'); };
+    var L = [];
+    L.push('Was kostet die Vergesellschaftung den Berliner Haushalt? – Rechnung mit diesen Annahmen');
+    L.push('Quelle;' + location.href);
+    L.push('');
+    CONTROLS.forEach(function (k) {
+      if (k.type === 'tilgung') { L.push('Tilgung;' + (p.tilgung === 'nurZinsen' ? 'nur Zinsen' : 'Annuität')); return; }
+      if (k.type === 'bestand') { L.push('Wohnungen;' + p.wohnungen); L.push('m² je Wohnung;' + c(p.flaecheJeWohnung, 1)); return; }
+      if (k.key === 'bewirtschaftung') L.push('Kostensteigerung pro Jahr (%, fest: Inflationsziel der EZB);' + c(p.kostensteigerung * 100, 1));
+      L.push(k.label + ' (' + k.unit + ');' + c(disp(k, p[k.key]), k.dec + 2));
+    });
+    L.push('');
+    L.push(['Jahr', 'Miete €/m²/Monat', 'Bewirtschaftung €/m²/Monat', 'Mieteinnahmen Mio €', 'Bewirtschaftungskosten Mio €', 'Reinertrag Mio €', 'Kapitaldienst Land Mio €',
+      'Kapitaldienst Anstalt Mio €', 'Saldo Mio € (+ Überschuss, − Zuschuss)', 'Saldo €/m²/Monat', 'Saldo € je Wohnung/Monat', 'Saldo aufgelaufen Mio €', 'Saldo Anstalt Mio €', 'Restschuld Mio €'].join(';'));
+    res.jahre.forEach(function (j) {
+      L.push([j.jahr, c(j.miete, 4), c(j.bewirtschaftungJeQm, 4), c(j.mieteinnahmen / 1e6, 3), c(j.bewirtschaftung / 1e6, 3), c(j.reinertrag / 1e6, 3), c(j.kapitaldienstLand / 1e6, 3),
+        c(j.kapitaldienstAnstalt / 1e6, 3), c(-j.belastung / 1e6, 3), c(-j.belastungJeQmMonat, 4), c(-j.belastungJeWohnungMonat, 2), c(-j.kumuliert / 1e6, 3), c(j.saldoAnstalt / 1e6, 3), c(j.restschuld / 1e6, 3)].join(';'));
+    });
+    var blob = new Blob(['﻿' + L.join('\r\n')], { type: 'text/csv;charset=utf-8' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob); a.download = 'Vergesellschaftung_Rechnung.csv';
+    document.body.appendChild(a); a.click(); setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+  }
+  function copyLink() {
+    clearTimeout(urlTimer);
+    var done = function () { $('vgr-copied').textContent = 'Link kopiert'; setTimeout(function () { $('vgr-copied').textContent = ''; }, 2500); };
+    writeUrlNow();
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(location.href).then(done, function () { window.prompt('Link kopieren:', location.href); });
+    else window.prompt('Link kopieren:', location.href);
+  }
+  function writeUrlNow() { writeUrl(); clearTimeout(urlTimer); /* sofort schreiben */
+    var s = standard(), q = new URLSearchParams();
+    CONTROLS.forEach(function (c) {
+      if (!c.url) return;
+      if (c.type === 'tilgung') { if (p.tilgung !== s.tilgung) q.set('t', p.tilgung === 'nurZinsen' ? 'z' : 'a'); return; }
+      if (Math.abs(p[c.key] - s[c.key]) > 1e-9) q.set(c.url, String(+(c.pct ? p[c.key] * 100 : p[c.key]).toFixed(4)));
+    });
+    if (p.wohnungen !== s.wohnungen) q.set('w', p.wohnungen);
+    if (p.flaecheJeWohnung !== s.flaecheJeWohnung) q.set('a', p.flaecheJeWohnung);
+    var qs = q.toString();
+    try { history.replaceState(null, '', location.pathname + (qs ? '?' + qs : '') + location.hash); } catch (e) { /* ignorieren */ }
+  }
+
+  // ------------------------------------------------------------------ Start
+  function init() {
+    if (typeof berechne !== 'function') return;
+    p = standard();
+    readUrl();
+    buildPresets();
+    buildControls();
+    document.querySelectorAll('.vgr .chart-head [role=tab]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        view = b.dataset.view;
+        document.querySelectorAll('.vgr .chart-head [role=tab]').forEach(function (x) { x.setAttribute('aria-selected', x === b ? 'true' : 'false'); });
+        drawChart();
+      });
+    });
+    document.querySelectorAll('#vgr-matrix-unit [role=tab]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        matrixUnit = b.dataset.unit;
+        document.querySelectorAll('#vgr-matrix-unit [role=tab]').forEach(function (x) { x.setAttribute('aria-selected', x === b ? 'true' : 'false'); });
+        renderMatrix();
+      });
+    });
+    $('vgr-matrix').addEventListener('click', function (e) {
+      var b = e.target.closest('button'); if (!b) return;
+      p.entschaedigungMrd = parseFloat(b.dataset.e); p.miete = parseFloat(b.dataset.m); update();
+      $('vgr-hero').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+    $('vgr-reset').addEventListener('click', function () { p = standard(); update(); });
+    $('vgr-csv').addEventListener('click', csv);
+    $('vgr-link').addEventListener('click', copyLink);
+    if (ADVANCED.some(function (k) { return p[k] !== STANDARD[k]; })) $('vgr-more').open = true;
+    if (window.IntersectionObserver) {
+      new IntersectionObserver(function (en) {
+        var e = en[0];
+        $('vgr-mini').classList.toggle('show', !e.isIntersecting && e.boundingClientRect.top > 0);
+      }).observe($('vgr-hero'));
+      $('vgr-mini').addEventListener('click', function () { $('vgr-hero').scrollIntoView({ behavior: 'smooth', block: 'start' }); });
+    }
+    if (window.ResizeObserver) {
+      var lastW = 0;
+      new ResizeObserver(function (en) { var w = Math.round(en[0].contentRect.width); if (w !== lastW && res) { lastW = w; drawChart(); } }).observe($('vgr-chart'));
+    }
+    update();
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+})();

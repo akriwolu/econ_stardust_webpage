@@ -1,0 +1,170 @@
+---
+title: "Was kostet die Vergesellschaftung den Berliner Haushalt? Ein Rechner"
+description: "Interaktiver Rechner: Wie stark belastet eine Vergesellschaftung großer Berliner Wohnungsbestände den Landeshaushalt – je nach Entschädigung, Miete und Zinsen? Mit allen Annahmen, Quellen und Excel-Rechenblatt."
+type: page
+layout: wide-body
+show_title_as_headline: false
+---
+<link rel="stylesheet" href="/vergesellschaftung/rechner.css">
+
+<div class="vgr" id="vgr" lang="de">
+
+<p class="kicker">Rechner zum <a href="https://www.diw.de/de/diw_01.c.1021274.de/publikationen/diw_aktuell/2026_0126/vergesellschaftung_der_wohnungsunternehmen_in_berlin_belastet_den_haushalt_und_schafft_keine_zusaetzliche_wohnung.html">DIW aktuell Nr. 126</a></p>
+<h1>Was kostet die Vergesellschaftung den Berliner Haushalt?</h1>
+<p class="lead">Wie stark eine Vergesellschaftung großer Wohnungsbestände nach Art. 15 GG den Berliner Landeshaushalt belastet, hängt vor allem von drei Größen ab: der Höhe der Entschädigung, der Miete, die in den Wohnungen verlangt wird, und den Zinsen, zu denen Land und Anstalt sich verschulden. Setzen Sie Ihre eigenen Annahmen und sehen Sie die Folgen.</p>
+<p class="muted small">Alexander Kriwoluzky · Grundlage: Dany-Knedlik, Kholodilin, Kritikos, Kriwoluzky (2026), <a href="https://www.diw.de/de/diw_01.c.1021274.de/publikationen/diw_aktuell/2026_0126/vergesellschaftung_der_wohnungsunternehmen_in_berlin_belastet_den_haushalt_und_schafft_keine_zusaetzliche_wohnung.html">DIW aktuell Nr. 126</a>, Tabelle 2 · <a href="#methode">Rechenweg</a> · <a href="#quellen">Quellen</a> · <a href="/vergesellschaftung/Vergesellschaftung_Rechner.xlsx" download>Excel-Rechenblatt</a></p>
+
+<noscript><p>Der Rechner benötigt JavaScript. Alle Rechnungen finden Sie auch im <a href="/vergesellschaftung/Vergesellschaftung_Rechner.xlsx">Excel-Rechenblatt</a>.</p></noscript>
+
+<div class="presets" role="group" aria-label="Voreinstellungen">
+  <span class="presets-label">Voreinstellungen:</span>
+  <span id="vgr-presets"></span>
+</div>
+<div class="preset-note" id="vgr-preset-note" hidden aria-live="polite"></div>
+
+<div class="layout">
+  <form class="inputs" id="vgr-inputs" aria-label="Annahmen" onsubmit="return false">
+    <h2>Ihre Annahmen</h2>
+    <div id="vgr-main-controls"></div>
+    <details class="more" id="vgr-more">
+      <summary>Weitere Annahmen</summary>
+      <div id="vgr-more-controls"></div>
+    </details>
+    <button type="button" class="reset" id="vgr-reset">Auf Standardwerte zurücksetzen</button>
+  </form>
+
+  <div class="results" aria-live="polite">
+    <section class="hero" id="vgr-hero">
+      <p class="hero-label">Saldo für den Landeshaushalt im ersten Jahr</p>
+      <div><span class="hero-value num" id="vgr-hero-value">–</span><span class="hero-tag" id="vgr-hero-tag">–</span></div>
+      <div class="hero-sub">
+        <span><b class="num" id="vgr-hero-qm">–</b> je m² Wohnfläche und Monat</span>
+        <span><b class="num" id="vgr-hero-we">–</b> je Wohnung und Monat</span>
+      </div>
+      <p class="hero-note" id="vgr-hero-note"></p>
+      <div class="bridge">
+        <div><div class="k">Reinertrag (Mieten − Bewirtschaftung)</div><div class="v" id="vgr-br-rein">–</div></div>
+        <div><div class="k">Kapitaldienst Land (Eigenkapital-Kredit)</div><div class="v" id="vgr-br-land">–</div></div>
+        <div><div class="k">Kapitaldienst Anstalt (Kredite)</div><div class="v" id="vgr-br-aoer">–</div></div>
+      </div>
+    </section>
+    <p class="context" id="vgr-context"></p>
+    <div class="breakeven" id="vgr-breakeven"></div>
+
+    <div class="chart-head">
+      <h3 id="vgr-chart-title">Saldo im Zeitverlauf</h3>
+      <div class="tabs" role="tablist" aria-label="Diagramm wählen">
+        <button type="button" role="tab" data-view="jahr" aria-selected="true">Jährlich</button>
+        <button type="button" role="tab" data-view="kum" aria-selected="false">Kumuliert</button>
+        <button type="button" role="tab" data-view="qm" aria-selected="false">Miete und Kosten je m²</button>
+      </div>
+    </div>
+    <p class="chart-sub" id="vgr-chart-sub"></p>
+    <div class="legend" id="vgr-legend"></div>
+    <div class="chart" id="vgr-chart"><div class="tooltip" id="vgr-tooltip" hidden></div></div>
+    <details class="yeartable">
+      <summary>Werte als Tabelle anzeigen</summary>
+      <div class="tbl-wrap" id="vgr-yeartable"></div>
+    </details>
+
+    <h3>Kennzahlen über den Betrachtungszeitraum</h3>
+    <div class="tiles" id="vgr-tiles"></div>
+  </div>
+</div>
+
+<button type="button" class="mini" id="vgr-mini" aria-label="Zum Ergebnis springen"><span class="mini-k">Saldo im ersten Jahr</span><span class="mini-v num" id="vgr-mini-v"></span><span class="mini-t" id="vgr-mini-t"></span></button>
+
+<h2 id="matrix">Entschädigung und Miete: die Übersicht</h2>
+<p class="prose">Saldo im ersten Jahr für verschiedene Entschädigungen und Mieten, bei Ihren übrigen Annahmen (<span id="vgr-matrix-params"></span>). Mit den Standardwerten entspricht das Tabelle 2 im <a href="https://www.diw.de/de/diw_01.c.1021274.de/publikationen/diw_aktuell/2026_0126/vergesellschaftung_der_wohnungsunternehmen_in_berlin_belastet_den_haushalt_und_schafft_keine_zusaetzliche_wohnung.html">DIW aktuell</a>. Ein Klick auf ein Feld übernimmt die Werte.</p>
+<div class="tabs" role="tablist" aria-label="Einheit der Übersicht" id="vgr-matrix-unit">
+  <button type="button" role="tab" data-unit="mio" aria-selected="true">Mio. € pro Jahr</button>
+  <button type="button" role="tab" data-unit="qm" aria-selected="false">€ je m² und Monat</button>
+</div>
+<div class="tbl-wrap" style="margin-top:0.6rem"><table class="matrix" id="vgr-matrix"></table></div>
+<p class="small muted" style="margin-top:0.5rem">Grün mit Pluszeichen: Überschuss. Rot mit Minuszeichen: Zuschuss aus dem Landeshaushalt. Im DIW aktuell sind die Vorzeichen umgekehrt (dort positiv = Zuzahlung). Mieten: 6 € Untergrenze der einkommensabhängigen Mieten im kommunalen Neubau (Wahlprogramm Die Linke 2026) · 7 € etwa Durchschnittsmiete der landeseigenen Unternehmen · 8 € etwa heutiges Niveau in den betroffenen Beständen.</p>
+
+<h2 id="download">Rechnung herunterladen und weitergeben</h2>
+<p class="prose">Das Excel-Rechenblatt enthält dieselbe Rechnung mit offenen Formeln: Annahmen ändern, Zeitreihe Jahr für Jahr nachvollziehen, Übersicht nach Entschädigung und Miete. Die CSV-Datei enthält die Zeitreihe zu den hier eingestellten Annahmen.</p>
+<div class="downloads">
+  <a class="btn primary" href="/vergesellschaftung/Vergesellschaftung_Rechner.xlsx" download>Excel-Rechenblatt (.xlsx)</a>
+  <button type="button" class="btn" id="vgr-csv">Aktuelle Rechnung als CSV</button>
+  <button type="button" class="btn" id="vgr-link">Link zu diesen Annahmen kopieren</button>
+  <span class="copied" id="vgr-copied" role="status"></span>
+</div>
+
+<hr>
+<div class="prose">
+<h2 id="methode">So wird gerechnet</h2>
+<p>Das Land zahlt die Entschädigung. Einen Teil davon bringt es als <strong>Eigenkapital</strong> in eine Anstalt öffentlichen Rechts ein und nimmt dafür selbst Kredit auf; den Rest finanziert die <strong>Anstalt</strong> über eigene Kredite. Die Mieten abzüglich der Bewirtschaftungskosten ergeben den <strong>Reinertrag</strong>. Reicht er nicht für Zins und Tilgung beider Kredite (den <strong>Kapitaldienst</strong>), muss der Landeshaushalt die Differenz zuschießen. Ein Überschuss der Anstalt kann umgekehrt an das Land fließen. Gerechnet wird konsolidiert, also für Land und Anstalt zusammen.</p>
+<div class="formula">Eigenkapital  = Eigenkapitalquote × Entschädigung
+Kredite der Anstalt = (1 − Eigenkapitalquote) × Entschädigung
+Kapitaldienst = Kredit × r / (1 − (1 + r)^−n)        (Annuität, Zins r, Laufzeit n)
+              = Kredit × r                           (bei „nur Zinsen“)
+Reinertrag(t) = (Miete(t) − Bewirtschaftung(t)) × Wohnfläche × 12
+Miete(t)      = Miete im Jahr 1 × (1 + Mietsteigerung)^(t−1)
+Bewirtschaftung(t) = Kosten im Jahr 1 × 1,02^(t−1)          (Inflationsziel der EZB)
+
+Saldo(t)      = Reinertrag(t) − Kapitaldienst Land − Kapitaldienst Anstalt
+                > 0: Überschuss,  < 0: Zuschuss aus dem Landeshaushalt</div>
+<p style="margin-top:0.85rem">Im ersten Jahr spielen Miet- und Kostensteigerung noch keine Rolle; deshalb entspricht die Hauptzahl Tabelle 2 im DIW aktuell (mit umgekehrtem Vorzeichen). Die Bewirtschaftungskosten steigen fest mit 2 % pro Jahr, dem Inflationsziel der EZB. Für die Mieten ist 1 % pro Jahr voreingestellt, wie politisch debattiert; der Wert lässt sich ändern. Steigen die Mieten langsamer als die Kosten, wächst der Zuschussbedarf mit der Zeit. Der Barwert wird mit dem Zins des Landes abgezinst. Die höchste tragbare Entschädigung im ersten Jahr ist Reinertrag ÷ [q · AF(Zins Land) + (1 − q) · AF(Zins Anstalt)], wobei q die Eigenkapitalquote und AF der Annuitätenfaktor ist.</p>
+
+<h3>Was die Rechnung nicht enthält</h3>
+<ul class="clean">
+  <li>Sie zeigt nur die <strong>direkte Haushaltswirkung</strong>. Nicht enthalten sind das Rechtsrisiko einer Entschädigung unter dem Verkehrswert, Kosten einer Landesbürgschaft im Krisenfall, steuerliche Rückwirkungen (Abschreibungen der Unternehmen bei einer Entschädigung unter Buchwert, vor allem zulasten des Bundes), Transaktions- und Aufbaukosten der Anstalt sowie Leerstand.</li>
+  <li>Keine Marktwirkungen: weder auf den Neubau (Wohnungsunternehmen stellten 2008–2025 im Schnitt 42 % der neuen Wohnungen fertig) noch auf die Umzugsmobilität oder die Mieten im übrigen Markt.</li>
+  <li>Die Zinsen gelten über die gesamte Laufzeit als fest; ein Zinsänderungsrisiko ist nicht berücksichtigt.</li>
+  <li>Der Bestand bleibt konstant: keine Verkäufe, kein Neubau durch die Anstalt.</li>
+</ul>
+
+<h2 id="annahmen">Annahmen und ihre Herkunft</h2>
+<h3>Entschädigung</h3>
+<div class="tbl-wrap"><table class="text">
+  <tr><th>Quelle</th><th>Wohnungen</th><th>Methode</th><th>Entschädigung</th></tr>
+  <tr><td>Senat (2019/2020)</td><td>226.000–240.000</td><td>Verkehrswert</td><td>29–36 Mrd. € (2020: bis 39,5)</td></tr>
+  <tr><td>Initiative Deutsche Wohnen &amp; Co enteignen</td><td>ca. 240.000</td><td>Ertragswert „Faire Mieten“ bzw. Mieten der Landeseigenen</td><td>8 bzw. 11 Mrd. €</td></tr>
+  <tr><td>Rechnungshof von Berlin (2024)</td><td>240.000</td><td>Szenarien der Haushaltsfolgen</td><td>8 / 11 / 29 / 36 Mrd. €</td></tr>
+  <tr><td>Holm et al. (2025)</td><td>240.000</td><td>Refinanzierbarkeit aus den Mieten</td><td>10,1 Mrd. € (realitätsnah 10–17)</td></tr>
+  <tr><td>Sondierungspapier Linke, Grüne, SPD (2026)</td><td>rund 160.000</td><td>Obergrenze; Unternehmen mit mehr als 10.000 Wohnungen</td><td>16 Mrd. €</td></tr>
+  <tr><td>IMK (2026)</td><td>210.000</td><td>Ertragswert, 4 % real, 40 Jahre, zzgl. Boden</td><td>13,5 Mrd. €</td></tr>
+</table></div>
+<p class="small muted" style="margin-top:0.4rem">Das Rahmengesetz vom März 2026 (in Kraft 2028) nennt den Verkehrswert als Ausgangspunkt der Entschädigung, lässt die Bewertungsmethode aber offen.</p>
+
+<h3>Bewirtschaftungskosten</h3>
+<p>Standard sind 3,73 € je m² und Monat (Holm et al. 2025, Tab. 5, landeseigene Unternehmen): Instandhaltung 1,77 €, Modernisierung 1,00 €, Verwaltung 0,52 €, Mietausfallwagnis 0,14 €, nicht umlagefähige Betriebskosten 0,30 €. Kapitalkosten und Tilgung stecken im Kapitaldienst; eine zusätzliche Abschreibung wird nicht angesetzt, um Doppelzählung zu vermeiden. Alternativen: 2,94 € (Holm et al., Basis), 3,66 € (IMK), 4,40 € (IW Köln, realistischere Modernisierung), 4,44 € (Holm et al., erhöhte Instandsetzung).</p>
+
+<h3>Zinsen</h3>
+<p>Bundesanleihen rentieren derzeit knapp unter 4 Prozent (30 Jahre: <span id="vgr-bund30">3,79</span> %; Deutsche Bundesbank, Stand <span class="vgr-zinsstand">20.10.2026</span>). Das ist die Untergrenze, denn zu geringeren Zinsen wird niemand dem Land Berlin oder einer Wohnungsgesellschaft Geld leihen. Berlin zahlt einen geringen Aufschlag gegenüber dem Bund (rund 0,2 Prozentpunkte); er kann steigen, wenn die Haushaltspolitik als unsolide gilt. Daraus ergibt sich der Standardwert von 4 % für das Land. Wohnungsgesellschaften können sich nicht zu den Konditionen des Bundes verschulden: Eine Anleihe der HOWOGE mit sieben Jahren Restlaufzeit rentiert rund 1 Prozentpunkt über vergleichbaren Bundesanleihen. Der Standardwert von 5 % für die Anstalt ist vorsichtig gerundet; Holm et al. (2025) setzen 1,5 bis 2 Prozentpunkte Aufschlag an.</p>
+
+<h3>Eigenkapitalquote und Laufzeit</h3>
+<p>Standard sind 20 % Eigenkapital (Holm et al. 2025) und 50 Jahre Laufzeit (DIW aktuell). Das IMK rechnet mit 30 % und 40 Jahren.</p>
+
+<h3>Vergleichsgrößen Landeshaushalt</h3>
+<div class="tbl-wrap"><table class="text">
+  <tr><th>Größe</th><th>Wert</th><th>Quelle</th></tr>
+  <tr><td>Bereinigte Ausgaben 2027</td><td>≈ 45,9 Mrd. €</td><td>Doppelhaushalt 2026/27, Pressemitteilung der Senatsverwaltung für Finanzen vom 19.12.2025 (2026: knapp 45 Mrd. €)</td></tr>
+  <tr><td>Finanzierungsdefizit 2026</td><td>≈ 4,6 Mrd. €</td><td>Statusbericht des Senats, 1.9.2026</td></tr>
+  <tr><td>Schuldenstand</td><td>≈ 69 Mrd. €</td><td>Senatsverwaltung für Finanzen</td></tr>
+</table></div>
+
+<h2 id="quellen">Quellen</h2>
+<ul class="clean sources">
+  <li>Dany-Knedlik, G., Kholodilin, K. A., Kritikos, A. S., Kriwoluzky, A. (2026): <a href="https://www.diw.de/de/diw_01.c.1021274.de/publikationen/diw_aktuell/2026_0126/vergesellschaftung_der_wohnungsunternehmen_in_berlin_belastet_den_haushalt_und_schafft_keine_zusaetzliche_wohnung.html">Vergesellschaftung der Wohnungsunternehmen in Berlin belastet den Haushalt und schafft keine zusätzliche Wohnung</a>. DIW aktuell Nr. 126, 5. Oktober 2026. ISSN 2567-3971.</li>
+  <li>Dullien, S., Kaczmarczyk, P., Krebs, T., Truger, A. (2026): Die Überführung von großen Wohnungsbeständen ins Gemeineigentum. IMK Policy Brief Nr. 225.</li>
+  <li>Holm, A. et al. (2025): Refinanzierungsoptionen in vergesellschafteten Wohnungsbeständen. Studie im Auftrag von Deutsche Wohnen &amp; Co enteignen.</li>
+  <li>Rechnungshof von Berlin (2024): Auswirkungen einer Vergesellschaftung großer Wohnungsunternehmen auf den Landeshaushalt.</li>
+  <li>Deschermeier, P., Voigtländer, M. (2026): Auswirkungen der Vergesellschaftung privater Wohnungsunternehmen in Berlin. IW Köln.</li>
+  <li>Simons, H. (2026): Auswirkungen einer Vergesellschaftung. empirica.</li>
+  <li>Expertenkommission Vergesellschaftung (2023): Abschlussbericht.</li>
+  <li>Initiative Deutsche Wohnen &amp; Co enteignen (2025): <a href="https://dwenteignen.de/unser-gesetz">Vergesellschaftungsgesetz (Entwurf vom 26.9.2025)</a>.</li>
+  <li>Die Linke Berlin (2026): <a href="https://dielinke.berlin/fileadmin/download/2026/Wahlprogramm_AGH_2026_Die_Linke_Berlin.pdf">Wahlprogramm zur Abgeordnetenhauswahl 2026</a>.</li>
+  <li>Senatskanzlei Berlin (1.9.2026): <a href="https://www.berlin.de/rbmskzl/aktuelles/pressemitteilungen/2026/pressemitteilung.1709184.php">Statusbericht zur Haushaltslage</a>.</li>
+  <li>Senatsverwaltung für Finanzen (2025): Doppelhaushalt 2026/2027, Pressemitteilung Nr. 21 vom 19.12.2025; <a href="https://www.berlin.de/sen/finanzen/haushalt/haushaltsueberwachung/schuldenbremse/artikel.746375.php">Umsetzung der Schuldenbremse im Land Berlin</a>.</li>
+  <li>dpa (21.10.2026): <a href="https://www.tagesspiegel.de/wirtschaft/dpa-regierungsbildung-vergesellschaftung-soll-kommen--was-konnte-sie-bringen-16181947.html">Regierungsbildung: Vergesellschaftung soll kommen – was könnte sie bringen?</a> Bericht über das Sondierungspapier von Linke, Grünen und SPD, Tagesspiegel.</li>
+  <li>Deutsche Bundesbank: Renditen börsennotierter Bundeswertpapiere, Stand <span class="vgr-zinsstand">20.10.2026</span>.</li>
+</ul>
+<p class="small muted">Der Rechner läuft vollständig in Ihrem Browser. Es werden keine Eingaben gespeichert oder übertragen, es gibt keine Cookies und kein Tracking. Stand: Oktober 2026.</p>
+</div>
+</div>
+
+<script src="/vergesellschaftung/rechenkern.js"></script>
+<script src="/vergesellschaftung/rechner.js"></script>
