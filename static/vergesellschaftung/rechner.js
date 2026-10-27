@@ -331,14 +331,8 @@
     // Einordnung
     var H = HAUSHALT, txt;
     if (zus) {
-      var lo = j.belastung / H.schuldenbremseSpielraumMax, hi = j.belastung / H.schuldenbremseSpielraumMin;
-      var spiel = hi < 1
-        ? 'Davon würde die Belastung ' + pct(lo, 0).replace(' %', '') + ' bis ' + pct(hi, 0) + ' binden.'
-        : (lo >= 1 ? 'Die Belastung wäre das ' + nf(lo, 1) + '- bis ' + nf(hi, 1) + '-Fache davon.' : 'Die Belastung würde ihn ganz oder fast ganz aufbrauchen.');
-      txt = 'Das entspricht <strong>' + pct(j.belastung / H.ausgaben2027) + '</strong> der Ausgaben des Landes 2027, <strong>' +
-        pct(j.belastung / H.finanzierungsdefizit2026) + '</strong> des Finanzierungsdefizits 2026 und <strong>' +
-        pct(j.belastung / H.einzelplan10_2027) + '</strong> der Ausgaben für Bildung, Jugend und Familie (Einzelplan 10). ' +
-        'Der jährliche Verschuldungsspielraum unter der Schuldenbremse beträgt etwa 675 bis 800 Mio. €. ' + spiel;
+      txt = 'Das entspricht <strong>' + pct(j.belastung / H.ausgaben2027) + '</strong> der Ausgaben des Landes 2027 und <strong>' +
+        pct(j.belastung / H.finanzierungsdefizit2026) + '</strong> des Finanzierungsdefizits 2026.';
     } else {
       txt = 'Im ersten Jahr decken die Mieten Bewirtschaftung, Zins und Tilgung. ' +
         (ueb ? 'Es bleibt ein Überschuss von <strong>' + geld(-B) + '</strong>, der an das Land fließen kann.' : '');
