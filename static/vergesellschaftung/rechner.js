@@ -377,6 +377,7 @@
     var dauerhaft = !mit.length ? 'von Anfang an ohne Zuschuss' : (lastMit >= H ? 'bis zum Ende des Zeitraums' : 'ab Jahr ' + (lastMit + 1) + ' dauerhaft ohne Zuschuss');
     var tiles = [
       ['Summe der Zuschüsse in ' + H + ' Jahren', geld(res.summeZuschuesse / 1e6), Math.abs(res.summeNetto - res.summeZuschuesse) > 5e5 ? 'nominal; Saldo inkl. Überschüssen ' + geld(-res.summeNetto / 1e6, true) : 'nominal, nicht abgezinst'],
+      ['Barwert des Saldos', geld(-res.barwert / 1e6, true), 'abgezinst mit ' + pct(p.diskontsatz == null ? p.zinsEK : p.diskontsatz, 1)],
       ['Saldo im Jahr ' + H, geld(-last.belastung / 1e6, true), sf(-last.belastungJeQmMonat, 2) + ' € je m² und Monat'],
       ['Jahre mit Zuschuss', mit.length + ' von ' + H, dauerhaft]
     ];
