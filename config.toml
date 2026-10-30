@@ -88,3 +88,7 @@ enableEmoji = true
     title = "Was kostet die Vergesellschaftung den Berliner Haushalt?"
     url = "/vergesellschaftung/"
     weight = 5
+
+[security]
+  # Allow our own HTML content files (e.g. content/vergesellschaftung/index.html); Hugo >= 0.15x blocks text/html by default
+  allowContent = [".*"]
