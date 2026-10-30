@@ -1,9 +1,9 @@
 # Startseiten-News: neueste Einträge zuerst; es werden maximal 8 angezeigt.
 # Felder: date (Anzeige), text (Markdown, Links erlaubt)
-- date: "Mar 2027"
-  text: "**BASEforHANK Spring School** at DIW Berlin — hands-on training in heterogeneous-agent models."
 - date: "Dec 2026"
   text: "**Macroeconometric Workshop** on 18 December at DIW Berlin, jointly with FU and HU Berlin; keynote by Evi Pappa."
+- date: "Oct 2026"
+  text: "Applications open for the **BASEforHANK Spring School**, 1–10 March 2027 (online and at DIW Berlin), on solving and estimating HANK models with Christian Bayer, Benjamin Born and Ralph Luetticke. Deadline 15 November 2026: [Call for applications](https://www.diw.de/sixcms/media.php/demo_diw_0.a.128.de/upload/BASEforHANK_Spring_School_2027_CfA.pdf)."
 - date: "Oct 2026"
   text: "New DIW Weekly Report with Frederik Kurcz: [ECB interest rate hikes have a greater impact in euro area countries with restrictive fiscal policies](https://www.diw.de/documents/publikationen/73/diw_01.c.1022269.de/dwr-26-39.pdf)."
 - date: "Oct 2026"
