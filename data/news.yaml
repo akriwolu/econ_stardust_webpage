@@ -1,4 +1,4 @@
-# Startseiten-News: neueste Einträge zuerst; es werden maximal 6 angezeigt.
+# Startseiten-News: neueste Einträge zuerst; es werden maximal 8 angezeigt.
 # Felder: date (Anzeige), text (Markdown, Links erlaubt)
 - date: "Mar 2027"
   text: "**BASEforHANK Spring School** at DIW Berlin — hands-on training in heterogeneous-agent models."
@@ -11,4 +11,8 @@
 - date: "Sep 2026"
   text: "*Financial Repression in General Equilibrium* (with Martin Kliem, Gernot Müller and Alexander Scheer) conditionally accepted at the *American Economic Journal: Macroeconomics*."
 - date: "Sep 2026"
+  text: "New DFG grant with Malte Rieth: **Macroeconomic and distributional effects of military spending** — how Europe's military build-up affects output, firms and households, studied for Germany."
+- date: "Sep 2026"
   text: "What would socialising Berlin's large housing stocks cost the city? New [DIW aktuell](https://www.diw.de/de/diw_01.c.1021274.de/publikationen/diw_aktuell/2026_0126/vergesellschaftung_der_wohnungsunternehmen_in_berlin_belastet_den_haushalt_und_schafft_keine_zusaetzliche_wohnung.html) and an [interactive calculator](/vergesellschaftung/)."
+- date: "Feb 2026"
+  text: "[Redistribution within and across borders: The fiscal response to an energy shock](/publications/EHANK/) (with Christian Bayer, Gernot Müller and Fabian Seyrich) accepted at the *Journal of Political Economy Macroeconomics*."

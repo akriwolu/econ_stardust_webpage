@@ -16,12 +16,12 @@
       {{ end }}
       </div>
     </div>
-    {{/* News: data/news.yaml, newest first, at most 6 entries */}}
+    {{/* News: data/news.yaml, newest first, at most 8 entries */}}
     {{ with site.Data.news }}
     <div class="mh4 mt5 pt4 bt b--light-gray">
       <h2 class="f5 fw7 mt0 mb3 ttu tracked">News</h2>
       <ul class="list pl0 ma0 mw7">
-      {{ range first 6 . }}
+      {{ range first 8 . }}
         <li class="flex-ns mb2 lh-copy">
           <span class="db w4 flex-shrink-0 f6 fw6 ttu tracked-tight mt1 o-60">{{ .date }}</span>
           <span class="f5">{{ .text | markdownify }}</span>
