@@ -1,6 +1,6 @@
 ---
 title: "Redistribution within and across borders: The fiscal response to an energy shock"
-date: 2026-03-01
+date: 2026-11-10
 tags: ["macroeconomics", "fiscal policy", "energy shock"]
 authors:
   - "Christian Bayer"
