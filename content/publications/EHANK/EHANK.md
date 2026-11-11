@@ -7,7 +7,7 @@ authors:
   - "Gernot Müller"
   - "Fabian Seyrich"
   - "Alexander Kriwoluzky"
-excerpt: "with Christian Bayer, Gernot Müller, Fabian Seyrich, **Journal of Political Economy Macroeconomics** (accepted)."
+excerpt: "with Christian Bayer, Gernot Müller, Fabian Seyrich, **Journal of Political Economy Macroeconomics**, forthcoming (vol. 5, no. 3, September 2027)."
 links:
   - icon: file-pdf
     icon_pack: fas
