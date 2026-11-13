@@ -9,6 +9,10 @@ authors:
   - "Alexander Kriwoluzky"
 excerpt: "with Christian Bayer, Gernot Müller, Fabian Seyrich, **Journal of Political Economy Macroeconomics**, forthcoming (vol. 5, no. 3, September 2027)."
 links:
+  - icon: external-link-alt
+    icon_pack: fas
+    name: Journal version
+    url: "https://doi.org/10.1086/744918"
   - icon: file-pdf
     icon_pack: fas
     name: Working paper
